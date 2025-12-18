@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source ./ui.sh
+source ./state.sh
+
+PACMAN_PACKAGES=(awesome,picom,rofi,rsync)
+NIX_PACKAGES=(brightnessctl,eza,fd,bat)
+
+NIX_SELECTION=$(checklist "Programs" "Select Nix programs to install:" \
+  ripgrep "ripgrep (Grep alternative)" on \
+  isort "isort (Python Import Sort)" on \
+  pyright "Pyright (Python LSP)" on \
+  uv "UV (Python package & project manager)" on \
+  zellij "Zellij (Terminal multiplexer)" on \
+  brightnessctl "BrightnessCTL" on \
+  nushell "NuShell" off \
+)
+
+for item in $NIX_SELECTION; do
+  NIX_PACKAGES+=("$item")
+done
+
+PACMAN_SELECTION=$(checklist "Programs" "Select Pacman programs to install:" \
+  neovim   "Neovim (editor)" on \
+  7z "7z" on \
+  docker   "Docker" on \
+  docker-compose "Docker Compose" on \
+  yazi "Yazi (TUI file manager)" on \
+  tldr "TLDR (application info)" on \
+  pavucontrol "PulseAudio Volume Control" on \
+  nitrogen "Nitrogen (Wallpaper manager)" on \
+  lxappearance "LXAppearance (Theme manager)" on \
+  go "Go (programming language)" on \
+  python314 "Python (programming language)" on \
+  arandr "Arandr (Display manager)" on \
+  flameshot "Flameshot (screenshot utility)" on
+)
+
+for item in $PACMAN_SELECTION; do
+  PACMAN_PACKAGES+=("$item")
+done
+
+SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications to install:" \
+  gitkraken "GitKraken (GUI Git management)" on \
+  pycharm-professional "Pycharm Professional" on \
+  libreoffice "LibreOffice" on \
+  gimp "Gimp (Graphical image editor)" on \
+  thorium-browser-bin "Thorium (web browser)" on \
+  imagemagick "ImageMagick (CLI image editing)" on \
+  neovide "Neovide (graphical NVIM client)" on \
+  flatpak "Flatpak (package manager)" on \
+  gh "gh (GitHub CLI)" on \
+  httpie "httpie (HTTP TUI client)" on
+) 
+
+
+
+for item in $SELECTION; do
+  case $item in
+    gitkraken|pycharm-professional|gh|httpie|neovide)
+      NIX_PACKAGES+=("$item")
+      ;;
+    libreoffice|gimp|thorium-browser-bin|imagemagick|flatpak)
+      PACMAN_PACKAGES+=("$item")
+      ;;
+  esac
+done
