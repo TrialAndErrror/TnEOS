@@ -3,25 +3,38 @@ set -euo pipefail
 
 source ./ui.sh
 
+# Build bulleted lists
+PACMAN_LIST=""
+if [ ${#PACMAN_PACKAGES[@]} -eq 0 ]; then
+  PACMAN_LIST="  (none)"
+else
+  for pkg in "${PACMAN_PACKAGES[@]}"; do
+    PACMAN_LIST+="  • $pkg"$'\n'
+  done
+fi
+
+NIX_LIST=""
+if [ ${#NIX_PACKAGES[@]} -eq 0 ]; then
+  NIX_LIST="  (none)"
+else
+  for pkg in "${NIX_PACKAGES[@]}"; do
+    NIX_LIST+="  • $pkg"$'\n'
+  done
+fi
+
 SUMMARY=$(
   cat <<EOF
 Hostname: $HOSTNAME
 User: $USERNAME
-Theme: $THEME
 
 Pacman packages:
-  ${PACMAN_PACKAGES[*]:-(none)}
-
+$PACMAN_LIST
 Nix packages:
-  ${NIX_PACKAGES[*]:-(none)}
+$NIX_LIST
 EOF
 )
 
-dialog --title "Summary" --yesno "$SUMMARY
-
-Proceed with installation?" 20 70
-
-case $? in
-  0) ;;
-  *) exit 1 ;;
-esac
+gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" "Summary"
+echo "$SUMMARY"
+echo ""
+gum confirm "Proceed with installation?" || exit 1

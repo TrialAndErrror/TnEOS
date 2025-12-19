@@ -6,7 +6,7 @@ source ./ui.sh
 PACMAN_PACKAGES=(awesome picom rofi rsync)
 NIX_PACKAGES=(brightnessctl eza fd bat)
 
-NIX_SELECTION=$(checklist "Programs" "Select Nix programs to install:" \
+NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
   ripgrep "ripgrep (Grep alternative)" on \
   isort "isort (Python Import Sort)" on \
   pyright "Pyright (Python LSP)" on \
@@ -20,7 +20,7 @@ for item in $NIX_SELECTION; do
   NIX_PACKAGES+=("$item")
 done
 
-PACMAN_SELECTION=$(checklist "Programs" "Select Pacman programs to install:" \
+PACMAN_SELECTION=$(checklist "Pacman Programs" "Select Pacman programs to install:" \
   neovim   "Neovim (editor)" on \
   7z "7z" on \
   docker   "Docker" on \
