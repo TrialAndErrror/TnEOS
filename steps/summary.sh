@@ -2,7 +2,6 @@
 set -euo pipefail
 
 source ./ui.sh
-source ./state.sh
 
 SUMMARY=$(
   cat <<EOF

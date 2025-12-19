@@ -2,10 +2,9 @@
 set -euo pipefail
 
 source ./ui.sh
-source ./state.sh
 
-PACMAN_PACKAGES=(awesome,picom,rofi,rsync)
-NIX_PACKAGES=(brightnessctl,eza,fd,bat)
+PACMAN_PACKAGES=(awesome picom rofi rsync)
+NIX_PACKAGES=(brightnessctl eza fd bat)
 
 NIX_SELECTION=$(checklist "Programs" "Select Nix programs to install:" \
   ripgrep "ripgrep (Grep alternative)" on \
@@ -56,7 +55,7 @@ SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications
 
 
 
-for item in $SELECTION; do
+for item in $SOFTWARE_SELECTION; do
   case $item in
     gitkraken|pycharm-professional|gh|httpie|neovide)
       NIX_PACKAGES+=("$item")
