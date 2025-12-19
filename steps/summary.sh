@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
 source ./ui.sh
 
@@ -37,4 +37,4 @@ EOF
 gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" "Summary"
 echo "$SUMMARY"
 echo ""
-gum confirm "Proceed with installation?" || exit 1
+gum confirm "Proceed with installation?" || return 1

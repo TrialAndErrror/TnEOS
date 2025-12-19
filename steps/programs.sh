@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 
 source ./ui.sh
 
@@ -14,7 +14,7 @@ NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
   zellij "Zellij (Terminal multiplexer)" on \
   brightnessctl "BrightnessCTL" on \
   nushell "NuShell" off \
-)
+) || return 1
 
 for item in $NIX_SELECTION; do
   NIX_PACKAGES+=("$item")
@@ -34,7 +34,7 @@ PACMAN_SELECTION=$(checklist "Pacman Programs" "Select Pacman programs to instal
   python314 "Python (programming language)" on \
   arandr "Arandr (Display manager)" on \
   flameshot "Flameshot (screenshot utility)" on
-)
+) || return 1
 
 for item in $PACMAN_SELECTION; do
   PACMAN_PACKAGES+=("$item")
@@ -51,7 +51,7 @@ SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications
   flatpak "Flatpak (package manager)" on \
   gh "gh (GitHub CLI)" on \
   httpie "httpie (HTTP TUI client)" on
-) 
+) || return 1
 
 
 
