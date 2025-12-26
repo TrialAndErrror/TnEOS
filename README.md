@@ -86,7 +86,8 @@ cd TnEOS
 The bootstrap script will:
 1. Check your system
 2. Install required tools (gum, Nix, rsync)
-3. Launch the interactive installer
+3. Install yay (AUR helper) if not present
+4. Launch the interactive installer
 
 ### Interactive Setup
 

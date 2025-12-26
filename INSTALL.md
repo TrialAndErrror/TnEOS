@@ -52,6 +52,11 @@ The bootstrap script will:
 - Install `rsync` (for file management)
 - Launch the main installer
 
+The main installer will:
+- Install `yay` (AUR helper) if not already installed
+- Install your selected packages using yay (supports both official repos and AUR)
+- Configure Home Manager for dotfile management
+
 ### Step 4: Follow the Interactive Prompts
 
 The installer will guide you through:

@@ -43,16 +43,45 @@ while true; do
   esac
 done
 
+# Check for yay and install if needed
+if ! command -v yay &> /dev/null; then
+  gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
+    "Installing yay AUR Helper" \
+    "yay is needed for AUR package support"
+
+  echo "Installing yay..."
+  echo ""
+
+  # Install dependencies
+  sudo pacman -S --needed --noconfirm git base-devel
+
+  # Clone and build yay
+  TEMP_DIR=$(mktemp -d)
+  cd "$TEMP_DIR"
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
+  makepkg -si --noconfirm
+  cd -
+  rm -rf "$TEMP_DIR"
+
+  gum style --bold --foreground 2 "✓ yay installed successfully"
+  echo ""
+else
+  echo "✓ yay already installed"
+  echo ""
+fi
+
 # Install Pacman packages
 if [ ${#PACMAN_PACKAGES[@]} -gt 0 ]; then
   gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
-    "Installing Pacman Packages" "${#PACMAN_PACKAGES[@]} packages selected"
+    "Installing Packages" "${#PACMAN_PACKAGES[@]} packages selected"
 
   echo "Installing: ${PACMAN_PACKAGES[*]}"
-  gum spin --spinner dot --title "Installing Pacman packages..." -- \
-    sudo pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
+  echo ""
+  yay -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
-  gum style --bold --foreground 2 "✓ Pacman packages installed successfully"
+  echo ""
+  gum style --bold --foreground 2 "✓ Packages installed successfully"
   echo ""
 
   # Enable LightDM if it was installed
@@ -70,9 +99,10 @@ if [ ${#NIX_PACKAGES[@]} -gt 0 ]; then
     "Installing Nix Packages" "${#NIX_PACKAGES[@]} packages selected"
 
   echo "Installing: ${NIX_PACKAGES[*]}"
-  gum spin --spinner dot --title "Installing Nix packages..." -- \
-    nix profile install "${NIX_PACKAGES[@]/#/nixpkgs#}"
+  echo ""
+  nix profile install "${NIX_PACKAGES[@]/#/nixpkgs#}"
 
+  echo ""
   gum style --bold --foreground 2 "✓ Nix packages installed successfully"
   echo ""
 fi
@@ -84,14 +114,16 @@ gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
 # Install Home Manager
 if ! command -v home-manager &> /dev/null; then
   echo "Installing Home Manager..."
-  gum spin --spinner dot --title "Installing Home Manager..." -- \
-    nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+  echo "Adding Home Manager channel..."
+  nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 
-  gum spin --spinner dot --title "Updating Nix channels..." -- \
-    nix-channel --update
+  echo "Updating Nix channels..."
+  nix-channel --update
 
-  gum spin --spinner dot --title "Installing Home Manager package..." -- \
-    nix-shell '<home-manager>' -A install
+  echo "Installing Home Manager package..."
+  nix-shell '<home-manager>' -A install
+
+  echo ""
 else
   echo "Home Manager already installed"
 fi
@@ -138,8 +170,9 @@ echo "Setting up Home Manager configuration..."
 mkdir -p "$HM_CONFIG_DIR"
 
 # Copy the entire home-manager directory
-gum spin --spinner dot --title "Copying Home Manager configuration..." -- \
-  rsync -av "$SCRIPT_DIR/home-manager/" "$HM_CONFIG_DIR/"
+echo "Copying Home Manager configuration..."
+rsync -av "$SCRIPT_DIR/home-manager/" "$HM_CONFIG_DIR/"
+echo ""
 
 # Conditionally remove nvim config if neovim wasn't selected
 if [[ ! " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
@@ -152,9 +185,9 @@ fi
 
 # Apply Home Manager configuration
 echo "Applying Home Manager configuration..."
-gum spin --spinner dot --title "Applying Home Manager configuration..." -- \
-  home-manager switch
+home-manager switch
 
+echo ""
 gum style --bold --foreground 2 "✓ Home Manager configured successfully"
 echo ""
 

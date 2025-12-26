@@ -20,7 +20,7 @@ for item in $NIX_SELECTION; do
   NIX_PACKAGES+=("$item")
 done
 
-PACMAN_SELECTION=$(checklist "Pacman Programs" "Select Pacman programs to install:" \
+PACMAN_SELECTION=$(checklist "System Programs" "Select programs to install (via yay - supports AUR):" \
   neovim   "Neovim (editor)" on \
   7z "7z" on \
   docker   "Docker" on \
