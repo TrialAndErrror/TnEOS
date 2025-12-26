@@ -100,10 +100,17 @@ if [ ${#NIX_PACKAGES[@]} -gt 0 ]; then
 
   echo "Installing: ${NIX_PACKAGES[*]}"
   echo ""
-  nix profile install "${NIX_PACKAGES[@]/#/nixpkgs#}"
+
+  # Install each package individually to handle errors better
+  for pkg in "${NIX_PACKAGES[@]}"; do
+    echo "  Installing $pkg..."
+    nix profile install "nixpkgs#$pkg" --impure || {
+      echo "  ⚠ Warning: Failed to install $pkg, skipping..."
+    }
+  done
 
   echo ""
-  gum style --bold --foreground 2 "✓ Nix packages installed successfully"
+  gum style --bold --foreground 2 "✓ Nix packages installation complete"
   echo ""
 fi
 

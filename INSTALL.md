@@ -49,12 +49,14 @@ The bootstrap script will:
 - Verify internet connection
 - Install `gum` (for the interactive interface)
 - Install Nix (if not already installed)
+- Enable Nix experimental features (nix-command and flakes)
 - Install `rsync` (for file management)
 - Launch the main installer
 
 The main installer will:
 - Install `yay` (AUR helper) if not already installed
 - Install your selected packages using yay (supports both official repos and AUR)
+- Install Nix packages with proper experimental features support
 - Configure Home Manager for dotfile management
 
 ### Step 4: Follow the Interactive Prompts
@@ -203,6 +205,14 @@ sh <(curl -L https://nixos.org/nix/install) --daemon
 Log out and log back in, or source the Nix profile:
 ```bash
 source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+```
+
+### "error: experimental Nix feature 'nix-command' is disabled"
+The bootstrap script should enable this automatically. If you see this error, manually enable it:
+```bash
+sudo mkdir -p /etc/nix
+echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
+sudo systemctl restart nix-daemon
 ```
 
 ### Home Manager fails to apply

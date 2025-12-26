@@ -84,6 +84,23 @@ else
   echo "✓ Nix already installed"
 fi
 
+# Enable Nix experimental features (nix-command and flakes)
+echo "Configuring Nix experimental features..."
+sudo mkdir -p /etc/nix
+if [ ! -f /etc/nix/nix.conf ] || ! grep -q "experimental-features" /etc/nix/nix.conf; then
+  echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf > /dev/null
+  echo "✓ Nix experimental features enabled"
+
+  # Restart nix-daemon to apply changes
+  if systemctl is-active --quiet nix-daemon; then
+    echo "Restarting nix-daemon..."
+    sudo systemctl restart nix-daemon
+  fi
+else
+  echo "✓ Nix experimental features already enabled"
+fi
+echo ""
+
 # Ensure rsync is installed (needed for Home Manager setup)
 if ! command -v rsync &> /dev/null; then
   echo "Installing rsync..."
