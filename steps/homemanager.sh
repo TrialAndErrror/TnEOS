@@ -9,7 +9,7 @@ gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
 gum style --bold --foreground 2 "✓ Home Manager will be installed and configured"
 
 msgbox "Home Manager Configuration" \
-"Home Manager will manage your dotfiles and assets.
+"Home Manager will manage your dotfiles.
 
 Configuration location: ./home-manager/
 
@@ -19,8 +19,10 @@ Your configs will be symlinked to:
   • ~/.config/picom/
   • ~/.config/rofi/
   • ~/.config/alacritty/
-  • ~/Pictures/Wallpapers/
-  • ~/.local/share/icons/"
+
+TnEOS wallpaper will be copied to:
+  • ~/Pictures/Wallpapers/tneos-wallpaper.jpg
+  (Your existing wallpapers won't be touched)"
 
 echo ""
 

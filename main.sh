@@ -97,7 +97,7 @@ else
 fi
 
 # Backup existing config files
-BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d-%H%M%S)"
+BACKUP_DIR="$HOME/.config-backups/$(date +%Y%m%d-%H%M%S)"
 CONFIGS_TO_BACKUP=("awesome" "nvim" "picom" "rofi" "alacritty")
 BACKUP_NEEDED=false
 
@@ -121,18 +121,6 @@ if [ "$BACKUP_NEEDED" = true ]; then
         mv "$HOME/.config/$config" "$BACKUP_DIR/"
       fi
     done
-
-    # Also backup wallpapers and icons if they exist
-    if [ -e "$HOME/Pictures/Wallpapers" ]; then
-      echo "  Backing up ~/Pictures/Wallpapers"
-      mkdir -p "$BACKUP_DIR/Pictures"
-      mv "$HOME/Pictures/Wallpapers" "$BACKUP_DIR/Pictures/"
-    fi
-    if [ -e "$HOME/.local/share/icons" ]; then
-      echo "  Backing up ~/.local/share/icons"
-      mkdir -p "$BACKUP_DIR/.local/share"
-      mv "$HOME/.local/share/icons" "$BACKUP_DIR/.local/share/"
-    fi
 
     gum style --bold --foreground 2 "✓ Backup created at: $BACKUP_DIR"
     echo ""
@@ -170,6 +158,15 @@ gum spin --spinner dot --title "Applying Home Manager configuration..." -- \
 gum style --bold --foreground 2 "✓ Home Manager configured successfully"
 echo ""
 
+# Copy TnEOS wallpaper (don't overwrite existing wallpapers)
+echo "Installing TnEOS wallpaper..."
+mkdir -p "$HOME/Pictures/Wallpapers"
+if [ -f "$HM_CONFIG_DIR/assets/backgrounds/wallpaper.jpg" ]; then
+  cp -n "$HM_CONFIG_DIR/assets/backgrounds/wallpaper.jpg" "$HOME/Pictures/Wallpapers/tneos-wallpaper.jpg"
+  echo "  ✓ TnEOS wallpaper added to ~/Pictures/Wallpapers/"
+fi
+echo ""
+
 if [ "$BACKUP_NEEDED" = true ] && [ -d "$BACKUP_DIR" ]; then
   gum style --bold --foreground 3 --border rounded --padding "1 2" --margin "1" \
     "Backup Information" \
@@ -192,14 +189,13 @@ if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
   ~/.config/nvim/"
 fi
 
-CONFIG_LIST="$CONFIG_LIST
-  ~/Pictures/Wallpapers/
-  ~/.local/share/icons/"
-
 gum style --bold --foreground 3 --border rounded --padding "1 2" --margin "1" \
   "Configuration Applied!" \
   "Your configs have been symlinked to:" \
   "$CONFIG_LIST" \
+  "" \
+  "TnEOS wallpaper added to:" \
+  "  ~/Pictures/Wallpapers/tneos-wallpaper.jpg" \
   "" \
   "To update configs later:" \
   "  1. Edit files in ~/.config/home-manager/" \

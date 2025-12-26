@@ -127,7 +127,7 @@ If you have existing configurations, TnEOS will:
 
 1. **Detect** existing config files in `~/.config/`
 2. **Prompt** you to create a backup
-3. **Create** a timestamped backup directory: `~/.config-backup-YYYYMMDD-HHMMSS/`
+3. **Create** a timestamped backup directory: `~/.config-backups/YYYYMMDD-HHMMSS/`
 4. **Move** your old configs there
 5. **Apply** the new TnEOS configurations
 
@@ -158,8 +158,10 @@ These are symlinked to their proper locations:
 - `~/.config/picom/` → Picom
 - `~/.config/rofi/` → Rofi
 - `~/.config/alacritty/` → Alacritty
-- `~/Pictures/Wallpapers/` → Wallpapers
-- `~/.local/share/icons/` → Icons
+
+TnEOS wallpaper is copied (not symlinked) to:
+- `~/Pictures/Wallpapers/tneos-wallpaper.jpg`
+  (Your existing wallpapers are not touched)
 
 ### Updating Configurations
 
@@ -212,13 +214,21 @@ startx
 ```
 
 ### Want to restore old configs?
-Your backups are in `~/.config-backup-*/`. To restore:
+Your backups are in `~/.config-backups/*/`.
+
+**Easy way** - Use the interactive restore script:
+```bash
+cd ~/TnEOS
+./restore-backup.sh
+```
+
+**Manual way** - Restore manually:
 ```bash
 # Remove TnEOS configs
 rm -rf ~/.config/awesome ~/.config/nvim ~/.config/picom ~/.config/rofi ~/.config/alacritty
 
 # Restore from backup (replace YYYYMMDD-HHMMSS with your backup timestamp)
-cp -r ~/.config-backup-YYYYMMDD-HHMMSS/* ~/
+cp -r ~/.config-backups/YYYYMMDD-HHMMSS/* ~/
 ```
 
 ## Advanced: Preparing During Arch Installation

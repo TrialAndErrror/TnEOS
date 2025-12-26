@@ -24,14 +24,14 @@ When you run the installation script and choose to set up Home Manager:
 
 1. Home Manager will be installed via Nix
 2. This configuration will be copied to `~/.config/home-manager/`
-3. Home Manager will create symlinks:
+3. Home Manager will create symlinks for your configs:
    - `~/.config/awesome/` → your awesome configs
    - `~/.config/nvim/` → your nvim configs
    - `~/.config/picom/` → your picom configs
    - `~/.config/rofi/` → your rofi configs
    - `~/.config/alacritty/` → your alacritty configs
-   - `~/Pictures/Wallpapers/` → your wallpapers
-   - `~/.local/share/icons/` → your icons
+4. TnEOS wallpaper will be copied to `~/Pictures/Wallpapers/tneos-wallpaper.jpg`
+   (Your existing wallpapers are not touched)
 
 ## Applying Changes
 If you want to make changes, you can edit files in ~/.config/home-manager/

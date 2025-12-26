@@ -134,9 +134,21 @@ All your configurations are in `~/.config/home-manager/` and can be updated anyt
 If you had existing configurations, TnEOS automatically:
 - Detects conflicts
 - Offers to create a timestamped backup
-- Safely stores old files in `~/.config-backup-YYYYMMDD-HHMMSS/`
+- Safely stores old files in `~/.config-backups/YYYYMMDD-HHMMSS/`
 
-You can restore from backup anytime if needed.
+### Restoring from Backup
+
+You can restore from backup anytime using the interactive restore script:
+
+```bash
+cd ~/TnEOS
+./restore-backup.sh
+```
+
+The script lets you:
+- Choose which backup to restore from
+- Select specific items to restore (or restore everything)
+- Safely replace current configs with backed-up versions
 
 ## Troubleshooting
 

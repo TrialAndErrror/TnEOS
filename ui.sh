@@ -31,7 +31,7 @@ menu() {
     shift 2
   done
 
-  $GUM choose "${options[@]}" | cut -d' ' -f1
+  $GUM choose --header "Use arrow keys to navigate, enter to select" "${options[@]}" | cut -d' ' -f1
 }
 
 checklist() {
@@ -59,9 +59,9 @@ checklist() {
   if [ ${#selected[@]} -gt 0 ]; then
     # Join selected items with commas
     local IFS=','
-    $GUM choose --no-limit --height 15 --selected="${selected[*]}" "${options[@]}"
+    $GUM choose --no-limit --height 15 --header "Use space to toggle, enter to confirm" --selected="${selected[*]}" "${options[@]}"
   else
-    $GUM choose --no-limit --height 15 "${options[@]}"
+    $GUM choose --no-limit --height 15 --header "Use space to toggle, enter to confirm" "${options[@]}"
   fi
 }
 
@@ -79,7 +79,7 @@ radiolist() {
     shift 3  # Skip description and status
   done
 
-  $GUM choose --height 10 "${options[@]}"
+  $GUM choose --height 10 --header "Use arrow keys to navigate, enter to select" "${options[@]}"
 }
 
 msgbox() {

@@ -45,18 +45,6 @@
     recursive = true;
   };
 
-  # Backgrounds/Wallpapers
-  home.file."Pictures/Wallpapers" = {
-    source = ./assets/backgrounds;
-    recursive = true;
-  };
-
-  # Icons
-  home.file.".local/share/icons" = {
-    source = ./assets/icons;
-    recursive = true;
-  };
-
   # Additional packages to install via Home Manager
   home.packages = with pkgs; [
     # Add any additional packages here
