@@ -54,6 +54,14 @@ if [ ${#PACMAN_PACKAGES[@]} -gt 0 ]; then
 
   gum style --bold --foreground 2 "✓ Pacman packages installed successfully"
   echo ""
+
+  # Enable LightDM if it was installed
+  if [[ " ${PACMAN_PACKAGES[@]} " =~ " lightdm " ]]; then
+    echo "Enabling LightDM display manager..."
+    sudo systemctl enable lightdm.service
+    gum style --bold --foreground 2 "✓ LightDM enabled - will start on next boot"
+    echo ""
+  fi
 fi
 
 # Install Nix packages
@@ -145,6 +153,15 @@ mkdir -p "$HM_CONFIG_DIR"
 gum spin --spinner dot --title "Copying Home Manager configuration..." -- \
   rsync -av "$SCRIPT_DIR/home-manager/" "$HM_CONFIG_DIR/"
 
+# Conditionally remove nvim config if neovim wasn't selected
+if [[ ! " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
+  echo "Neovim not selected, removing nvim configuration from Home Manager..."
+  # Remove the nvim config block from home.nix using markers
+  sed -i '/# CONDITIONAL_NVIM_START/,/# CONDITIONAL_NVIM_END/d' "$HM_CONFIG_DIR/home.nix"
+  # Also update the EDITOR variable
+  sed -i 's/EDITOR = "nvim";/EDITOR = "vim";/' "$HM_CONFIG_DIR/home.nix"
+fi
+
 # Apply Home Manager configuration
 echo "Applying Home Manager configuration..."
 gum spin --spinner dot --title "Applying Home Manager configuration..." -- \
@@ -163,21 +180,50 @@ if [ "$BACKUP_NEEDED" = true ] && [ -d "$BACKUP_DIR" ]; then
   echo ""
 fi
 
+# Build the config list dynamically
+CONFIG_LIST="  ~/.config/awesome/
+  ~/.config/picom/
+  ~/.config/rofi/
+  ~/.config/alacritty/"
+
+# Add nvim if it was selected
+if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
+  CONFIG_LIST="$CONFIG_LIST
+  ~/.config/nvim/"
+fi
+
+CONFIG_LIST="$CONFIG_LIST
+  ~/Pictures/Wallpapers/
+  ~/.local/share/icons/"
+
 gum style --bold --foreground 3 --border rounded --padding "1 2" --margin "1" \
   "Configuration Applied!" \
   "Your configs have been symlinked to:" \
-  "  ~/.config/awesome/" \
-  "  ~/.config/nvim/" \
-  "  ~/.config/picom/" \
-  "  ~/.config/rofi/" \
-  "  ~/.config/alacritty/" \
-  "  ~/Pictures/Wallpapers/" \
-  "  ~/.local/share/icons/" \
+  "$CONFIG_LIST" \
   "" \
   "To update configs later:" \
   "  1. Edit files in ~/.config/home-manager/" \
   "  2. Run: home-manager switch"
 echo ""
 
+# Build final message
+FINAL_MESSAGE="Installation Complete!
+All packages have been installed successfully.
+
+Next steps:"
+
+if [[ " ${PACMAN_PACKAGES[@]} " =~ " lightdm " ]]; then
+  FINAL_MESSAGE="$FINAL_MESSAGE
+  1. Reboot your system
+  2. LightDM will start automatically
+  3. Select 'Awesome' from the session menu
+  4. Log in and enjoy!"
+else
+  FINAL_MESSAGE="$FINAL_MESSAGE
+  1. Log out of your current session
+  2. Start Awesome WM with: echo 'exec awesome' > ~/.xinitrc && startx
+  OR install a display manager (lightdm recommended)"
+fi
+
 gum style --bold --foreground 2 --border double --padding "1 2" --margin "1" \
-  "Installation Complete!" "All packages have been installed successfully."
+  "$FINAL_MESSAGE"

@@ -3,7 +3,16 @@ set -e
 
 source ./ui.sh
 
-HOSTNAME=$(input "System" "Enter hostname:") || return 1
-USERNAME=$(input "User" "Enter username:") || return 1
-USER_PASSWORD=$(password "User Password" "Enter password for $USERNAME:") || return 1
-ROOT_PASSWORD=$(password "Root Password" "Enter root password:") || return 1
+# Get current system info (already set during Arch install)
+HOSTNAME=$(hostname)
+USERNAME=$USER
+
+gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
+  "System Information" \
+  "Hostname: $HOSTNAME" \
+  "User: $USERNAME" \
+  "" \
+  "This information was detected from your system."
+
+echo ""
+gum confirm "Continue with installation?" || return 1

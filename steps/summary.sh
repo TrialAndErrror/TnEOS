@@ -24,13 +24,13 @@ fi
 
 SUMMARY=$(
   cat <<EOF
-Hostname: $HOSTNAME
-User: $USERNAME
+System: $USERNAME@$HOSTNAME
 
 Pacman packages:
 $PACMAN_LIST
 Nix packages:
 $NIX_LIST
+Home Manager: Yes (automatic)
 EOF
 )
 

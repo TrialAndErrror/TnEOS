@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-# Admin
+# System Info (detected automatically)
 HOSTNAME=""
 USERNAME=""
-USER_PASSWORD=""
-ROOT_PASSWORD=""
 
 # Programs
 PACMAN_PACKAGES=()

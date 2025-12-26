@@ -20,10 +20,12 @@
   };
 
   # Neovim configuration
+  # CONDITIONAL_NVIM_START
   home.file.".config/nvim" = {
     source = ./config/nvim;
     recursive = true;
   };
+  # CONDITIONAL_NVIM_END
 
   # Picom configuration
   home.file.".config/picom" = {
