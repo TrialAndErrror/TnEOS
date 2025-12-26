@@ -56,7 +56,7 @@ The bootstrap script will:
 The main installer will:
 - Install `yay` (AUR helper) if not already installed
 - Install your selected packages using yay (supports both official repos and AUR)
-- Install Nix packages with proper experimental features support
+- Install Nix packages using `nix profile add` (modern Nix command)
 - Configure Home Manager for dotfile management
 
 ### Step 4: Follow the Interactive Prompts

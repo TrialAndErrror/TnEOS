@@ -104,7 +104,7 @@ if [ ${#NIX_PACKAGES[@]} -gt 0 ]; then
   # Install each package individually to handle errors better
   for pkg in "${NIX_PACKAGES[@]}"; do
     echo "  Installing $pkg..."
-    nix profile install "nixpkgs#$pkg" --impure || {
+    nix profile add "nixpkgs#$pkg" --impure || {
       echo "  ⚠ Warning: Failed to install $pkg, skipping..."
     }
   done
