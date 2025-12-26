@@ -13,7 +13,7 @@ NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
   uv "UV (Python package & project manager)" on \
   zellij "Zellij (Terminal multiplexer)" on \
   brightnessctl "BrightnessCTL" on \
-  nushell "NuShell" off \
+  nushell "NuShell" on \
 ) || return 1
 
 for item in $NIX_SELECTION; do
