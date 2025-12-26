@@ -36,7 +36,31 @@ while true; do
   esac
 done
 
-# Placeholder for real work
-gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
-  "All selections collected." "Ready to begin install phase."
-gum input --placeholder "Press Enter to continue..." --width 0 > /dev/null
+# Install Pacman packages
+if [ ${#PACMAN_PACKAGES[@]} -gt 0 ]; then
+  gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
+    "Installing Pacman Packages" "${#PACMAN_PACKAGES[@]} packages selected"
+
+  echo "Installing: ${PACMAN_PACKAGES[*]}"
+  gum spin --spinner dot --title "Installing Pacman packages..." -- \
+    sudo pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
+
+  gum style --bold --foreground 2 "✓ Pacman packages installed successfully"
+  echo ""
+fi
+
+# Install Nix packages
+if [ ${#NIX_PACKAGES[@]} -gt 0 ]; then
+  gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
+    "Installing Nix Packages" "${#NIX_PACKAGES[@]} packages selected"
+
+  echo "Installing: ${NIX_PACKAGES[*]}"
+  gum spin --spinner dot --title "Installing Nix packages..." -- \
+    nix profile install "${NIX_PACKAGES[@]/#/nixpkgs#}"
+
+  gum style --bold --foreground 2 "✓ Nix packages installed successfully"
+  echo ""
+fi
+
+gum style --bold --foreground 2 --border double --padding "1 2" --margin "1" \
+  "Installation Complete!" "All packages have been installed successfully."
