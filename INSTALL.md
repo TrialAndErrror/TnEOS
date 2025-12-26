@@ -50,13 +50,14 @@ The bootstrap script will:
 - Install `gum` (for the interactive interface)
 - Install Nix (if not already installed)
 - Enable Nix experimental features (nix-command and flakes)
+- Enable unfree packages in Nix (for proprietary software)
 - Install `rsync` (for file management)
 - Launch the main installer
 
 The main installer will:
 - Install `yay` (AUR helper) if not already installed
 - Install your selected packages using yay (supports both official repos and AUR)
-- Install Nix packages using `nix profile add` (modern Nix command)
+- Install Nix packages using `nix profile add` (supports unfree packages)
 - Configure Home Manager for dotfile management
 
 ### Step 4: Follow the Interactive Prompts

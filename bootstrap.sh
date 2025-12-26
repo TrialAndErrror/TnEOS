@@ -85,20 +85,54 @@ else
 fi
 
 # Enable Nix experimental features (nix-command and flakes)
-echo "Configuring Nix experimental features..."
+echo "Configuring Nix experimental features and unfree packages..."
+
+# Configure system-wide
 sudo mkdir -p /etc/nix
 if [ ! -f /etc/nix/nix.conf ] || ! grep -q "experimental-features" /etc/nix/nix.conf; then
   echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf > /dev/null
-  echo "✓ Nix experimental features enabled"
-
-  # Restart nix-daemon to apply changes
-  if systemctl is-active --quiet nix-daemon; then
-    echo "Restarting nix-daemon..."
-    sudo systemctl restart nix-daemon
-  fi
+  echo "✓ System-wide Nix experimental features enabled"
 else
-  echo "✓ Nix experimental features already enabled"
+  echo "✓ System-wide Nix experimental features already enabled"
 fi
+
+# Also configure for current user
+mkdir -p "$HOME/.config/nix"
+if [ ! -f "$HOME/.config/nix/nix.conf" ] || ! grep -q "experimental-features" "$HOME/.config/nix/nix.conf"; then
+  echo "experimental-features = nix-command flakes" >> "$HOME/.config/nix/nix.conf"
+  echo "✓ User Nix experimental features enabled"
+else
+  echo "✓ User Nix experimental features already enabled"
+fi
+
+# Enable unfree packages for the user
+mkdir -p "$HOME/.config/nixpkgs"
+if [ ! -f "$HOME/.config/nixpkgs/config.nix" ]; then
+  cat > "$HOME/.config/nixpkgs/config.nix" << 'EOF'
+{
+  allowUnfree = true;
+}
+EOF
+  echo "✓ Unfree packages enabled"
+else
+  # Check if allowUnfree is already set
+  if ! grep -q "allowUnfree" "$HOME/.config/nixpkgs/config.nix"; then
+    # Backup existing config
+    cp "$HOME/.config/nixpkgs/config.nix" "$HOME/.config/nixpkgs/config.nix.backup"
+    # Add allowUnfree to existing config
+    sed -i 's/{/{\n  allowUnfree = true;/' "$HOME/.config/nixpkgs/config.nix"
+    echo "✓ Unfree packages enabled (existing config updated)"
+  else
+    echo "✓ Unfree packages already enabled"
+  fi
+fi
+
+# Restart nix-daemon to apply changes
+if systemctl is-active --quiet nix-daemon; then
+  echo "Restarting nix-daemon..."
+  sudo systemctl restart nix-daemon
+fi
+
 echo ""
 
 # Ensure rsync is installed (needed for Home Manager setup)
