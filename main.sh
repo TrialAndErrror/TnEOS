@@ -91,6 +91,14 @@ if [ ${#PACMAN_PACKAGES[@]} -gt 0 ]; then
     gum style --bold --foreground 2 "✓ LightDM enabled - will start on next boot"
     echo ""
   fi
+
+  # Enable acpid for battery widget support
+  if [[ " ${PACMAN_PACKAGES[@]} " =~ " acpid " ]]; then
+    echo "Enabling acpid for battery monitoring..."
+    sudo systemctl enable --now acpid.service
+    gum style --bold --foreground 2 "✓ acpid enabled - battery widget will work"
+    echo ""
+  fi
 fi
 
 # Install Nix packages
@@ -193,6 +201,11 @@ fi
 # Apply Home Manager configuration
 echo "Applying Home Manager configuration..."
 home-manager switch
+
+# Fix ownership of config files (Home Manager might create files as root)
+echo "Fixing ownership of configuration files..."
+chown -R "$USER:$USER" "$HOME/.config"
+echo "✓ Configuration file ownership corrected"
 
 echo ""
 gum style --bold --foreground 2 "✓ Home Manager configured successfully"

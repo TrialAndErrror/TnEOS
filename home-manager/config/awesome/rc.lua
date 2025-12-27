@@ -19,8 +19,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
 -- My custom packages
-local battery_widget = require("battery-widget")
--- https://github.c
+local battery_widget = require("battery-widget.battery-widget")
+-- https://github.com/deficient/battery-widget
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
