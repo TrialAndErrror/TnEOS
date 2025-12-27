@@ -198,6 +198,22 @@ if [[ ! " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
   sed -i 's/EDITOR = "nvim";/EDITOR = "vim";/' "$HM_CONFIG_DIR/home.nix"
 fi
 
+# Configure for Desktop vs Laptop mode
+if [ "$DEVICE_TYPE" = "Desktop" ]; then
+  echo "Configuring for Desktop mode..."
+  # Use desktop rc.lua (no battery widget)
+  cp "$HM_CONFIG_DIR/config/awesome/rc.lua.desktop" "$HM_CONFIG_DIR/config/awesome/rc.lua"
+  # Remove battery-widget directory
+  rm -rf "$HM_CONFIG_DIR/config/awesome/battery-widget"
+  echo "  ✓ Desktop configuration applied (no battery widget)"
+else
+  echo "Configuring for Laptop mode..."
+  # Use laptop rc.lua (with battery widget)
+  cp "$HM_CONFIG_DIR/config/awesome/rc.lua.laptop" "$HM_CONFIG_DIR/config/awesome/rc.lua"
+  echo "  ✓ Laptop configuration applied (with battery widget and brightness controls)"
+fi
+echo ""
+
 # Apply Home Manager configuration
 echo "Applying Home Manager configuration..."
 home-manager switch

@@ -3,8 +3,21 @@ set -e
 
 source ./ui.sh
 
-PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter acpid nitrogen ttf-jetbrains-mono-nerd)
-NIX_PACKAGES=(brightnessctl eza fd bat)
+# Ask if desktop or laptop
+DEVICE_TYPE=$(gum choose --header "Select your device type:" "Laptop" "Desktop")
+
+# Base packages for all systems
+PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter nitrogen ttf-jetbrains-mono-nerd)
+NIX_PACKAGES=(eza fd bat)
+
+# Add laptop-specific packages
+if [ "$DEVICE_TYPE" = "Laptop" ]; then
+  PACMAN_PACKAGES+=(acpid)
+  NIX_PACKAGES+=(brightnessctl)
+fi
+
+# Export device type for use in main.sh
+export DEVICE_TYPE
 
 NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
   ripgrep "ripgrep (Grep alternative)" on \
@@ -12,7 +25,6 @@ NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
   pyright "Pyright (Python LSP)" on \
   uv "UV (Python package & project manager)" on \
   zellij "Zellij (Terminal multiplexer)" on \
-  brightnessctl "BrightnessCTL" on \
   nushell "NuShell" on \
 ) || return 1
 
