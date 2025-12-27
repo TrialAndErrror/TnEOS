@@ -220,6 +220,39 @@ if [ -f "$HM_CONFIG_DIR/assets/backgrounds/wallpaper.jpg" ]; then
 fi
 echo ""
 
+# Configure nitrogen to use the TnEOS wallpaper
+if [[ " ${PACMAN_PACKAGES[@]} " =~ " nitrogen " ]]; then
+  echo "Configuring nitrogen wallpaper..."
+  mkdir -p "$HOME/.config/nitrogen"
+
+  # Create nitrogen config with the wallpaper
+  cat > "$HOME/.config/nitrogen/bg-saved.cfg" << EOF
+[xin_-1]
+file=$HOME/Pictures/Wallpapers/tneos-wallpaper.jpg
+mode=5
+bgcolor=#000000
+EOF
+
+  # Also create nitrogen preferences
+  cat > "$HOME/.config/nitrogen/nitrogen.cfg" << EOF
+[geometry]
+posx=0
+posy=0
+sizex=800
+sizey=600
+
+[nitrogen]
+view=icon
+recurse=true
+sort=alpha
+icon_caps=false
+dirs=$HOME/Pictures/Wallpapers;
+EOF
+
+  echo "  ✓ Nitrogen configured with TnEOS wallpaper"
+  echo ""
+fi
+
 if [ "$BACKUP_NEEDED" = true ] && [ -d "$BACKUP_DIR" ]; then
   gum style --bold --foreground 3 --border rounded --padding "1 2" --margin "1" \
     "Backup Information" \

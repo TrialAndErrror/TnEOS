@@ -254,6 +254,16 @@ local function styled_section(widget, bg_color)
 end
 
 awful.screen.connect_for_each_screen(function(s)
+	-- Wallpaper
+	if beautiful.wallpaper then
+		local wallpaper = beautiful.wallpaper
+		-- If wallpaper is a function, call it with the screen
+		if type(wallpaper) == "function" then
+			wallpaper = wallpaper(s)
+		end
+		gears.wallpaper.maximized(wallpaper, s, true)
+	end
+
 	-- Each screen has its own tag table.
 	awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
@@ -733,6 +743,17 @@ client.connect_signal("focus", function(c)
 end)
 client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
+end)
+
+-- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+screen.connect_signal("property::geometry", function(s)
+	if beautiful.wallpaper then
+		local wallpaper = beautiful.wallpaper
+		if type(wallpaper) == "function" then
+			wallpaper = wallpaper(s)
+		end
+		gears.wallpaper.maximized(wallpaper, s, true)
+	end
 end)
 -- }}}
 -- Configure display

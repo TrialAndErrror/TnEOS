@@ -3,7 +3,7 @@ set -e
 
 source ./ui.sh
 
-PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter acpid)
+PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter acpid nitrogen ttf-jetbrains-mono-nerd)
 NIX_PACKAGES=(brightnessctl eza fd bat)
 
 NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
