@@ -17,6 +17,14 @@
   home.file.".config/awesome" = {
     source = ./config/awesome;
     recursive = true;
+    # Force copy even if source contains .git directories
+    onChange = ''
+      # Ensure battery-widget is copied
+      if [ -d "${./config/awesome}/battery-widget" ] && [ ! -d "$HOME/.config/awesome/battery-widget" ]; then
+        cp -r "${./config/awesome}/battery-widget" "$HOME/.config/awesome/"
+        rm -rf "$HOME/.config/awesome/battery-widget/.git"
+      fi
+    '';
   };
 
   # Neovim configuration

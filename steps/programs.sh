@@ -42,7 +42,7 @@ done
 
 SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications to install:" \
   gitkraken "GitKraken (GUI Git management)" on \
-  pycharm-professional "Pycharm Professional" on \
+  jetbrains.pycharm-professional "PyCharm Professional" on \
   libreoffice "LibreOffice" on \
   gimp "Gimp (Graphical image editor)" on \
   thorium-browser-bin "Thorium (web browser)" on \
@@ -57,7 +57,7 @@ SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications
 
 for item in $SOFTWARE_SELECTION; do
   case $item in
-    gitkraken|pycharm-professional|gh|httpie|neovide)
+    gitkraken|jetbrains.pycharm-professional|gh|httpie|neovide)
       NIX_PACKAGES+=("$item")
       ;;
     libreoffice|gimp|thorium-browser-bin|imagemagick|flatpak)
