@@ -3,21 +3,15 @@ set -e
 
 source ./ui.sh
 
-# Ask if desktop or laptop
-DEVICE_TYPE=$(gum choose --header "Select your device type:" "Laptop" "Desktop")
-
 # Base packages for all systems
 PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter nitrogen ttf-jetbrains-mono-nerd)
 NIX_PACKAGES=(eza fd bat)
 
-# Add laptop-specific packages
+# Add laptop-specific packages (DEVICE_TYPE is set in admin.sh)
 if [ "$DEVICE_TYPE" = "Laptop" ]; then
   PACMAN_PACKAGES+=(acpid)
   NIX_PACKAGES+=(brightnessctl)
 fi
-
-# Export device type for use in main.sh
-export DEVICE_TYPE
 
 NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
   ripgrep "ripgrep (Grep alternative)" on \
