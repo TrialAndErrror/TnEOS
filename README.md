@@ -31,6 +31,7 @@ That's it! The script will:
 
 ### Desktop Environment
 - **Awesome WM** - Tiling window manager with custom configuration
+- **LightDM** - Display manager with customizable login screen
 - **Picom** - Compositor for transparency and effects
 - **Rofi** - Application launcher and window switcher
 - **Alacritty** - Fast, GPU-accelerated terminal emulator
@@ -129,6 +130,22 @@ home-manager switch
 ```
 
 All your configurations are in `~/.config/home-manager/` and can be updated anytime.
+
+### Customizing the Login Screen
+
+TnEOS includes a beautiful, customizable login screen. To customize it:
+
+```bash
+# Automated setup with TnEOS theme
+cd ~/TnEOS
+./install/setup-lightdm-greeter.sh
+
+# Or use the GUI tool
+yay -S lightdm-gtk-greeter-settings
+lightdm-gtk-greeter-settings
+```
+
+See the [Login Screen Setup Guide](docs/LOGIN_SCREEN_SETUP.md) for detailed customization options.
 
 ## Backup Protection
 
