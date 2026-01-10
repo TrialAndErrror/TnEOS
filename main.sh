@@ -202,14 +202,14 @@ fi
 if [ "$DEVICE_TYPE" = "Desktop" ]; then
   echo "Configuring for Desktop mode..."
   # Use desktop rc.lua (no battery widget)
-  cp "$HM_CONFIG_DIR/config/awesome/rc.lua.desktop" "$HM_CONFIG_DIR/config/awesome/rc.lua"
+  cp "$HM_CONFIG_DIR/config/awesome/rc.desktop.lua" "$HM_CONFIG_DIR/config/awesome/rc.lua"
   # Remove battery-widget directory
   rm -rf "$HM_CONFIG_DIR/config/awesome/battery-widget"
   echo "  ✓ Desktop configuration applied (no battery widget)"
 else
   echo "Configuring for Laptop mode..."
   # Use laptop rc.lua (with battery widget)
-  cp "$HM_CONFIG_DIR/config/awesome/rc.lua.laptop" "$HM_CONFIG_DIR/config/awesome/rc.lua"
+  cp "$HM_CONFIG_DIR/config/awesome/rc.laptop.lua" "$HM_CONFIG_DIR/config/awesome/rc.lua"
   echo "  ✓ Laptop configuration applied (with battery widget and brightness controls)"
 fi
 echo ""
