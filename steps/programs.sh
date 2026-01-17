@@ -28,6 +28,7 @@ done
 
 PACMAN_SELECTION=$(checklist "System Programs" "Select programs to install (via yay - supports AUR):" \
   neovim   "Neovim (editor)" on \
+  zsh "zShell" on \
   7z "7z" on \
   docker   "Docker" on \
   docker-compose "Docker Compose" on \
