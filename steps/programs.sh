@@ -4,7 +4,7 @@ set -e
 source ./ui.sh
 
 # Base packages for all systems
-PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter nitrogen ttf-jetbrains-mono-nerd)
+PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter nitrogen ttf-jetbrains-mono-nerd caja)
 NIX_PACKAGES=(eza fd bat)
 
 # Add laptop-specific packages (DEVICE_TYPE is set in admin.sh)
