@@ -104,49 +104,33 @@ set_default_font() {
   echo "Setting default font to: $selected_font"
   echo ""
 
-  # Update configuration files
-  local HM_CONFIG_DIR="$HOME/.config/home-manager"
-  
-  if [ -d "$HM_CONFIG_DIR" ]; then
-    # Update Alacritty config
-    if [ -f "$HM_CONFIG_DIR/config/alacritty/alacritty.toml" ]; then
-      echo "Updating Alacritty configuration..."
-      sed -i "s/family = \".*Nerd Font\"/family = \"$selected_font\"/" \
-        "$HM_CONFIG_DIR/config/alacritty/alacritty.toml"
-    fi
+  # Update configuration files in ~/.config
+  local CONFIG_DIR="$HOME/.config"
 
-    # Update AwesomeWM theme
-    if [ -f "$HM_CONFIG_DIR/config/awesome/theme.lua" ]; then
-      echo "Updating AwesomeWM theme..."
-      sed -i "s/theme.font.*=.*\".*Nerd Font.*/theme.font          = \"$selected_font 12\"/" \
-        "$HM_CONFIG_DIR/config/awesome/theme.lua"
-    fi
-
-    # Update Rofi font configs
-    echo "Updating Rofi configurations..."
-    find "$HM_CONFIG_DIR/config/rofi" -name "*.rasi" -type f -exec \
-      sed -i "s/font:.*\".*Nerd Font.*/font: \"$selected_font 10\";/" {} \;
-
-    echo ""
-    gum style --bold --foreground 2 "✓ Default font updated in configuration files"
-    echo ""
-    
-    # Apply changes with home-manager if available
-    if command -v home-manager &> /dev/null; then
-      if gum confirm "Apply changes now with home-manager switch?"; then
-        echo "Applying Home Manager configuration..."
-        home-manager switch
-        echo ""
-        gum style --bold --foreground 2 "✓ Changes applied successfully"
-      else
-        echo ""
-        gum style --bold --foreground 3 "⚠ Remember to run 'home-manager switch' to apply changes"
-      fi
-    fi
-  else
-    gum style --bold --foreground 3 "⚠ Home Manager config directory not found at $HM_CONFIG_DIR"
-    echo "Font installed but configuration not updated"
+  # Update Alacritty config
+  if [ -f "$CONFIG_DIR/alacritty/alacritty.toml" ]; then
+    echo "Updating Alacritty configuration..."
+    sed -i "s/family = \".*Nerd Font\"/family = \"$selected_font\"/" \
+      "$CONFIG_DIR/alacritty/alacritty.toml"
   fi
+
+  # Update AwesomeWM theme
+  if [ -f "$CONFIG_DIR/awesome/theme.lua" ]; then
+    echo "Updating AwesomeWM theme..."
+    sed -i "s/theme.font.*=.*\".*Nerd Font.*/theme.font          = \"$selected_font 12\"/" \
+      "$CONFIG_DIR/awesome/theme.lua"
+  fi
+
+  # Update Rofi font configs
+  if [ -d "$CONFIG_DIR/rofi" ]; then
+    echo "Updating Rofi configurations..."
+    find "$CONFIG_DIR/rofi" -name "*.rasi" -type f -exec \
+      sed -i "s/font:.*\".*Nerd Font.*/font: \"$selected_font 10\";/" {} \;
+  fi
+
+  echo ""
+  gum style --bold --foreground 2 "✓ Default font updated in configuration files"
+  echo ""
 
   echo ""
 }

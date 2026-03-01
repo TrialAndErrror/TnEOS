@@ -26,18 +26,11 @@ while true; do
       fi
       ;;
     3)
-      if source ./steps/homemanager.sh; then
-        CURRENT_STEP=4
-      else
-        CURRENT_STEP=2  # Go back
-      fi
-      ;;
-    4)
       if source ./steps/summary.sh; then
-        CURRENT_STEP=5
+        CURRENT_STEP=4
         break
       else
-        CURRENT_STEP=3  # Go back
+        CURRENT_STEP=2  # Go back
       fi
       ;;
   esac
@@ -47,10 +40,7 @@ done
 source ./install/install-yay.sh
 source ./install/install-pacman-packages.sh
 source ./install/install-nix-packages.sh
-source ./install/install-home-manager.sh
-source ./install/backup-configs.sh
-source ./install/setup-home-manager-config.sh
-source ./install/apply-home-manager.sh
+source ./install/copy-configs.sh
 source ./install/setup-wallpaper.sh
 source ./install/setup-lightdm-greeter.sh
 source ./install/show-completion.sh
@@ -59,10 +49,7 @@ source ./install/show-completion.sh
 install_yay
 install_pacman_packages
 install_nix_packages
-install_home_manager
-backup_configs
-setup_home_manager_config
-apply_home_manager
+copy_configs
 setup_wallpaper
 setup_lightdm_greeter
 show_completion

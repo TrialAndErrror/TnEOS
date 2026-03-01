@@ -7,18 +7,14 @@ source "$SCRIPT_DIR/../ui.sh"
 
 setup_wallpaper() {
   local REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-  local HM_CONFIG_DIR="$HOME/.config/home-manager"
 
   # Copy TnEOS wallpaper (don't overwrite existing wallpapers)
   echo "Installing TnEOS wallpaper..."
   mkdir -p "$HOME/Pictures/Wallpapers"
 
-  # Try to find wallpaper in either the copied config or the source repo
   local WALLPAPER_SOURCE=""
-  if [ -f "$HM_CONFIG_DIR/assets/backgrounds/wallpaper.jpg" ]; then
-    WALLPAPER_SOURCE="$HM_CONFIG_DIR/assets/backgrounds/wallpaper.jpg"
-  elif [ -f "$REPO_DIR/home-manager/assets/backgrounds/wallpaper.jpg" ]; then
-    WALLPAPER_SOURCE="$REPO_DIR/home-manager/assets/backgrounds/wallpaper.jpg"
+  if [ -f "$REPO_DIR/config/backgrounds/wallpaper.jpg" ]; then
+    WALLPAPER_SOURCE="$REPO_DIR/config/backgrounds/wallpaper.jpg"
   fi
 
   if [ -n "$WALLPAPER_SOURCE" ]; then

@@ -6,17 +6,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../ui.sh"
 
 show_completion() {
-  # Show backup information if backup was created
-  if [ "$BACKUP_NEEDED" = true ] && [ -d "$BACKUP_DIR" ]; then
-    gum style --bold --foreground 3 --border rounded --padding "1 2" --margin "1" \
-      "Backup Information" \
-      "Your old config files are backed up at:" \
-      "  $BACKUP_DIR" \
-      "" \
-      "You can restore them anytime if needed."
-    echo ""
-  fi
-
   # Build the config list dynamically
   local CONFIG_LIST="  ~/.config/awesome/
   ~/.config/picom/
@@ -31,15 +20,14 @@ show_completion() {
 
   gum style --bold --foreground 3 --border rounded --padding "1 2" --margin "1" \
     "Configuration Applied!" \
-    "Your configs have been symlinked to:" \
+    "Your configs have been copied to:" \
     "$CONFIG_LIST" \
     "" \
     "TnEOS wallpaper added to:" \
     "  ~/Pictures/Wallpapers/tneos-wallpaper.jpg" \
     "" \
     "To update configs later:" \
-    "  1. Edit files in ~/.config/home-manager/" \
-    "  2. Run: home-manager switch"
+    "  Edit files directly in ~/.config/"
   echo ""
 
   # Build final message
