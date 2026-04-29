@@ -24,11 +24,10 @@ copy_configs() {
   local AWESOME_SRC="$CONFIG_SRC/awesome"
   if [ "$DEVICE_TYPE" = "Desktop" ]; then
     echo "Preparing awesome config for Desktop (no battery widget)..."
-    cp "$AWESOME_SRC/rc.desktop.lua" "$AWESOME_SRC/rc.lua"
     rm -rf "$AWESOME_SRC/battery-widget"
   else
     echo "Preparing awesome config for Laptop (with battery widget)..."
-    cp "$AWESOME_SRC/rc.laptop.lua" "$AWESOME_SRC/rc.lua"
+    cp "$AWESOME_SRC/modules/config.laptop.lua" "$AWESOME_SRC/modules/config.lua"
   fi
   echo ""
 
