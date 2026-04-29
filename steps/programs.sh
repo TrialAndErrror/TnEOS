@@ -3,9 +3,27 @@ set -e
 
 source ./ui.sh
 
+WM_SELECTION=$(checklist "Window Managers" "Select window managers to install:" \
+  awesome "Awesome WM" on \
+  niri "Niri (Wayland compositor)" on \
+) || return 1
+
+WINDOW_MANAGERS=()
+for wm in $WM_SELECTION; do
+  WINDOW_MANAGERS+=("$wm")
+done
+
 # Base packages for all systems
-PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter nitrogen ttf-jetbrains-mono-nerd caja)
+PACMAN_PACKAGES=(rsync alacritty lightdm lightdm-gtk-greeter ttf-jetbrains-mono-nerd caja)
 NIX_PACKAGES=(eza fd bat)
+
+# Window manager packages
+if [[ " ${WINDOW_MANAGERS[@]} " =~ " awesome " ]]; then
+  PACMAN_PACKAGES+=(awesome picom rofi nitrogen)
+fi
+if [[ " ${WINDOW_MANAGERS[@]} " =~ " niri " ]]; then
+  PACMAN_PACKAGES+=(niri)
+fi
 
 # Add laptop-specific packages (DEVICE_TYPE is set in admin.sh)
 if [ "$DEVICE_TYPE" = "Laptop" ]; then
@@ -35,7 +53,6 @@ PACMAN_SELECTION=$(checklist "System Programs" "Select programs to install (via 
   yazi "Yazi (TUI file manager)" on \
   tldr "TLDR (application info)" on \
   pavucontrol "PulseAudio Volume Control" on \
-  nitrogen "Nitrogen (Wallpaper manager)" on \
   lxappearance "LXAppearance (Theme manager)" on \
   go "Go (programming language)" on \
   python314 "Python (programming language)" on \

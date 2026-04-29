@@ -14,22 +14,32 @@ copy_configs() {
     "Copying Configuration Files" "Installing dotfiles to ~/.config/"
 
   # Determine which configs to install
-  local CONFIGS=("awesome" "picom" "rofi" "alacritty")
+  local CONFIGS=("alacritty")
+
+  if [[ " ${WINDOW_MANAGERS[@]} " =~ " awesome " ]]; then
+    CONFIGS+=("awesome" "picom" "rofi")
+  fi
+
+  if [[ " ${WINDOW_MANAGERS[@]} " =~ " niri " ]]; then
+    CONFIGS+=("niri" "ghostty")
+  fi
 
   if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
     CONFIGS+=("nvim")
   fi
 
   # Prepare awesome config for desktop/laptop
-  local AWESOME_SRC="$CONFIG_SRC/awesome"
-  if [ "$DEVICE_TYPE" = "Desktop" ]; then
-    echo "Preparing awesome config for Desktop (no battery widget)..."
-    rm -rf "$AWESOME_SRC/battery-widget"
-  else
-    echo "Preparing awesome config for Laptop (with battery widget)..."
-    cp "$AWESOME_SRC/modules/config.laptop.lua" "$AWESOME_SRC/modules/config.lua"
+  if [[ " ${WINDOW_MANAGERS[@]} " =~ " awesome " ]]; then
+    local AWESOME_SRC="$CONFIG_SRC/awesome"
+    if [ "$DEVICE_TYPE" = "Desktop" ]; then
+      echo "Preparing awesome config for Desktop (no battery widget)..."
+      rm -rf "$AWESOME_SRC/battery-widget"
+    else
+      echo "Preparing awesome config for Laptop (with battery widget)..."
+      cp "$AWESOME_SRC/modules/config.laptop.lua" "$AWESOME_SRC/modules/config.lua"
+    fi
+    echo ""
   fi
-  echo ""
 
   # Copy each config, backing up existing ones
   echo "Installing configs to $CONFIG_DEST..."

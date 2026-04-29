@@ -22,10 +22,21 @@ else
   done
 fi
 
+WM_LIST=""
+if [ ${#WINDOW_MANAGERS[@]} -eq 0 ]; then
+  WM_LIST="  (none)"
+else
+  for wm in "${WINDOW_MANAGERS[@]}"; do
+    WM_LIST+="  • $wm"$'\n'
+  done
+fi
+
 SUMMARY=$(
   cat <<EOF
 System: $USERNAME@$HOSTNAME
 
+Window managers:
+$WM_LIST
 Pacman packages:
 $PACMAN_LIST
 Nix packages:

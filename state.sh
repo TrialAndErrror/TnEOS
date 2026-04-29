@@ -4,6 +4,9 @@
 HOSTNAME=""
 USERNAME=""
 
+# Window Managers
+WINDOW_MANAGERS=()
+
 # Programs
 PACMAN_PACKAGES=()
 NIX_PACKAGES=()
