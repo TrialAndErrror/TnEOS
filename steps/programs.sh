@@ -3,8 +3,14 @@ set -e
 
 source ./ui.sh
 
-# Check if a pacman package is installed
-pacman_installed() { pacman -Q "$1" &>/dev/null 2>&1; }
+# Check if a system package is installed (distro-aware)
+pacman_installed() {
+  case "${DISTRO_TYPE:-Arch}" in
+    Debian) dpkg -l "$1" 2>/dev/null | grep -q '^ii' ;;
+    Fedora) rpm -q "$1" &>/dev/null 2>&1 ;;
+    *)      pacman -Q "$1" &>/dev/null 2>&1 ;;
+  esac
+}
 
 # Cache nix profile list to avoid repeated slow calls
 _NIX_PROFILE_CACHE=""
@@ -27,7 +33,7 @@ pl() { pacman_installed "$1" && echo "$2 [installed]" || echo "$2"; }
 nl() { nix_installed "$1" && echo "$2 [installed]" || echo "$2"; }
 
 # Base packages for all systems
-PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter nitrogen ttf-jetbrains-mono-nerd caja)
+PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter ttf-jetbrains-mono-nerd caja feh)
 NIX_PACKAGES=(eza fd bat)
 
 # Add laptop-specific packages (DEVICE_TYPE is set in admin.sh)
@@ -46,36 +52,35 @@ NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
 ) || return 1
 
 for item in $NIX_SELECTION; do
-  NIX_PACKAGES+=("$item")
+  nix_installed "$item" || NIX_PACKAGES+=("$item")
 done
 
-PACMAN_SELECTION=$(checklist "System Programs" "Select programs to install (via yay - supports AUR):" \
+PACMAN_SELECTION=$(checklist "System Programs" "Select programs to install:" \
   neovim        "$(pl neovim 'Neovim (editor)')" on \
   zsh           "$(pl zsh 'zShell')" on \
-  7z            "$(pl 7z '7z')" on \
+  7zip          "$(pl 7zip '7zip')" on \
   docker        "$(pl docker 'Docker')" on \
   docker-compose "$(pl docker-compose 'Docker Compose')" on \
   yazi          "$(pl yazi 'Yazi (TUI file manager)')" on \
   tldr          "$(pl tldr 'TLDR (application info)')" on \
   pavucontrol   "$(pl pavucontrol 'PulseAudio Volume Control')" on \
-  nitrogen      "$(pl nitrogen 'Nitrogen (Wallpaper manager)')" on \
   lxappearance  "$(pl lxappearance 'LXAppearance (Theme manager)')" on \
   go            "$(pl go 'Go (programming language)')" on \
-  python314     "$(pl python314 'Python (programming language)')" on \
+  python        "$(pl python 'Python (programming language)')" on \
   arandr        "$(pl arandr 'Arandr (Display manager)')" on \
   flameshot     "$(pl flameshot 'Flameshot (screenshot utility)')" on \
 ) || return 1
 
 for item in $PACMAN_SELECTION; do
-  PACMAN_PACKAGES+=("$item")
+  pacman_installed "$item" || PACMAN_PACKAGES+=("$item")
 done
 
 SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications to install:" \
   gitkraken                    "$(nl gitkraken 'GitKraken (GUI Git management)')" on \
   jetbrains.pycharm-professional "$(nl jetbrains.pycharm-professional 'PyCharm Professional')" on \
-  libreoffice                  "$(pl libreoffice 'LibreOffice')" on \
+  libreoffice-fresh            "$(pl libreoffice-fresh 'LibreOffice')" on \
   gimp                         "$(pl gimp 'Gimp (Graphical image editor)')" on \
-  thorium-browser-bin          "$(pl thorium-browser-bin 'Thorium (web browser)')" on \
+  chromium                     "$(pl chromium 'Chromium (web browser)')" on \
   imagemagick                  "$(pl imagemagick 'ImageMagick (CLI image editing)')" on \
   neovide                      "$(nl neovide 'Neovide (graphical NVIM client)')" on \
   flatpak                      "$(pl flatpak 'Flatpak (package manager)')" on \
@@ -88,10 +93,8 @@ SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications
 for item in $SOFTWARE_SELECTION; do
   case $item in
     gitkraken|jetbrains.pycharm-professional|gh|httpie|neovide)
-      NIX_PACKAGES+=("$item")
-      ;;
-    libreoffice|gimp|thorium-browser-bin|imagemagick|flatpak)
-      PACMAN_PACKAGES+=("$item")
-      ;;
+      nix_installed "$item" || NIX_PACKAGES+=("$item") ;;
+    libreoffice-fresh|gimp|chromium|imagemagick|flatpak)
+      pacman_installed "$item" || PACMAN_PACKAGES+=("$item") ;;
   esac
 done

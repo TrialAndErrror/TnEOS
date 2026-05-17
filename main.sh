@@ -7,8 +7,7 @@ source ./state.sh
 source ./ui.sh
 
 # Source all install modules
-source ./install/install-yay.sh
-source ./install/install-pacman-packages.sh
+source ./install/install-package-manager-packages.sh
 source ./install/install-nix-packages.sh
 source ./install/copy-configs.sh
 source ./install/setup-wallpaper.sh
@@ -53,8 +52,7 @@ action_full_install() {
     esac
   done
 
-  install_yay
-  install_pacman_packages
+  install_package_manager_packages
   install_nix_packages
   copy_configs
   setup_wallpaper
@@ -78,8 +76,7 @@ action_install_programs() {
   ensure_device_type
 
   if source ./steps/programs.sh; then
-    install_yay
-    install_pacman_packages
+    install_package_manager_packages
     install_nix_packages
   fi
 }

@@ -1,9 +1,23 @@
 # Updating TnEOS
 
-## pacman / AUR packages
+## System packages
+
+### Arch (pacman / AUR)
 
 ```bash
 yay -Syu
+```
+
+### Debian / Ubuntu (apt)
+
+```bash
+sudo apt update && sudo apt upgrade
+```
+
+### Fedora (dnf)
+
+```bash
+sudo dnf upgrade
 ```
 
 ## Nix packages

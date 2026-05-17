@@ -25,42 +25,11 @@ setup_wallpaper() {
   fi
   echo ""
 
-  # Configure nitrogen to use the TnEOS wallpaper
-  # Check if nitrogen is installed (either in PACMAN_PACKAGES or already on system)
-  local CONFIGURE_NITROGEN=false
-  if [[ " ${PACMAN_PACKAGES[@]} " =~ " nitrogen " ]] || command -v nitrogen &> /dev/null; then
-    CONFIGURE_NITROGEN=true
-  fi
-
-  if [ "$CONFIGURE_NITROGEN" = true ]; then
-    echo "Configuring nitrogen wallpaper..."
-    mkdir -p "$HOME/.config/nitrogen"
-
-    # Create nitrogen config with the wallpaper
-    cat > "$HOME/.config/nitrogen/bg-saved.cfg" << EOF
-[xin_-1]
-file=$HOME/Pictures/Wallpapers/tneos-wallpaper.jpg
-mode=5
-bgcolor=#000000
-EOF
-
-    # Also create nitrogen preferences
-    cat > "$HOME/.config/nitrogen/nitrogen.cfg" << EOF
-[geometry]
-posx=0
-posy=0
-sizex=800
-sizey=600
-
-[nitrogen]
-view=icon
-recurse=true
-sort=alpha
-icon_caps=false
-dirs=$HOME/Pictures/Wallpapers;
-EOF
-
-    echo "  ✓ Nitrogen configured with TnEOS wallpaper"
+  # Set wallpaper with feh (also writes ~/.fehbg for session restore)
+  if [ -f "$HOME/Pictures/Wallpapers/tneos-wallpaper.jpg" ] && command -v feh &>/dev/null; then
+    echo "Setting wallpaper with feh..."
+    feh --bg-fill "$HOME/Pictures/Wallpapers/tneos-wallpaper.jpg"
+    echo "  ✓ Wallpaper set"
     echo ""
   fi
 }

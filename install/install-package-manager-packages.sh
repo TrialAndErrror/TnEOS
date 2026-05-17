@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Install packages via pacman/yay
+# Install packages via pacman/apt/dnf
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../ui.sh"
 
-install_pacman_packages() {
+install_package_manager_packages() {
   if [ ${#PACMAN_PACKAGES[@]} -eq 0 ]; then
-    echo "No pacman packages to install"
+    echo "No packages to install"
     return 0
   fi
 
@@ -16,7 +16,11 @@ install_pacman_packages() {
 
   echo "Installing: ${PACMAN_PACKAGES[*]}"
   echo ""
-  yay -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
+  case "${DISTRO_TYPE:-Arch}" in
+    Debian) sudo apt install -y "${PACMAN_PACKAGES[@]}" ;;
+    Fedora) sudo dnf install -y "${PACMAN_PACKAGES[@]}" ;;
+    *)      sudo pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}" ;;
+  esac
 
   echo ""
   gum style --bold --foreground 2 "✓ Packages installed successfully"
@@ -41,6 +45,6 @@ install_pacman_packages() {
 
 # Run if executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  install_pacman_packages
+  install_package_manager_packages
 fi
 
