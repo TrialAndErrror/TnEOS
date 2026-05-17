@@ -6,7 +6,7 @@ modkey = "Mod4"
 
 beautiful.init("/home/wade/.config/awesome/theme.lua")
 
-terminal = "alacritty"
+terminal = "ghostty"
 file_manager = "caja"
 editor = os.getenv("EDITOR") or "zeditor"
 editor_cmd = terminal .. editor
