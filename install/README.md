@@ -54,13 +54,13 @@ Displays installation completion messages.
 - Provides next steps for the user
 
 ### 10. `install-nerd-fonts.sh`
-Installs Nerd Fonts and optionally sets one as default.
-- Presents a selection of popular Nerd Fonts from AUR
+Installs Nerd Fonts and optionally sets one as default. Works on all distros.
+- Presents a selection of popular Nerd Fonts
 - Pre-selects already installed fonts
-- Installs selected fonts via yay
-- Refreshes font cache
+- Downloads selected fonts from github.com/ryanoasis/nerd-fonts releases
+- Extracts to ~/.local/share/fonts/NerdFonts/
+- Refreshes font cache with fc-cache
 - Optionally updates default font in configs (Alacritty, Rofi, AwesomeWM)
-- Can apply changes immediately with home-manager
 
 ## Usage
 

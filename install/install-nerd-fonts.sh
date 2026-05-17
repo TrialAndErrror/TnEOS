@@ -1,99 +1,107 @@
 #!/usr/bin/env bash
-# Install Nerd Fonts and optionally set one as default
+# Install Nerd Fonts from GitHub releases (works on all distros)
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../ui.sh"
 
-# Popular Nerd Fonts available in AUR
+FONTS_DIR="$HOME/.local/share/fonts/NerdFonts"
+RELEASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
+
+# Release archive name → display name
 declare -A NERD_FONTS=(
-  ["ttf-jetbrains-mono-nerd"]="JetBrainsMono Nerd Font"
-  ["ttf-firacode-nerd"]="FiraCode Nerd Font"
-  ["ttf-hack-nerd"]="Hack Nerd Font"
-  ["ttf-meslo-nerd"]="MesloLG Nerd Font"
-  ["ttf-sourcecodepro-nerd"]="SauceCodePro Nerd Font"
-  ["ttf-iosevka-nerd"]="Iosevka Nerd Font"
-  ["ttf-cascadia-code-nerd"]="CaskaydiaCove Nerd Font"
-  ["ttf-ubuntu-mono-nerd"]="UbuntuMono Nerd Font"
-  ["ttf-roboto-mono-nerd"]="RobotoMono Nerd Font"
-  ["ttf-dejavu-nerd"]="DejaVuSansMono Nerd Font"
+  ["JetBrainsMono"]="JetBrains Mono"
+  ["FiraCode"]="FiraCode"
+  ["Hack"]="Hack"
+  ["Meslo"]="MesloLG"
+  ["SourceCodePro"]="Source Code Pro"
+  ["Iosevka"]="Iosevka"
+  ["CascadiaCode"]="Cascadia Code"
+  ["UbuntuMono"]="Ubuntu Mono"
+  ["RobotoMono"]="Roboto Mono"
+  ["DejaVuSansMono"]="DejaVu Sans Mono"
 )
+
+font_installed() {
+  [ -d "$FONTS_DIR/$1" ]
+}
 
 install_nerd_fonts() {
   gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
     "Nerd Fonts Installation" \
-    "Select Nerd Fonts to install"
+    "Fonts downloaded from github.com/ryanoasis/nerd-fonts"
 
   echo ""
-  echo "Available Nerd Fonts:"
-  echo ""
 
-  # Build checklist options
+  # Build checklist — pre-select already installed fonts
   local checklist_options=()
-  for pkg in "${!NERD_FONTS[@]}"; do
-    local font_name="${NERD_FONTS[$pkg]}"
-    # Check if already installed
+  for key in "${!NERD_FONTS[@]}"; do
     local status="off"
-    if pacman -Qi "$pkg" &>/dev/null; then
-      status="on"
-    fi
-    checklist_options+=("$pkg" "$font_name" "$status")
+    font_installed "$key" && status="on"
+    checklist_options+=("$key" "${NERD_FONTS[$key]}" "$status")
   done
 
-  # Let user select fonts
   local FONT_SELECTION
-  FONT_SELECTION=$(checklist "Nerd Fonts" "Select fonts to install (already installed fonts are pre-selected):" \
+  FONT_SELECTION=$(checklist "Nerd Fonts" "Select fonts to install:" \
     "${checklist_options[@]}") || {
     echo "No fonts selected, skipping..."
     return 0
   }
 
-  # Convert selection to array
+  # Skip any that are already installed
   local FONTS_TO_INSTALL=()
   for font in $FONT_SELECTION; do
-    FONTS_TO_INSTALL+=("$font")
+    font_installed "$font" || FONTS_TO_INSTALL+=("$font")
   done
 
   if [ ${#FONTS_TO_INSTALL[@]} -eq 0 ]; then
-    echo "No fonts selected, skipping..."
+    echo "All selected fonts are already installed."
     return 0
   fi
 
-  # Install selected fonts (Nerd Fonts are in official repos, use pacman)
-  echo "Installing selected Nerd Fonts..."
-  echo ""
-  sudo pacman -S --needed --noconfirm "${FONTS_TO_INSTALL[@]}"
+  mkdir -p "$FONTS_DIR"
+
+  local TEMP_DIR
+  TEMP_DIR=$(mktemp -d)
+  trap "rm -rf '$TEMP_DIR'" EXIT
+
+  for font in "${FONTS_TO_INSTALL[@]}"; do
+    echo "Downloading $font..."
+    if curl -fL --progress-bar "$RELEASE_URL/$font.tar.xz" -o "$TEMP_DIR/$font.tar.xz"; then
+      mkdir -p "$FONTS_DIR/$font"
+      tar -xf "$TEMP_DIR/$font.tar.xz" -C "$FONTS_DIR/$font"
+      gum style --foreground 2 "  ✓ ${NERD_FONTS[$font]} installed"
+    else
+      gum style --foreground 1 "  ✗ Failed to download $font"
+    fi
+  done
 
   echo ""
-  gum style --bold --foreground 2 "✓ Nerd Fonts installed successfully"
-  echo ""
-
-  # Refresh font cache
   echo "Refreshing font cache..."
   fc-cache -fv
   echo ""
 
-  # Ask if user wants to set a default font
-  if gum confirm "Would you like to set a default Nerd Font for your system?"; then
+  gum style --bold --foreground 2 "✓ Nerd Fonts installed successfully"
+  echo ""
+
+  if gum confirm "Would you like to set a default Nerd Font for your configs?"; then
     set_default_font "${FONTS_TO_INSTALL[@]}"
   fi
 }
 
 set_default_font() {
   local installed_fonts=("$@")
-  
+
   echo ""
   gum style --bold --foreground 212 "Select Default Nerd Font"
   echo "This will update Alacritty, Rofi, and AwesomeWM configs"
   echo ""
 
-  # Build list of installed font names
   local font_options=()
-  for pkg in "${installed_fonts[@]}"; do
-    font_options+=("${NERD_FONTS[$pkg]}")
+  for key in "${installed_fonts[@]}"; do
+    font_options+=("${NERD_FONTS[$key]} Nerd Font")
   done
 
-  # Let user choose default font
   local selected_font
   selected_font=$(gum choose --header "Select default font:" "${font_options[@]}") || {
     echo "No font selected, keeping current configuration"
@@ -104,24 +112,20 @@ set_default_font() {
   echo "Setting default font to: $selected_font"
   echo ""
 
-  # Update configuration files in ~/.config
   local CONFIG_DIR="$HOME/.config"
 
-  # Update Alacritty config
   if [ -f "$CONFIG_DIR/alacritty/alacritty.toml" ]; then
     echo "Updating Alacritty configuration..."
     sed -i "s/family = \".*Nerd Font\"/family = \"$selected_font\"/" \
       "$CONFIG_DIR/alacritty/alacritty.toml"
   fi
 
-  # Update AwesomeWM theme
   if [ -f "$CONFIG_DIR/awesome/theme.lua" ]; then
     echo "Updating AwesomeWM theme..."
     sed -i "s/theme.font.*=.*\".*Nerd Font.*/theme.font          = \"$selected_font 12\"/" \
       "$CONFIG_DIR/awesome/theme.lua"
   fi
 
-  # Update Rofi font configs
   if [ -d "$CONFIG_DIR/rofi" ]; then
     echo "Updating Rofi configurations..."
     find "$CONFIG_DIR/rofi" -name "*.rasi" -type f -exec \
@@ -131,12 +135,9 @@ set_default_font() {
   echo ""
   gum style --bold --foreground 2 "✓ Default font updated in configuration files"
   echo ""
-
-  echo ""
 }
 
 # Run if executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   install_nerd_fonts
 fi
-

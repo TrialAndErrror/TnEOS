@@ -16,7 +16,6 @@ translate_packages_apt() {
       libreoffice-fresh)      translated+=(libreoffice) ;;
       docker)                 translated+=(docker.io) ;;
       imagemagick)            translated+=(imagemagick) ;;
-      ttf-jetbrains-mono-nerd) echo "  ⚠ Skipping ttf-jetbrains-mono-nerd: not in apt repos (install manually from nerdfonts.com)" ;;
       yazi)                   echo "  ⚠ Skipping yazi: not in apt repos (install manually from yazi-rs.github.io)" ;;
       *)                      translated+=("$pkg") ;;
     esac
@@ -34,7 +33,7 @@ translate_packages_dnf() {
       python)                 translated+=(python3) ;;
       libreoffice-fresh)      translated+=(libreoffice) ;;
       imagemagick)            translated+=(ImageMagick) ;;
-      ttf-jetbrains-mono-nerd) echo "  ⚠ Skipping ttf-jetbrains-mono-nerd: not in dnf repos (install manually from nerdfonts.com)" ;;
+      yazi) echo "  ⚠ Skipping yazi: not in dnf repos (install manually from yazi-rs.github.io)" ;;
       yazi)                   echo "  ⚠ Skipping yazi: not in dnf repos (install manually from yazi-rs.github.io)" ;;
       *)                      translated+=("$pkg") ;;
     esac
