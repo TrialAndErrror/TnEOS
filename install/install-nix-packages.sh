@@ -20,7 +20,7 @@ install_nix_packages() {
   # Install each package individually to handle errors better
   for pkg in "${NIX_PACKAGES[@]}"; do
     echo "  Installing $pkg..."
-    NIXPKGS_ALLOW_UNFREE=1 nix --extra-experimental-features "nix-command flakes" profile add "nixpkgs#$pkg" --impure || {
+    NIXPKGS_ALLOW_UNFREE=1 nix --extra-experimental-features "nix-command flakes" profile install "nixpkgs#$pkg" --impure || {
       echo "  ⚠ Warning: Failed to install $pkg, skipping..."
     }
   done
