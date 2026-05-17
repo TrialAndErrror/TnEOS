@@ -33,7 +33,7 @@ pl() { pacman_installed "$1" && echo "$2 [installed]" || echo "$2"; }
 nl() { nix_installed "$1" && echo "$2 [installed]" || echo "$2"; }
 
 # Base packages for all systems
-PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter ttf-jetbrains-mono-nerd caja feh)
+PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter caja feh)
 NIX_PACKAGES=(eza fd bat)
 
 # Add laptop-specific packages (DEVICE_TYPE is set in admin.sh)
@@ -49,6 +49,7 @@ NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
   uv "$(nl uv 'UV (Python package & project manager)')" on \
   zellij "$(nl zellij 'Zellij (Terminal multiplexer)')" on \
   nushell "$(nl nushell 'NuShell')" on \
+  yazi "$(nl yazi 'Yazi (TUI file manager)')" on \
 ) || return 1
 
 for item in $NIX_SELECTION; do
@@ -61,7 +62,6 @@ PACMAN_SELECTION=$(checklist "System Programs" "Select programs to install:" \
   7zip          "$(pl 7zip '7zip')" on \
   docker        "$(pl docker 'Docker')" on \
   docker-compose "$(pl docker-compose 'Docker Compose')" on \
-  yazi          "$(pl yazi 'Yazi (TUI file manager)')" on \
   tldr          "$(pl tldr 'TLDR (application info)')" on \
   pavucontrol   "$(pl pavucontrol 'PulseAudio Volume Control')" on \
   lxappearance  "$(pl lxappearance 'LXAppearance (Theme manager)')" on \

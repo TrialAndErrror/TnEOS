@@ -16,7 +16,6 @@ translate_packages_apt() {
       libreoffice-fresh)      translated+=(libreoffice) ;;
       docker)                 translated+=(docker.io) ;;
       imagemagick)            translated+=(imagemagick) ;;
-      yazi)                   echo "  ⚠ Skipping yazi: not in apt repos (install manually from yazi-rs.github.io)" ;;
       *)                      translated+=("$pkg") ;;
     esac
   done
@@ -34,7 +33,6 @@ translate_packages_dnf() {
       libreoffice-fresh)      translated+=(libreoffice) ;;
       imagemagick)            translated+=(ImageMagick) ;;
       yazi) echo "  ⚠ Skipping yazi: not in dnf repos (install manually from yazi-rs.github.io)" ;;
-      yazi)                   echo "  ⚠ Skipping yazi: not in dnf repos (install manually from yazi-rs.github.io)" ;;
       *)                      translated+=("$pkg") ;;
     esac
   done
