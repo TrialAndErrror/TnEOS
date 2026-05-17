@@ -94,10 +94,23 @@ action_install_fonts() {
   bash "$(dirname "$0")/install-fonts.sh" || true
 }
 
+# --- Detect distro ---
+
+if command -v pacman &>/dev/null; then
+  DISTRO_TYPE="Arch"
+elif command -v apt &>/dev/null; then
+  DISTRO_TYPE="Debian"
+elif command -v dnf &>/dev/null; then
+  DISTRO_TYPE="Fedora"
+else
+  DISTRO_TYPE="Unknown"
+fi
+export DISTRO_TYPE
+
 # --- Main Menu ---
 
 gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
-  "TnEOS" "Arch Linux Configuration Manager"
+  "TnEOS" "Linux Configuration Manager" "Detected OS: $DISTRO_TYPE"
 
 while true; do
   echo ""

@@ -7,19 +7,11 @@ source ./ui.sh
 HOSTNAME=$(hostname)
 USERNAME=$USER
 
-# --- Detect distro via package manager ---
-DISTRO_TYPE=""
-if command -v pacman &>/dev/null; then
-  DISTRO_TYPE="Arch"
-elif command -v apt &>/dev/null; then
-  DISTRO_TYPE="Debian"
-elif command -v dnf &>/dev/null; then
-  DISTRO_TYPE="Fedora"
-fi
-
-if [ -z "$DISTRO_TYPE" ]; then
+# --- Verify distro detection ---
+if [ -z "${DISTRO_TYPE:-}" ]; then
   gum style --bold --foreground 3 "Could not detect Linux distribution."
   DISTRO_TYPE=$(gum choose --header "Select your distribution:" "Arch" "Debian" "Fedora")
+  export DISTRO_TYPE
 fi
 
 # --- Detect laptop vs desktop via battery presence ---
