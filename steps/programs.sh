@@ -3,6 +3,29 @@ set -e
 
 source ./ui.sh
 
+# Check if a pacman package is installed
+pacman_installed() { pacman -Q "$1" &>/dev/null 2>&1; }
+
+# Cache nix profile list to avoid repeated slow calls
+_NIX_PROFILE_CACHE=""
+_nix_profile() {
+  if [ -z "$_NIX_PROFILE_CACHE" ]; then
+    _NIX_PROFILE_CACHE=$(nix profile list 2>/dev/null || echo "")
+  fi
+  echo "$_NIX_PROFILE_CACHE"
+}
+
+# Check if a nix package is installed (by profile or binary in PATH)
+nix_installed() {
+  _nix_profile | grep -qF "$1" || command -v "$1" &>/dev/null 2>&1
+}
+
+# Return label with [installed] appended if the pacman package is already installed
+pl() { pacman_installed "$1" && echo "$2 [installed]" || echo "$2"; }
+
+# Return label with [installed] appended if the nix package is already installed
+nl() { nix_installed "$1" && echo "$2 [installed]" || echo "$2"; }
+
 # Base packages for all systems
 PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter nitrogen ttf-jetbrains-mono-nerd caja)
 NIX_PACKAGES=(eza fd bat)
@@ -14,12 +37,12 @@ if [ "$DEVICE_TYPE" = "Laptop" ]; then
 fi
 
 NIX_SELECTION=$(checklist "Nix Programs" "Select Nix programs to install:" \
-  ripgrep "ripgrep (Grep alternative)" on \
-  isort "isort (Python Import Sort)" on \
-  pyright "Pyright (Python LSP)" on \
-  uv "UV (Python package & project manager)" on \
-  zellij "Zellij (Terminal multiplexer)" on \
-  nushell "NuShell" on \
+  ripgrep "$(nl ripgrep 'ripgrep (Grep alternative)')" on \
+  isort "$(nl isort 'isort (Python Import Sort)')" on \
+  pyright "$(nl pyright 'Pyright (Python LSP)')" on \
+  uv "$(nl uv 'UV (Python package & project manager)')" on \
+  zellij "$(nl zellij 'Zellij (Terminal multiplexer)')" on \
+  nushell "$(nl nushell 'NuShell')" on \
 ) || return 1
 
 for item in $NIX_SELECTION; do
@@ -27,20 +50,20 @@ for item in $NIX_SELECTION; do
 done
 
 PACMAN_SELECTION=$(checklist "System Programs" "Select programs to install (via yay - supports AUR):" \
-  neovim   "Neovim (editor)" on \
-  zsh "zShell" on \
-  7z "7z" on \
-  docker   "Docker" on \
-  docker-compose "Docker Compose" on \
-  yazi "Yazi (TUI file manager)" on \
-  tldr "TLDR (application info)" on \
-  pavucontrol "PulseAudio Volume Control" on \
-  nitrogen "Nitrogen (Wallpaper manager)" on \
-  lxappearance "LXAppearance (Theme manager)" on \
-  go "Go (programming language)" on \
-  python314 "Python (programming language)" on \
-  arandr "Arandr (Display manager)" on \
-  flameshot "Flameshot (screenshot utility)" on
+  neovim        "$(pl neovim 'Neovim (editor)')" on \
+  zsh           "$(pl zsh 'zShell')" on \
+  7z            "$(pl 7z '7z')" on \
+  docker        "$(pl docker 'Docker')" on \
+  docker-compose "$(pl docker-compose 'Docker Compose')" on \
+  yazi          "$(pl yazi 'Yazi (TUI file manager)')" on \
+  tldr          "$(pl tldr 'TLDR (application info)')" on \
+  pavucontrol   "$(pl pavucontrol 'PulseAudio Volume Control')" on \
+  nitrogen      "$(pl nitrogen 'Nitrogen (Wallpaper manager)')" on \
+  lxappearance  "$(pl lxappearance 'LXAppearance (Theme manager)')" on \
+  go            "$(pl go 'Go (programming language)')" on \
+  python314     "$(pl python314 'Python (programming language)')" on \
+  arandr        "$(pl arandr 'Arandr (Display manager)')" on \
+  flameshot     "$(pl flameshot 'Flameshot (screenshot utility)')" on \
 ) || return 1
 
 for item in $PACMAN_SELECTION; do
@@ -48,16 +71,16 @@ for item in $PACMAN_SELECTION; do
 done
 
 SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications to install:" \
-  gitkraken "GitKraken (GUI Git management)" on \
-  jetbrains.pycharm-professional "PyCharm Professional" on \
-  libreoffice "LibreOffice" on \
-  gimp "Gimp (Graphical image editor)" on \
-  thorium-browser-bin "Thorium (web browser)" on \
-  imagemagick "ImageMagick (CLI image editing)" on \
-  neovide "Neovide (graphical NVIM client)" on \
-  flatpak "Flatpak (package manager)" on \
-  gh "gh (GitHub CLI)" on \
-  httpie "httpie (HTTP TUI client)" on
+  gitkraken                    "$(nl gitkraken 'GitKraken (GUI Git management)')" on \
+  jetbrains.pycharm-professional "$(nl jetbrains.pycharm-professional 'PyCharm Professional')" on \
+  libreoffice                  "$(pl libreoffice 'LibreOffice')" on \
+  gimp                         "$(pl gimp 'Gimp (Graphical image editor)')" on \
+  thorium-browser-bin          "$(pl thorium-browser-bin 'Thorium (web browser)')" on \
+  imagemagick                  "$(pl imagemagick 'ImageMagick (CLI image editing)')" on \
+  neovide                      "$(nl neovide 'Neovide (graphical NVIM client)')" on \
+  flatpak                      "$(pl flatpak 'Flatpak (package manager)')" on \
+  gh                           "$(nl gh 'gh (GitHub CLI)')" on \
+  httpie                       "$(nl httpie 'httpie (HTTP TUI client)')" on \
 ) || return 1
 
 
