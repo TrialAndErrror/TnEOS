@@ -9,6 +9,7 @@ source ./ui.sh
 # Source all install modules
 source ./install/install-package-manager-packages.sh
 source ./install/install-nix-packages.sh
+source ./install/install-oh-my-zsh.sh
 source ./install/copy-configs.sh
 source ./install/setup-wallpaper.sh
 source ./install/setup-lightdm-greeter.sh
@@ -54,6 +55,7 @@ action_full_install() {
 
   install_package_manager_packages
   install_nix_packages
+  install_oh_my_zsh
   copy_configs
   setup_wallpaper
   setup_lightdm_greeter
@@ -69,6 +71,7 @@ action_install_config() {
     PACMAN_PACKAGES=()
   fi
 
+  install_oh_my_zsh
   copy_configs
 }
 

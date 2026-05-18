@@ -5,6 +5,82 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../ui.sh"
 
+# Copy a directory config to ~/.config/, with diff checking.
+# Args: src_dir dest_dir display_name
+_install_dir_config() {
+  local src="$1" dest="$2" name="$3"
+
+  if [ ! -d "$src" ]; then
+    echo "  ⚠ Source not found: $src, skipping..."
+    return
+  fi
+
+  if [ -e "$dest" ]; then
+    if diff -rq "$src" "$dest" &>/dev/null; then
+      echo "  ✓ $name is already up to date, skipping."
+      return
+    fi
+
+    echo ""
+    gum style --bold --foreground 212 "Changes detected in $name:"
+    diff -r --color=always "$dest" "$src" || true
+    echo ""
+
+    if ! gum confirm "Overwrite ~/.config/$name with the repo version?"; then
+      echo "  Skipping $name."
+      return
+    fi
+
+    local backup="${dest}.bak"
+    if [ -e "$backup" ]; then
+      backup="${dest}.bak.$(date +%Y%m%d-%H%M%S)"
+    fi
+    echo "  Backing up ~/.config/$name -> ${backup##*/home/$USER/.config/}"
+    mv "$dest" "$backup"
+  fi
+
+  echo "  Copying $name..."
+  cp -r "$src" "$dest"
+}
+
+# Copy a single file config (e.g. ~/.zshrc), with diff checking.
+# Args: src_file dest_file display_name
+_install_file_config() {
+  local src="$1" dest="$2" name="$3"
+
+  if [ ! -f "$src" ]; then
+    echo "  ⚠ Source not found: $src, skipping..."
+    return
+  fi
+
+  if [ -e "$dest" ]; then
+    if diff -q "$src" "$dest" &>/dev/null; then
+      echo "  ✓ $name is already up to date, skipping."
+      return
+    fi
+
+    echo ""
+    gum style --bold --foreground 212 "Changes detected in $name:"
+    diff --color=always "$dest" "$src" || true
+    echo ""
+
+    if ! gum confirm "Overwrite ~/$name with the repo version?"; then
+      echo "  Skipping $name."
+      return
+    fi
+
+    local backup="${dest}.bak"
+    if [ -e "$backup" ]; then
+      backup="${dest}.bak.$(date +%Y%m%d-%H%M%S)"
+    fi
+    echo "  Backing up ~/$name -> ${backup##*/home/$USER/}"
+    mv "$dest" "$backup"
+  fi
+
+  echo "  Copying $name..."
+  cp "$src" "$dest"
+}
+
 copy_configs() {
   local REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
   local CONFIG_SRC="$REPO_DIR/config"
@@ -14,7 +90,7 @@ copy_configs() {
     "Copying Configuration Files" "Installing dotfiles to ~/.config/"
 
   # Determine which configs to install
-  local CONFIGS=("awesome" "picom" "rofi" "alacritty")
+  local CONFIGS=("awesome" "picom" "rofi" "alacritty" "ghostty")
 
   if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
     CONFIGS+=("nvim")
@@ -31,33 +107,15 @@ copy_configs() {
   fi
   echo ""
 
-  # Copy each config, backing up existing ones
   echo "Installing configs to $CONFIG_DEST..."
   for config in "${CONFIGS[@]}"; do
-    local src="$CONFIG_SRC/$config"
-    local dest="$CONFIG_DEST/$config"
-
-    if [ ! -d "$src" ]; then
-      echo "  ⚠ Source not found: $src, skipping..."
-      continue
-    fi
-
-    if [ -e "$dest" ]; then
-      local backup="${dest}.bak"
-      # If .bak already exists, use a timestamp
-      if [ -e "$backup" ]; then
-        backup="${dest}.bak.$(date +%Y%m%d-%H%M%S)"
-      fi
-      echo "  Backing up existing ~/.config/$config -> ${backup##*/home/$USER/.config/}"
-      mv "$dest" "$backup"
-    fi
-
-    echo "  Copying $config..."
-    cp -r "$src" "$dest"
+    _install_dir_config "$CONFIG_SRC/$config" "$CONFIG_DEST/$config" "$config"
   done
 
+  _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc" ".zshrc"
+
   echo ""
-  gum style --bold --foreground 2 "✓ Configs installed to ~/.config/"
+  gum style --bold --foreground 2 "✓ Configs installed to ~/.config/ and ~/"
   echo ""
 }
 
