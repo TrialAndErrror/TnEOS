@@ -96,19 +96,21 @@ copy_configs() {
     CONFIGS+=("nvim")
   fi
 
-  # Prompt for device type if not already set
-  DEVICE_TYPE=""
-  for supply_type in /sys/class/power_supply/*/type; do
-    if [ -f "$supply_type" ] && grep -qi "^battery$" "$supply_type" 2>/dev/null; then
-      DEVICE_TYPE="Laptop"
-      break
-    fi
-  done
+  # Detect or reuse already-exported device type
+  if [ -z "${DEVICE_TYPE:-}" ]; then
+    for supply_type in /sys/class/power_supply/*/type; do
+      if [ -f "$supply_type" ] && grep -qi "^battery$" "$supply_type" 2>/dev/null; then
+        DEVICE_TYPE="Laptop"
+        break
+      fi
+    done
 
-  if [ -z "$DEVICE_TYPE" ]; then
-    gum style --bold --foreground 3 "Could not detect device type (no battery found)."
-    DEVICE_TYPE=$(gum choose --header "Select your device type:" "Desktop" "Laptop")
+    if [ -z "$DEVICE_TYPE" ]; then
+      gum style --bold --foreground 3 "Could not detect device type (no battery found)."
+      DEVICE_TYPE=$(gum choose --header "Select your device type:" "Desktop" "Laptop")
+    fi
   fi
+  export DEVICE_TYPE
 
   # Prepare awesome config for desktop/laptop in a temp dir to avoid modifying the repo
   local AWESOME_SRC="$CONFIG_SRC/awesome"

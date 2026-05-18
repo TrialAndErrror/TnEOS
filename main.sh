@@ -15,11 +15,13 @@ source ./install/setup-wallpaper.sh
 source ./install/setup-lightdm-greeter.sh
 source ./install/show-completion.sh
 
-# Prompt for device type if not already set
 ensure_device_type() {
-  
+  if [ -n "${DEVICE_TYPE:-}" ]; then
+    export DEVICE_TYPE
+    return
+  fi
+
   # --- Detect laptop vs desktop via battery presence ---
-  DEVICE_TYPE=""
   for supply_type in /sys/class/power_supply/*/type; do
     if [ -f "$supply_type" ] && grep -qi "^battery$" "$supply_type" 2>/dev/null; then
       DEVICE_TYPE="Laptop"
