@@ -47,7 +47,8 @@ keybind = shift+enter=text:\n
 # Rando stuff
 gtk-single-instance = true
 
-# Dank color generation
-# theme = dankcolors
-# theme = Afterglow
-config-file = ?auto/theme.ghostty
+# Set default
+theme = Afterglow
+
+# To use ghostty +list-themes, just uncomment below
+# config-file = ?auto/theme.ghostty
