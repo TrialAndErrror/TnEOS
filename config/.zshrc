@@ -115,5 +115,6 @@ chpwd() {
 }
 
 # Bookmarks
-hash -d repos=/home/wade/repos
-hash -d duel=/mnt/hermes/duel/
+# Use the following structure to set up your 
+hash -d repos=~/repos
+hash -d config=~/.config/
