@@ -125,6 +125,7 @@ copy_configs() {
   else
     echo "Preparing awesome config for Laptop (with battery widget and brightness controls)..."
     cp "$AWESOME_TMP/modules/config.laptop.lua" "$AWESOME_TMP/modules/config.lua"
+    cp "$AWESOME_TMP/modules/keys.laptop.lua" "$AWESOME_TMP/modules/keys.lua"
   fi
   echo ""
 
