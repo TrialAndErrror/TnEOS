@@ -6,7 +6,7 @@ function run {
     fi
 }
 
-nitrogen --restore
+~/.fehbg &
 xev -version
 
 # Generic command for all touchpads

@@ -16,16 +16,6 @@ if [ "$EUID" -eq 0 ]; then
   exit 1
 fi
 
-# Check if we're on Arch Linux
-if [ ! -f /etc/arch-release ]; then
-  echo "⚠️  Warning: This script is designed for Arch Linux."
-  read -p "Continue anyway? (y/N) " -n 1 -r
-  echo
-  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    exit 1
-  fi
-fi
-
 echo "Checking prerequisites..."
 echo ""
 
@@ -85,17 +75,8 @@ else
 fi
 
 # Enable Nix experimental features (nix-command and flakes)
-echo "Configuring Nix experimental features and unfree packages..."
 
-# Configure system-wide
-sudo mkdir -p /etc/nix
-if [ ! -f /etc/nix/nix.conf ] || ! grep -q "experimental-features" /etc/nix/nix.conf; then
-  echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf > /dev/null
-  echo "✓ System-wide Nix experimental features enabled"
-else
-  echo "✓ System-wide Nix experimental features already enabled"
-fi
-
+echo "Checking Nix configuration"
 # Also configure for current user
 mkdir -p "$HOME/.config/nix"
 if [ ! -f "$HOME/.config/nix/nix.conf" ] || ! grep -q "experimental-features" "$HOME/.config/nix/nix.conf"; then
@@ -149,7 +130,7 @@ echo "======================================"
 echo "  Prerequisites satisfied!"
 echo "======================================"
 echo ""
-echo "Starting TnEOS installation..."
+echo "Starting TnEOS setup..."
 sleep 2
 
 # Run the main installation script

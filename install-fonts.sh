@@ -9,12 +9,14 @@ cd "$(dirname "$0")"
 # Check if gum is installed
 if ! command -v gum &> /dev/null; then
   echo "Error: gum is required but not installed."
-  echo "Install it with: sudo pacman -S gum"
+  echo "See https://github.com/charmbracelet/gum for installation instructions."
   exit 1
 fi
 
-# Note: Nerd Fonts are in official Arch repos, so pacman is sufficient
-# No need to check for yay
+if ! command -v curl &> /dev/null; then
+  echo "Error: curl is required but not installed."
+  exit 1
+fi
 
 # Source required files
 source ./ui.sh

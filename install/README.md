@@ -4,14 +4,8 @@ This directory contains modular installation scripts that are called by `main.sh
 
 ## Installation Scripts
 
-### 1. `install-yay.sh`
-Installs the yay AUR helper if not already present.
-- Checks if yay is installed
-- Installs git and base-devel dependencies
-- Clones and builds yay from AUR
-
-### 2. `install-pacman-packages.sh`
-Installs packages via pacman/yay.
+### 1. `install-package-manager-packages.sh`
+Installs packages via the system package manager (pacman, apt, or dnf).
 - Installs all packages in the `PACMAN_PACKAGES` array
 - Enables LightDM service if installed
 - Enables acpid service for battery monitoring (laptops)
@@ -50,7 +44,7 @@ Applies the Home Manager configuration.
 Installs and configures the TnEOS wallpaper.
 - Finds wallpaper in either copied config or source repo
 - Copies wallpaper to `~/Pictures/Wallpapers/`
-- Configures nitrogen if installed (checks both PACMAN_PACKAGES and system)
+- Sets wallpaper with feh and writes ~/.fehbg for session restore
 - Works standalone or as part of full installation
 
 ### 9. `show-completion.sh`
@@ -60,27 +54,27 @@ Displays installation completion messages.
 - Provides next steps for the user
 
 ### 10. `install-nerd-fonts.sh`
-Installs Nerd Fonts and optionally sets one as default.
-- Presents a selection of popular Nerd Fonts from AUR
+Installs Nerd Fonts and optionally sets one as default. Works on all distros.
+- Presents a selection of popular Nerd Fonts
 - Pre-selects already installed fonts
-- Installs selected fonts via yay
-- Refreshes font cache
+- Downloads selected fonts from github.com/ryanoasis/nerd-fonts releases
+- Extracts to ~/.local/share/fonts/NerdFonts/
+- Refreshes font cache with fc-cache
 - Optionally updates default font in configs (Alacritty, Rofi, AwesomeWM)
-- Can apply changes immediately with home-manager
 
 ## Usage
 
 These scripts are designed to be sourced and called from `main.sh`:
 
 ```bash
-source ./install/install-yay.sh
-install_yay
+source ./install/install-package-manager-packages.sh
+install_package_manager_packages
 ```
 
 Each script can also be run independently if needed:
 
 ```bash
-./install/install-yay.sh
+./install/install-package-manager-packages.sh
 ```
 
 ## Dependencies

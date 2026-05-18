@@ -48,21 +48,26 @@ checklist() {
     local item=$1
     local desc=$2
     local status=$3
-    options+=("$item")
+    local label="$item: $desc"
+    options+=("$label")
     if [ "$status" = "on" ]; then
-      selected+=("$item")
+      selected+=("$label")
     fi
     shift 3
   done
 
   # Build the gum choose command with selected items (comma-separated)
+  local result
   if [ ${#selected[@]} -gt 0 ]; then
     # Join selected items with commas
     local IFS=','
-    $GUM choose --no-limit --height 15 --header "Use space to toggle, enter to confirm" --selected="${selected[*]}" "${options[@]}"
+    result=$($GUM choose --no-limit --height 15 --header "Use space to toggle, enter to confirm" --selected="${selected[*]}" "${options[@]}")
   else
-    $GUM choose --no-limit --height 15 --header "Use space to toggle, enter to confirm" "${options[@]}"
+    result=$($GUM choose --no-limit --height 15 --header "Use space to toggle, enter to confirm" "${options[@]}")
   fi
+
+  # Return just the item names (strip ": description" suffix)
+  echo "$result" | sed 's/: .*//'
 }
 
 radiolist() {

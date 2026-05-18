@@ -7,24 +7,23 @@ if [ -f "./ui.sh" ]; then
 fi
 
 setup_lightdm_greeter() {
-  echo "Setting up LightDM GTK Greeter customization..."
-  echo ""
-
-  # Check if lightdm is installed
-  if ! command -v lightdm &> /dev/null; then
-    echo "LightDM is not installed. Skipping greeter customization."
+  # Check if lightdm-gtk-greeter is installed
+  if ! command -v lightdm &>/dev/null || ! [ -f /usr/lib/lightdm/lightdm-gtk-greeter ]; then
+    echo "lightdm-gtk-greeter is not installed. Skipping greeter customization."
     return 0
   fi
 
+  echo "Setting up LightDM GTK Greeter customization..."
+  echo ""
+
   # Install required themes
   echo "Installing required themes and icons..."
-  if command -v yay &> /dev/null; then
-    yay -S --needed --noconfirm matcha-gtk-theme papirus-icon-theme breeze breeze-gtk
-    echo "  ✓ Themes installed (Matcha, Papirus, Breeze)"
-  else
-    echo "  ⚠ yay not found, skipping theme installation"
-    echo "  Please install manually: yay -S matcha-gtk-theme papirus-icon-theme breeze breeze-gtk"
-  fi
+  case "${DISTRO_TYPE:-Arch}" in
+    Debian) sudo apt install -y matcha-gtk-theme papirus-icon-theme breeze ;;
+    Fedora) sudo dnf install -y papirus-icon-theme breeze ;;
+    *)      sudo pacman -S --needed --noconfirm matcha-gtk-theme papirus-icon-theme breeze breeze-gtk ;;
+  esac
+  echo "  ✓ Themes installed"
   echo ""
 
   # Backup existing configuration
@@ -91,14 +90,15 @@ EOF
   echo ""
 
   # Optional: Install lightdm-gtk-greeter-settings for GUI customization
-  if command -v yay &> /dev/null; then
-    read -p "Would you like to install lightdm-gtk-greeter-settings (GUI tool for customization)? [y/N] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-      echo "Installing lightdm-gtk-greeter-settings..."
-      yay -S --needed --noconfirm lightdm-gtk-greeter-settings
-      echo "  ✓ You can now run 'lightdm-gtk-greeter-settings' to customize the greeter with a GUI"
-    fi
+  if ! command -v lightdm-gtk-greeter-settings &>/dev/null && \
+     gum confirm "Install lightdm-gtk-greeter-settings (GUI tool for customization)?"; then
+    echo "Installing lightdm-gtk-greeter-settings..."
+    case "${DISTRO_TYPE:-Arch}" in
+      Debian) sudo apt install -y lightdm-gtk-greeter-settings ;;
+      Fedora) sudo dnf install -y lightdm-gtk-greeter-settings ;;
+      *)      sudo pacman -S --needed --noconfirm lightdm-gtk-greeter-settings ;;
+    esac
+    echo "  ✓ You can now run 'lightdm-gtk-greeter-settings' to customize the greeter with a GUI"
   fi
 
   echo ""
