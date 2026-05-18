@@ -96,13 +96,27 @@ copy_configs() {
     CONFIGS+=("nvim")
   fi
 
+  # Prompt for device type if not already set
+  DEVICE_TYPE=""
+  for supply_type in /sys/class/power_supply/*/type; do
+    if [ -f "$supply_type" ] && grep -qi "^battery$" "$supply_type" 2>/dev/null; then
+      DEVICE_TYPE="Laptop"
+      break
+    fi
+  done
+
+  if [ -z "$DEVICE_TYPE" ]; then
+    gum style --bold --foreground 3 "Could not detect device type (no battery found)."
+    DEVICE_TYPE=$(gum choose --header "Select your device type:" "Desktop" "Laptop")
+  fi
+
   # Prepare awesome config for desktop/laptop
   local AWESOME_SRC="$CONFIG_SRC/awesome"
   if [ "$DEVICE_TYPE" = "Desktop" ]; then
     echo "Preparing awesome config for Desktop (no battery widget)..."
     rm -rf "$AWESOME_SRC/battery-widget"
   else
-    echo "Preparing awesome config for Laptop (with battery widget)..."
+    echo "Preparing awesome config for Laptop (with battery widget and brightness controls)..."
     cp "$AWESOME_SRC/modules/config.laptop.lua" "$AWESOME_SRC/modules/config.lua"
   fi
   echo ""
