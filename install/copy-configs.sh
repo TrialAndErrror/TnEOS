@@ -110,19 +110,26 @@ copy_configs() {
     DEVICE_TYPE=$(gum choose --header "Select your device type:" "Desktop" "Laptop")
   fi
 
-  # Prepare awesome config for desktop/laptop
+  # Prepare awesome config for desktop/laptop in a temp dir to avoid modifying the repo
   local AWESOME_SRC="$CONFIG_SRC/awesome"
+  local AWESOME_TMP
+  AWESOME_TMP="$(mktemp -d)"
+  trap 'rm -rf "$AWESOME_TMP"' RETURN
+  cp -r "$AWESOME_SRC/." "$AWESOME_TMP/"
+
   if [ "$DEVICE_TYPE" = "Desktop" ]; then
     echo "Preparing awesome config for Desktop (no battery widget)..."
-    rm -rf "$AWESOME_SRC/battery-widget"
+    rm -rf "$AWESOME_TMP/battery-widget"
   else
     echo "Preparing awesome config for Laptop (with battery widget and brightness controls)..."
-    cp "$AWESOME_SRC/modules/config.laptop.lua" "$AWESOME_SRC/modules/config.lua"
+    cp "$AWESOME_TMP/modules/config.laptop.lua" "$AWESOME_TMP/modules/config.lua"
   fi
   echo ""
 
   echo "Installing configs to $CONFIG_DEST..."
+  _install_dir_config "$AWESOME_TMP" "$CONFIG_DEST/awesome" "awesome"
   for config in "${CONFIGS[@]}"; do
+    [[ "$config" == "awesome" ]] && continue
     _install_dir_config "$CONFIG_SRC/$config" "$CONFIG_DEST/$config" "$config"
   done
 
