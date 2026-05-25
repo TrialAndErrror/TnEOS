@@ -137,6 +137,7 @@ copy_configs() {
   done
 
   _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc" ".zshrc"
+  _install_file_config "$CONFIG_SRC/.xprofile" "$HOME/.xprofile" ".xprofile"
 
   echo ""
   gum style --bold --foreground 2 "✓ Configs installed to ~/.config/ and ~/"
