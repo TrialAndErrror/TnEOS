@@ -43,6 +43,51 @@ _install_dir_config() {
   cp -r "$src" "$dest"
 }
 
+# Copy a single file to a system path (requires sudo), with diff checking.
+# Args: src_file dest_file display_name
+_install_system_file_config() {
+  local src="$1" dest="$2" name="$3"
+
+  if [ ! -f "$src" ]; then
+    echo "  ⚠ Source not found: $src, skipping..."
+    return
+  fi
+
+  if [ -e "$dest" ]; then
+    if diff -q "$src" "$dest" &>/dev/null; then
+      echo "  ✓ $name is already up to date, skipping."
+      return
+    fi
+
+    echo ""
+    gum style --bold --foreground 212 "Changes detected in $name:"
+    diff --color=always "$dest" "$src" || true
+    echo ""
+
+    if ! gum confirm "Overwrite $dest with the repo version? (requires sudo)"; then
+      echo "  Skipping $name."
+      return
+    fi
+
+    local backup="${dest}.bak"
+    if [ -e "$backup" ]; then
+      backup="${dest}.bak.$(date +%Y%m%d-%H%M%S)"
+    fi
+    echo "  Backing up $dest -> ${backup}"
+    sudo mv "$dest" "$backup"
+  fi
+
+  local dest_dir
+  dest_dir="$(dirname "$dest")"
+  if [ ! -d "$dest_dir" ]; then
+    echo "  Creating $dest_dir..."
+    sudo mkdir -p "$dest_dir"
+  fi
+
+  echo "  Copying $name..."
+  sudo cp "$src" "$dest"
+}
+
 # Copy a single file config (e.g. ~/.zshrc), with diff checking.
 # Args: src_file dest_file display_name
 _install_file_config() {
@@ -138,6 +183,15 @@ copy_configs() {
 
   _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc" ".zshrc"
   _install_file_config "$CONFIG_SRC/.xprofile" "$HOME/.xprofile" ".xprofile"
+
+  # Laptop-only: lid-switch behaviour
+  if [ "$DEVICE_TYPE" = "Laptop" ]; then
+    echo "Installing laptop system configs..."
+    _install_system_file_config \
+      "$CONFIG_SRC/logind.conf.d/lid.conf" \
+      "/etc/systemd/logind.conf.d/lid.conf" \
+      "logind.conf.d/lid.conf"
+  fi
 
   echo ""
   gum style --bold --foreground 2 "✓ Configs installed to ~/.config/ and ~/"
