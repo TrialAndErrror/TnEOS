@@ -75,6 +75,11 @@ for item in $PACMAN_SELECTION; do
   pacman_installed "$item" || PACMAN_PACKAGES+=("$item")
 done
 
+# tree-sitter CLI is required by tree-sitter-manager.nvim to compile parsers
+if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
+  pacman_installed "tree-sitter" || PACMAN_PACKAGES+=("tree-sitter")
+fi
+
 SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications to install:" \
   gitkraken                    "$(nl gitkraken 'GitKraken (GUI Git management)')" on \
   jetbrains.pycharm-professional "$(nl jetbrains.pycharm-professional 'PyCharm Professional')" on \
