@@ -17,7 +17,7 @@ TnEOS is an automated post-installation script for Arch Linux that sets up a com
 After installing Arch Linux and rebooting into your new system, run this single command:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TrialAndErrror/TnEOS/main/install.sh | bash
+curl -fsSL trialanderrror.com/install | bash
 ```
 
 That's it! The script will:

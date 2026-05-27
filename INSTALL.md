@@ -16,7 +16,7 @@ Before running TnEOS, you need:
 The easiest way - just copy and paste this command:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TrialAndErrror/TnEOS/main/install.sh | bash
+curl -fsSL trialanderrror.com/install | bash
 ```
 
 This will:
