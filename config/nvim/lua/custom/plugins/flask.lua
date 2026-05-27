@@ -2,8 +2,10 @@
 return {
 	-- Extend treesitter with Python and Jinja2 parsers + filetype detection
 	{
-		"nvim-treesitter/nvim-treesitter",
+		"romus204/tree-sitter-manager.nvim",
 		opts = function(_, opts)
+			-- Merge python and jinja parsers into the base ensure_installed list
+			opts.ensure_installed = opts.ensure_installed or {}
 			vim.list_extend(opts.ensure_installed, { "python", "jinja" })
 		end,
 		init = function()

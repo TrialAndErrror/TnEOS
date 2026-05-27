@@ -77,7 +77,7 @@ done
 
 # tree-sitter CLI is required by tree-sitter-manager.nvim to compile parsers
 if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
-  pacman_installed "tree-sitter" || PACMAN_PACKAGES+=("tree-sitter")
+  pacman_installed "tree-sitter-cli" || PACMAN_PACKAGES+=("tree-sitter-cli")
 fi
 
 SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications to install:" \
