@@ -3,11 +3,7 @@ return {
 	-- Extend treesitter with Python and Jinja2 parsers + filetype detection
 	{
 		"romus204/tree-sitter-manager.nvim",
-		opts = function(_, opts)
-			-- Merge python and jinja parsers into the base ensure_installed list
-			opts.ensure_installed = opts.ensure_installed or {}
-			vim.list_extend(opts.ensure_installed, { "python", "jinja" })
-		end,
+		-- python and jinja parsers are in the base ensure_installed list in init.lua
 		init = function()
 			vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 				group = vim.api.nvim_create_augroup("flask-filetypes", { clear = true }),
