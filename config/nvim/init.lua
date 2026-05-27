@@ -942,7 +942,7 @@ require('lazy').setup({
     'romus204/tree-sitter-manager.nvim',
     config = function()
       require('tree-sitter-manager').setup {
-        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'sql', 'jinja', 'python', 'json', 'go' },
         auto_install = true,
         -- highlight is opt-out: all installed parsers are highlighted by default
         nohighlight = { 'ruby' }, -- ruby uses regex highlighting for indent rules
