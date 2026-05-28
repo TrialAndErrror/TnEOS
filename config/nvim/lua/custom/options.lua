@@ -12,3 +12,5 @@ vim.opt.breakindent = true -- maintain indent when wrapping lines
 
 -- Load custom keybindings
 require 'custom.keybindings'
+
+vim.cmd.colorscheme("miniautumn")
