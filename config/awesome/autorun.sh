@@ -12,3 +12,4 @@ xev -version
 # Generic command for all touchpads
 xinput set-prop "$(xinput list --name-only | grep -i touch)" "libinput Tapping Enabled" 1
 picom -b --config ~/.config/picom/picom.conf
+nm-applet
