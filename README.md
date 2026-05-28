@@ -34,7 +34,7 @@ That's it! The script will:
 - **LightDM** - Display manager with customizable login screen
 - **Picom** - Compositor for transparency and effects
 - **Rofi** - Application launcher and window switcher
-- **Alacritty** - Fast, GPU-accelerated terminal emulator
+- **GhosTTY** - Fast, GPU-accelerated terminal emulator
 
 ### Development Tools
 - **Neovim** - Modern text editor with full IDE features
@@ -47,11 +47,9 @@ That's it! The script will:
 - **ripgrep, fd, bat, eza** - Modern CLI tools
 
 ### System Tools
-- **Nitrogen** - Wallpaper manager
+- **Feh** - Wallpaper manager
 - **Flameshot** - Screenshot tool
 - **PulseAudio Control** - Audio management
-
-All configurations are managed by Home Manager, making updates easy.
 
 ## How It Works
 
@@ -110,26 +108,20 @@ The installer will guide you through:
 
 ### What's Configured
 
-All your dotfiles are now managed by Home Manager:
+Your dotfiles are copied into `~/.config/`:
 - Awesome WM configuration
 - Neovim setup
 - Terminal settings
 - Application launcher
 - Wallpapers and themes
 
-### Updating Configurations
+## Important Configurations
 
-Want to customize something? Easy:
+### Rofi Customization
 
-```bash
-# Edit any config file
-vim ~/.config/home-manager/config/nvim/init.lua
+In ~/.config/rofi/config.rasi, we declare an overall theme at the top and then have some overrides and customization in the file. You can modify that config with the cong-loader command (meta + shift + c).
 
-# Apply the changes
-home-manager switch
-```
-
-All your configurations are in `~/.config/home-manager/` and can be updated anytime.
+There is a setting for fonts; by default, it looks for Hack Nerd Font, then JetBrainsMono Nerd Font, then Iosevka Nerd Font, then falls back to monospace font. Be sure to install those fonts if you're just seeing plain monospace using the Font Installer command (or change to your preferred fonts.)
 
 ### Customizing the Login Screen
 
@@ -145,7 +137,6 @@ yay -S lightdm-gtk-greeter-settings
 lightdm-gtk-greeter-settings
 ```
 
-See the [Login Screen Setup Guide](docs/LOGIN_SCREEN_SETUP.md) for detailed customization options.
 
 ## Backup Protection
 
@@ -190,7 +181,7 @@ startx
 ```
 
 ### Want to start over?
-Your old configs are backed up in `~/.config-backup-*/` if you need to restore them.
+Your old configs are backed up in `~/.config-backups/` if you need to restore them.
 
 ## Support
 
