@@ -1,0 +1,31 @@
+<div class="feature-layout">
+  <div class="feature-copy">
+    <div class="feature-title">Display Picker</div>
+    <div class="feature-shortcut">
+      <span class="label">Open with</span>
+      Super + Shift + W
+    </div>
+    <div class="feature-desc">
+      The display picker lets you instantly swap between saved monitor layouts.
+      It reads shell scripts from <code>~/.screenlayout/</code> — each script
+      typically calls <code>xrandr</code> with a pre-set arrangement — and presents them
+      in a rofi menu.
+      <br><br>
+      Add your own layouts by setting up your display layout in <code>arandr</code>
+      and then using the "Save" feature; by default, the layouts will be saved as
+      <code>*.sh</code> files in <code>~/.screenlayout/</code>.
+      Useful for switching between laptop-only, docked, or presentation setups
+      without touching a terminal.
+    </div>
+  </div>
+
+  <div class="rofi-mock">
+    <div class="rofi-bar"><span class="icon">🖥</span>Select Screen Layout</div>
+    <div class="rofi-list">
+      <div class="rofi-item hi">dual-hdmi.sh</div>
+      <div class="rofi-item">laptop-only.sh</div>
+      <div class="rofi-item">presentation.sh</div>
+      <div class="rofi-item">triple.sh</div>
+    </div>
+  </div>
+</div>

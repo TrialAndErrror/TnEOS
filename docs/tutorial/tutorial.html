@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="tutorial.css">
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <div class="header-left">
+      <svg class="logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="3" width="9" height="9" rx="1.5"/>
+        <rect x="13" y="3" width="9" height="9" rx="1.5"/>
+        <rect x="2" y="14" width="9" height="7" rx="1.5"/>
+        <rect x="13" y="14" width="9" height="7" rx="1.5"/>
+      </svg>
+      <span class="page-title">Welcome to TnEOS</span>
+    </div>
+    <div class="header-right">
+      <div class="dots">
+        <div class="dot active" id="dot-0" onclick="goTo(0)" title="Page 1"></div>
+        <div class="dot"        id="dot-1" onclick="goTo(1)" title="Page 2"></div>
+        <div class="dot"        id="dot-2" onclick="goTo(2)" title="Page 3"></div>
+      </div>
+      <button class="close-btn"
+              onclick="window.webkit.messageHandlers.close.postMessage(null)"
+              title="Close (Esc)">✕</button>
+    </div>
+  </header>
+
+  <div class="viewport">
+    <div class="track" id="track">
+      <div class="page" id="p0"></div>
+      <div class="page" id="p1"></div>
+      <div class="page" id="p2"></div>
+    </div>
+  </div>
+
+  <footer>
+    <button class="nav-btn" id="btn-prev" disabled onclick="step(-1)">← Previous</button>
+    <span class="page-label" id="page-label">Page 1 of 3</span>
+    <button class="nav-btn" id="btn-next" onclick="step(1)">Next →</button>
+  </footer>
+
+</div>
+<script src="tutorial.js"></script>
+</body>
+</html>
