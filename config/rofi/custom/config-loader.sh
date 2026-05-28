@@ -7,6 +7,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # 1) Your manual order for display
 configs_order=(
   "Awesome (rc.lua)"
+  "ZShell (.zshrc)"
   "SSH (.ssh/config)"
   "NVIM (init.lua)"
   "GhosTTY (config)"
@@ -17,6 +18,7 @@ configs_order=(
 # 2) Name → Path lookup
 declare -A configs=(
   ["Awesome (rc.lua)"]="$HOME/.config/awesome/rc.lua"
+  ["ZShell (.zshrc)"]="$HOME/.zshrc"
   ["NVIM (init.lua)"]="$HOME/.config/nvim/init.lua"
   ["GhosTTY (config)"]="$HOME/.config/ghostty/config"
   ["SSH (.ssh/config)"]="$HOME/.ssh/config"
