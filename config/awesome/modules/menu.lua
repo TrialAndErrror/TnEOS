@@ -67,6 +67,12 @@ local editorsmenu = {
 
 local mymainmenu = awful.menu({
 	items = {
+		{
+			"tutorial",
+			function()
+				awful.spawn.with_shell("python3 ~/.config/TnEOS/tutorial/tutorial.py")
+			end,
+		},
 		{ "awesome", myawesomemenu, beautiful.awesome_icon },
 		{ "editors", editorsmenu },
 		{ "squid", "gitkraken" },

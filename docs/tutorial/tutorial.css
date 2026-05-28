@@ -114,13 +114,13 @@ header {
 
 .track {
   display: flex;
-  width: 300%;
+  /* width set dynamically by tutorial.js based on TOTAL */
   height: 100%;
   transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
 }
 
 .page {
-  width: 33.333%;
+  /* width set dynamically by tutorial.js based on TOTAL */
   height: 100%;
   padding: 28px 36px;
   overflow-y: auto;

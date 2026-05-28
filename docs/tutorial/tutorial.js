@@ -1,5 +1,9 @@
-const TOTAL = 3;
+const TOTAL = 4;
 let cur = 0;
+
+const track = document.getElementById("track");
+track.style.width = `${TOTAL * 100}%`;
+track.querySelectorAll(".page").forEach(p => p.style.width = `${100 / TOTAL}%`);
 
 async function loadPages() {
   for (let i = 0; i < TOTAL; i++) {

@@ -193,6 +193,10 @@ copy_configs() {
       "logind.conf.d/lid.conf"
   fi
 
+  # Install tutorial
+  mkdir -p "$HOME/.config/TnEOS"
+  _install_dir_config "$REPO_DIR/docs/tutorial" "$HOME/.config/TnEOS/tutorial" "TnEOS/tutorial"
+
   echo ""
   gum style --bold --foreground 2 "✓ Configs installed to ~/.config/ and ~/"
   echo ""
