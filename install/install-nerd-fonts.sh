@@ -1,44 +1,42 @@
 #!/usr/bin/env bash
-# Install Nerd Fonts from GitHub releases (works on all distros)
+# Install Nerd Fonts bundled with TnEOS
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../ui.sh"
 
 FONTS_DIR="$HOME/.local/share/fonts/NerdFonts"
-RELEASE_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
+REPO_FONTS_DIR="$SCRIPT_DIR/../fonts"
 
-# Release archive name → display name
 declare -A NERD_FONTS=(
-  ["JetBrainsMono"]="JetBrains Mono"
-  ["FiraCode"]="FiraCode"
-  ["Hack"]="Hack"
-  ["Meslo"]="MesloLG"
-  ["SourceCodePro"]="Source Code Pro"
-  ["Iosevka"]="Iosevka"
-  ["CascadiaCode"]="Cascadia Code"
-  ["UbuntuMono"]="Ubuntu Mono"
-  ["RobotoMono"]="Roboto Mono"
-  ["DejaVuSansMono"]="DejaVu Sans Mono"
+  ["JetBrainsMonoNLNerdFont-Regular.ttf"]="JetBrains Mono"
+  ["FiraCodeNerdFont-Regular.ttf"]="FiraCode"
+  ["HackNerdFont-Regular.ttf"]="Hack"
+  ["MesloLGLNerdFont-Regular.ttf"]="MesloLG"
+  ["SauceCodeProNerdFont-Regular.ttf"]="Source Code Pro"
+  ["IosevkaNerdFont-Regular.ttf"]="Iosevka"
+  ["CaskaydiaCoveNerdFont-Regular.ttf"]="Cascadia Code"
+  ["UbuntuMonoNerdFont-Regular.ttf"]="Ubuntu Mono"
+  ["RobotoMonoNerdFont-Regular.ttf"]="Roboto Mono"
+  ["DejaVuSansMNerdFont-Regular.ttf"]="DejaVu Sans Mono"
 )
 
 font_installed() {
-  [ -d "$FONTS_DIR/$1" ]
+  [ -f "$FONTS_DIR/$1" ]
 }
 
 install_nerd_fonts() {
   gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
     "Nerd Fonts Installation" \
-    "Fonts downloaded from github.com/ryanoasis/nerd-fonts"
+    "Fonts bundled with TnEOS"
 
   echo ""
 
-  # Build checklist — pre-select already installed fonts
   local checklist_options=()
-  for key in "${!NERD_FONTS[@]}"; do
-    local status="off"
-    font_installed "$key" && status="on"
-    checklist_options+=("$key" "${NERD_FONTS[$key]}" "$status")
+  for file in "${!NERD_FONTS[@]}"; do
+    local label="${NERD_FONTS[$file]}"
+    font_installed "$file" && label="$label (installed)"
+    checklist_options+=("$file" "$label" "on")
   done
 
   local FONT_SELECTION
@@ -48,7 +46,6 @@ install_nerd_fonts() {
     return 0
   }
 
-  # Skip any that are already installed
   local FONTS_TO_INSTALL=()
   for font in $FONT_SELECTION; do
     font_installed "$font" || FONTS_TO_INSTALL+=("$font")
@@ -61,19 +58,10 @@ install_nerd_fonts() {
 
   mkdir -p "$FONTS_DIR"
 
-  local TEMP_DIR
-  TEMP_DIR=$(mktemp -d)
-  trap "rm -rf '$TEMP_DIR'" EXIT
-
   for font in "${FONTS_TO_INSTALL[@]}"; do
-    echo "Downloading $font..."
-    if curl -fL --progress-bar "$RELEASE_URL/$font.tar.xz" -o "$TEMP_DIR/$font.tar.xz"; then
-      mkdir -p "$FONTS_DIR/$font"
-      tar -xf "$TEMP_DIR/$font.tar.xz" -C "$FONTS_DIR/$font"
-      gum style --foreground 2 "  ✓ ${NERD_FONTS[$font]} installed"
-    else
-      gum style --foreground 1 "  ✗ Failed to download $font"
-    fi
+    echo "Installing $font..."
+    cp "$REPO_FONTS_DIR/$font" "$FONTS_DIR/$font"
+    gum style --foreground 2 "  ✓ ${NERD_FONTS[$font]} installed"
   done
 
   echo ""
@@ -98,8 +86,8 @@ set_default_font() {
   echo ""
 
   local font_options=()
-  for key in "${installed_fonts[@]}"; do
-    font_options+=("${NERD_FONTS[$key]} Nerd Font")
+  for file in "${installed_fonts[@]}"; do
+    font_options+=("${NERD_FONTS[$file]} Nerd Font")
   done
 
   local selected_font
