@@ -11,6 +11,7 @@ source ./install/install-package-manager-packages.sh
 source ./install/install-nix-packages.sh
 source ./install/install-oh-my-zsh.sh
 source ./install/copy-configs.sh
+source ./install/install-nerd-fonts.sh
 source ./install/setup-wallpaper.sh
 source ./install/setup-lightdm-greeter.sh
 source ./install/show-completion.sh
@@ -71,6 +72,7 @@ action_full_install() {
   install_nix_packages
   install_oh_my_zsh
   copy_configs
+  install_nerd_fonts
   setup_wallpaper
   setup_lightdm_greeter
   show_completion
