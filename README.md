@@ -191,3 +191,6 @@ Found a bug or have a question? Open an issue on GitHub.
 
 MIT
 
+# Special Thanks
+... to Aditya Shakya for providing [so many helpful Rofi themes and applets](https://github.com/adi1090x/rofi)
+... to Ryan McIntyre for creating [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts)
