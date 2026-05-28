@@ -14,4 +14,4 @@ xinput set-prop "$(xinput list --name-only | grep -i touch)" "libinput Tapping E
 picom -b --config ~/.config/picom/picom.conf
 run nm-applet
 run volumeicon
-
+run blueman-applet
