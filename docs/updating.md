@@ -5,7 +5,7 @@
 ### Arch (pacman / AUR)
 
 ```bash
-yay -Syu
+sudo pacman -Syu
 ```
 
 ### Debian / Ubuntu (apt)

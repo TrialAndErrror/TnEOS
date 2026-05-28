@@ -5,7 +5,7 @@
 ### Arch (pacman / AUR)
 
 ```bash
-yay -Rns <package>
+sudo pacman -Rns <package>
 ```
 
 `-Rns` removes the package, its unneeded dependencies, and any saved configuration files.
@@ -13,7 +13,7 @@ yay -Rns <package>
 To list all explicitly installed packages:
 
 ```bash
-yay -Qe
+sudo pacman -Qe
 ```
 
 ### Debian / Ubuntu (apt)
