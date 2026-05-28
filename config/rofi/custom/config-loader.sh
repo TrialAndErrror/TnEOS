@@ -8,10 +8,11 @@ export PATH="$HOME/.local/bin:$PATH"
 configs_order=(
   "Awesome (rc.lua)"
   "ZShell (.zshrc)"
-  "SSH (.ssh/config)"
   "NVIM (init.lua)"
+  "SSH (.ssh/config)"
   "GhosTTY (config)"
   "Zellij (config.kdl)"
+  "Rofi (config.rasi)"
   "— Cancel"
 )
 
@@ -22,12 +23,13 @@ declare -A configs=(
   ["NVIM (init.lua)"]="$HOME/.config/nvim/init.lua"
   ["GhosTTY (config)"]="$HOME/.config/ghostty/config"
   ["SSH (.ssh/config)"]="$HOME/.ssh/config"
+  ["Rofi (config.rasi)"]="$HOME/.config/rofi/config.rasi"
   ["Zellij (config.kdl)"]="$HOME/.config/zellij/config.kdl"
 )
 
 # 3) Show menu in your manual order (no custom entries)
 selection=$(printf '%s\n' "${configs_order[@]}" \
-  | rofi -dmenu -no-custom -i -theme ~/.config/rofi/powermenu/type-1/style-1.rasi -p "Edit Config")
+  | rofi -dmenu -no-custom -i -p "Edit Config")
 
 # User canceled with Esc or chose the "Cancel" entry
 [[ -z "${selection:-}" || "$selection" == "— Cancel" ]] && exit 0

@@ -2,7 +2,7 @@
 colors="red orange yellow green blue indigo violet"
 
 # Use rofi to select color
-selected_color=$(echo "$colors" | tr ' ' '\n' | rofi -dmenu -theme ~/.config/rofi/powermenu/type-1/style-1.rasi -p "Select Environment Color")
+selected_color=$(echo "$colors" | tr ' ' '\n' | rofi -dmenu -p "Select Environment Color")
 
 
 flask_remote_shell() {

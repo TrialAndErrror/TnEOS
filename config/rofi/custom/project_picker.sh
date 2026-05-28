@@ -35,7 +35,7 @@ declare -A projects=(
 
 # 3) Show menu in your manual order (no custom entries)
 selection=$(printf '%s\n' "${projects_order[@]}" \
-  | rofi -dmenu -no-custom -i -theme ~/.config/rofi/powermenu/type-1/style-1.rasi -p "Open project")
+  | rofi -dmenu -no-custom -i -p "Open project")
 
 # User canceled with Esc or chose the "Cancel" entry
 [[ -z "${selection:-}" || "$selection" == "— Cancel" ]] && exit 0
