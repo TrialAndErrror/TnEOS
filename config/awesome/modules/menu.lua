@@ -22,21 +22,9 @@ local myawesomemenu = {
 
 local editorsmenu = {
 	{
-		"Emacs",
+		"Neovim",
 		function()
-			awful.spawn.with_shell("emacs")
-		end,
-	},
-	{
-		"Cursor",
-		function()
-			awful.spawn.with_shell("cursor.sh")
-		end,
-	},
-	{
-		"Neovide",
-		function()
-			awful.spawn.with_shell("neovide")
+			awful.spawn.with_shell("nvim")
 		end,
 	},
 	{
@@ -75,7 +63,7 @@ local mymainmenu = awful.menu({
 		},
 		{ "awesome", myawesomemenu, beautiful.awesome_icon },
 		{ "editors", editorsmenu },
-		{ "squid", "gitkraken" },
+		{ "gitkraken", "gitkraken" },
 		{
 			"volume",
 			function()
