@@ -23,13 +23,25 @@ function goTo(n) {
     `Page ${cur + 1} of ${TOTAL}`;
 
   document.getElementById("btn-prev").disabled = cur === 0;
-  document.getElementById("btn-next").disabled = cur === TOTAL - 1;
+
+  const isLast = cur === TOTAL - 1;
+  document.getElementById("btn-next").style.display = isLast ? "none" : "block";
+  document.getElementById("btn-finish").style.display = isLast ? "block" : "none";
 
   for (let i = 0; i < TOTAL; i++)
     document.getElementById(`dot-${i}`).classList.toggle("active", i === cur);
 }
 
 function step(dir) { goTo(cur + dir); }
+
+function finish() {
+  const checked = document.getElementById("show-on-startup").checked;
+  window.webkit.messageHandlers.finish.postMessage(checked);
+}
+
+function setShowOnStartup(val) {
+  document.getElementById("show-on-startup").checked = val;
+}
 
 document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight" || e.key === "ArrowDown") step(1);
