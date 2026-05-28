@@ -6,7 +6,8 @@
  * Configuration For Rofi Version: 1.7.3
  **/
 
-@theme "/usr/share/rofi/themes/gruvbox-dark.rasi"
+@theme "~/.config/rofi/launchers/type-2/style-1.rasi"
+
 configuration {
 	/*---------- General setting ----------*/
 	modi: "drun,run,filebrowser,window";
@@ -44,7 +45,6 @@ configuration {
 		parse-user:   true;
 		/** Parse system desktop files. */
 		parse-system: true;
-		fallback-icon: "application-x-addon";
     }
 
 	/*---------- Run settings ----------*/
@@ -53,7 +53,7 @@ configuration {
 	run-shell-command: "{terminal} -e {cmd}";
 
 	/*---------- Fallback Icon ----------*/
-	run {
+	run,drun {
 		fallback-icon: "application-x-addon";
 	}
 
@@ -85,7 +85,7 @@ configuration {
 
 	/*---------- Misc setting ----------*/
 	terminal: "rofi-sensible-terminal";
-	font: "Mono 12";
+	font: "Hack Nerd Font 12, JetBrainsMono Nerd Font 12, Iosevka Nerd Font 12, Mono 12";
 	sort: false;
 	threads: 0;
 	click-to-exit: true;

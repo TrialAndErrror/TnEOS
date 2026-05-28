@@ -4,7 +4,7 @@
 SCRIPT_DIR=~/.screenlayout
 
 # Use rofi to select a script
-SELECTED_SCRIPT=$(ls "$SCRIPT_DIR" | rofi -dmenu -theme ~/.config/rofi/powermenu/type-1/style-1.rasi -p "Run script")
+SELECTED_SCRIPT=$(ls "$SCRIPT_DIR" | rofi -dmenu -p "Run script")
 
 # Run the selected script if not empty
 if [ -n "$SELECTED_SCRIPT" ]; then
