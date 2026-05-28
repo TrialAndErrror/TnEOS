@@ -56,7 +56,7 @@ local editorsmenu = {
 local mymainmenu = awful.menu({
 	items = {
 		{
-			"tutorial",
+			"About TnEOS",
 			function()
 				awful.spawn.with_shell("python3 ~/.config/TnEOS/tutorial/tutorial.py")
 			end,

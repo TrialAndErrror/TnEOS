@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import gi
 import os
+import subprocess
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('WebKit2', '4.0')
@@ -43,8 +44,19 @@ class TutorialWindow(Gtk.Window):
         html_path = os.path.join(script_dir, "tutorial.html")
         web_view.load_uri(f"file://{html_path}")
 
+        web_view.connect("decide-policy", self._on_decide_policy)
+
         self.add(web_view)
         self.show_all()
+
+    def _on_decide_policy(self, web_view, decision, decision_type):
+        if decision_type == WebKit2.PolicyDecisionType.NAVIGATION_ACTION:
+            uri = decision.get_navigation_action().get_request().get_uri()
+            if uri.startswith("http://") or uri.startswith("https://"):
+                subprocess.Popen(["xdg-open", uri])
+                decision.ignore()
+                return True
+        return False
 
     def _on_draw(self, widget, cr):
         cr.set_source_rgba(0, 0, 0, 0)

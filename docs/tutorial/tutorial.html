@@ -25,6 +25,8 @@
           <div class="dot" id="dot-1" onclick="goTo(1)" title="Page 2"></div>
           <div class="dot" id="dot-2" onclick="goTo(2)" title="Page 3"></div>
           <div class="dot" id="dot-3" onclick="goTo(3)" title="Page 4"></div>
+          <div class="dot" id="dot-4" onclick="goTo(4)" title="Page 5"></div>
+          <div class="dot" id="dot-5" onclick="goTo(5)" title="Page 6"></div>
         </div>
         <button class="close-btn" onclick="window.webkit.messageHandlers.close.postMessage(null)"
           title="Close (Esc)">✕</button>
@@ -37,12 +39,14 @@
         <div class="page" id="p1"></div>
         <div class="page" id="p2"></div>
         <div class="page" id="p3"></div>
+        <div class="page" id="p4"></div>
+        <div class="page" id="p5"></div>
       </div>
     </div>
 
     <footer>
       <button class="nav-btn" id="btn-prev" disabled onclick="step(-1)">← Previous</button>
-      <span class="page-label" id="page-label">Page 1 of 4</span>
+      <span class="page-label" id="page-label">Page 1 of 6</span>
       <button class="nav-btn" id="btn-next" onclick="step(1)">Next →</button>
     </footer>
 

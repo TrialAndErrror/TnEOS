@@ -1,4 +1,4 @@
-const TOTAL = 4;
+const TOTAL = 6;
 let cur = 0;
 
 const track = document.getElementById("track");
