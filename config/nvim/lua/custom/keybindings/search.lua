@@ -7,4 +7,5 @@ wk.add({
   { '<leader>ss', '<cmd>Telescope live_grep<cr>', desc = 'Search text' },
   { '<leader>sh', '<cmd>Telescope help_tags<cr>', desc = 'Help tags' },
   { '<leader>sm', '<cmd>Telescope man_pages<cr>', desc = 'Man pages' },
+  { '<leader>sc', '<cmd>Telescope colorscheme enable_preview=true<cr>', desc = 'Colorscheme picker' },
 })

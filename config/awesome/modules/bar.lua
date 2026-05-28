@@ -176,6 +176,9 @@ awful.screen.connect_for_each_screen(function(s)
 			styled_section({
 				layout = wibox.layout.fixed.horizontal,
 				wibox.widget.systray(),
+			}),
+			styled_section({
+				layout = wibox.layout.fixed.horizontal,
 				mytextclock,
 			}),
 		},

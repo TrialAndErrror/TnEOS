@@ -156,7 +156,7 @@ local system_keys = gears.table.join(
 	end, { description = "Screenshot Menu", group = "system" }),
 
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn.with_shell("rofi-bluetooth")
+		awful.spawn.with_shell("~/.config/rofi/custom/rofi_bluetooth.sh")
 	end, { description = "Bluetooth Menu", group = "system" }),
 
 	awful.key({ modkey, "Shift" }, "w", function()
