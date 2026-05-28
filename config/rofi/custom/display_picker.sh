@@ -4,7 +4,7 @@
 SCRIPT_DIR=~/.screenlayout
 
 # Use rofi to select a script
-SELECTED_SCRIPT=$(ls "$SCRIPT_DIR" | rofi -dmenu -p "Run script")
+SELECTED_SCRIPT=$(ls "$SCRIPT_DIR" | rofi -dmenu -p "Select Screen Layout:")
 
 # Run the selected script if not empty
 if [ -n "$SELECTED_SCRIPT" ]; then

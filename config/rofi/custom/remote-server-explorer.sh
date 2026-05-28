@@ -1,15 +1,13 @@
-CONFIG="$HOME/.config/zed-projects.conf"
-NOTIFY="notify-send -a Zed -i code"
+set -euo pipefail
 
-choice=$(grep -v '^\s*#' "$CONFIG" \
-  | rofi -dmenu -p "Open in Zed" -i)
+export PATH="$HOME/.local/bin:$PATH"
 
-[ -z "$choice" ] && exit 0
+# Parse top-level Host entries from SSH config (skip wildcards)
+mapfile -t hosts < <(grep -i "^Host " "$HOME/.ssh/config" | awk '{print $2}' | grep -v '\*')
 
-path="${choice#*: }"
-uri="ssh://$path"
+selection=$(printf '%s\n' "${hosts[@]}" \
+  | rofi -dmenu -no-custom -i -p "SSH:")
 
-if ! zeditor "$uri" 2>/tmp/zed-launch-err; then
-    err=$(cat /tmp/zed-launch-err)
-    $NOTIFY "Failed to open project" "${choice%%:*}\n$err"
-fi
+[[ -z "${selection:-}" ]] && exit 0
+
+ghostty -e ssh "$selection"

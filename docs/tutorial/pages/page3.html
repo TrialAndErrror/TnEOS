@@ -1,0 +1,34 @@
+<div class="feature-layout">
+  <div class="feature-copy">
+    <div class="feature-title">Config Menu</div>
+    <div class="feature-shortcut">
+      <span class="label">Open with</span>
+      Super + Shift + C
+    </div>
+    <div class="feature-desc">
+      The config menu is a quick-access rofi launcher for your most-edited dotfiles.
+      Invoke it from anywhere and pick from <strong>Awesome</strong>, <strong>ZShell</strong>,
+      <strong>Neovim</strong>, <strong>GhosTTY</strong>, <strong>Zellij</strong>,
+      <strong>SSH config</strong>, or <strong>Rofi</strong> — and the selected file opens
+      straight in your editor.
+      <br><br>
+      Config files live under <code>~/.config/</code> and edits take effect the next time
+      the relevant program is restarted. For Awesome, the config menu also triggers
+      <code>awesome.restart()</code> automatically after saving.
+    </div>
+  </div>
+
+  <div class="rofi-mock">
+    <div class="rofi-bar"><span class="icon">⚙</span> Edit Config Files</div>
+    <div class="rofi-list">
+      <div class="rofi-item hi">Awesome (rc.lua)</div>
+      <div class="rofi-item">ZShell (.zshrc)</div>
+      <div class="rofi-item">NVIM (init.lua)</div>
+      <div class="rofi-item">SSH (.ssh/config)</div>
+      <div class="rofi-item">GhosTTY (config)</div>
+      <div class="rofi-item">Zellij (config.kdl)</div>
+      <div class="rofi-item">Rofi (config.rasi)</div>
+      <div class="rofi-item">— Cancel</div>
+    </div>
+  </div>
+</div>

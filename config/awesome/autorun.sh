@@ -14,4 +14,6 @@ xinput set-prop "$(xinput list --name-only | grep -i touch)" "libinput Tapping E
 picom -b --config ~/.config/picom/picom.conf
 run nm-applet
 run volumeicon
+run blueman-applet
 
+[ -f "$HOME/.config/TnEOS/.show-tutorial" ] && python3 "$HOME/.config/TnEOS/tutorial/tutorial.py" &

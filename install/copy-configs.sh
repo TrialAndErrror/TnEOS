@@ -193,6 +193,12 @@ copy_configs() {
       "logind.conf.d/lid.conf"
   fi
 
+  # Install tutorial
+  mkdir -p "$HOME/.config/TnEOS"
+  _install_dir_config "$REPO_DIR/docs/tutorial" "$HOME/.config/TnEOS/tutorial" "TnEOS/tutorial"
+  touch "$HOME/.config/TnEOS/.show-tutorial"
+  echo "  ✓ Tutorial set to show on next login"
+
   echo ""
   gum style --bold --foreground 2 "✓ Configs installed to ~/.config/ and ~/"
   echo ""
