@@ -80,6 +80,18 @@ install_nerd_fonts() {
 set_default_font() {
   local installed_fonts=("$@")
 
+  # When called standalone (no args), discover installed fonts from disk
+  if [ ${#installed_fonts[@]} -eq 0 ]; then
+    for file in "${!NERD_FONTS[@]}"; do
+      font_installed "$file" && installed_fonts+=("$file")
+    done
+  fi
+
+  if [ ${#installed_fonts[@]} -eq 0 ]; then
+    gum style --bold --foreground 1 "No Nerd Fonts installed. Run \"Install Fonts\" first."
+    return 1
+  fi
+
   echo ""
   gum style --bold --foreground 212 "Select Default Nerd Font"
   echo "This will update Alacritty, Rofi, and AwesomeWM configs"

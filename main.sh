@@ -142,6 +142,7 @@ while true; do
     "Setup Display" \
     "Restore Backup" \
     "Install Fonts" \
+    "Set Default Font" \
     "Quit")
 
   echo ""
@@ -152,6 +153,7 @@ while true; do
     "Setup Display")        action_setup_display ;;
     "Restore Backup")       action_restore_backup ;;
     "Install Fonts")        action_install_fonts ;;
+    "Set Default Font")        set_default_font;;
     "Quit")                 exit 0 ;;
   esac
 
