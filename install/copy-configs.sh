@@ -161,7 +161,7 @@ copy_configs() {
   local AWESOME_SRC="$CONFIG_SRC/awesome"
   local AWESOME_TMP
   AWESOME_TMP="$(mktemp -d)"
-  trap 'rm -rf "$AWESOME_TMP"' RETURN
+  trap '[[ -n "${AWESOME_TMP:-}" ]] && rm -rf "$AWESOME_TMP"' RETURN
   cp -r "$AWESOME_SRC/." "$AWESOME_TMP/"
 
   if [ "$DEVICE_TYPE" = "Desktop" ]; then
