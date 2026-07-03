@@ -51,14 +51,12 @@ The bootstrap script will:
 - Install Nix (if not already installed)
 - Enable Nix experimental features (nix-command and flakes)
 - Enable unfree packages in Nix (for proprietary software)
-- Install `rsync` (for file management)
 - Launch the main installer
 
 The main installer will:
-- Install `yay` (AUR helper) if not already installed
-- Install your selected packages using yay (supports both official repos and AUR)
-- Install Nix packages using `nix profile add` (supports unfree packages)
-- Configure Home Manager for dotfile management
+- Install your selected packages via pacman/apt/dnf
+- Install Nix packages using `nix profile install`
+- Copy dotfiles into `~/.config/`
 
 ### Step 4: Follow the Interactive Prompts
 
@@ -73,19 +71,14 @@ The installer will guide you through:
 - **Pacman Packages** - Choose additional system packages
 - Use arrow keys and space to select, Enter to confirm
 
-#### 3. Home Manager Information
-- Brief explanation of how dotfiles will be managed
-- No action needed, just informational
-
-#### 4. Summary
+#### 3. Summary
 - Review everything that will be installed
 - Confirm to proceed or go back to make changes
 
-#### 5. Installation
+#### 4. Installation
 - Pacman packages install
 - Nix packages install
-- Home Manager installs and configures
-- Your dotfiles are applied
+- Dotfiles are copied to `~/.config/`
 
 ### Step 5: Complete!
 
@@ -145,45 +138,24 @@ Your old configs are safe and can be restored anytime.
 
 ### Your Configurations
 
-All configs are managed by Home Manager in `~/.config/home-manager/`:
+Configs are copied directly into `~/.config/`:
 
 ```
-~/.config/home-manager/
-├── config/
-│   ├── awesome/     → Awesome WM configuration
-│   ├── nvim/        → Neovim configuration
-│   ├── picom/       → Picom configuration
-│   ├── rofi/        → Rofi configuration
-│   └── alacritty/   → Alacritty configuration
-└── assets/
-    ├── backgrounds/ → Wallpapers
-    └── icons/       → Icon files
+~/.config/
+├── awesome/     → Awesome WM configuration
+├── nvim/        → Neovim configuration
+├── picom/       → Picom configuration
+├── rofi/        → Rofi configuration
+└── kitty/       → Kitty terminal configuration
 ```
 
-These are symlinked to their proper locations:
-- `~/.config/awesome/` → Awesome WM
-- `~/.config/nvim/` → Neovim
-- `~/.config/picom/` → Picom
-- `~/.config/rofi/` → Rofi
-- `~/.config/alacritty/` → Alacritty
-
-TnEOS wallpaper is copied (not symlinked) to:
+TnEOS wallpaper is copied to:
 - `~/Pictures/Wallpapers/tneos-wallpaper.jpg`
   (Your existing wallpapers are not touched)
 
 ### Updating Configurations
 
-To customize your setup:
-
-```bash
-# Edit any config file
-vim ~/.config/home-manager/config/awesome/rc.lua
-
-# Apply the changes
-home-manager switch
-```
-
-That's it! Home Manager will update the symlinks and apply your changes.
+Edit config files directly in `~/.config/`. To re-run TnEOS and apply updates from the repo, run `./main.sh` again — it will diff and prompt before overwriting.
 
 ## Troubleshooting
 
@@ -214,12 +186,6 @@ The bootstrap script should enable this automatically. If you see this error, ma
 sudo mkdir -p /etc/nix
 echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.conf
 sudo systemctl restart nix-daemon
-```
-
-### Home Manager fails to apply
-Check for errors:
-```bash
-home-manager switch --show-trace
 ```
 
 ### Awesome WM won't start

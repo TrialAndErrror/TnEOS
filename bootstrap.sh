@@ -63,7 +63,7 @@ fi
 if ! command -v nix &> /dev/null; then
   echo ""
   echo "⚠️  Nix is not installed."
-  echo "   Nix is required for package management and Home Manager."
+  echo "   Nix is required for package management."
   echo ""
   read -p "Install Nix now? (Y/n) " -n 1 -r
   echo

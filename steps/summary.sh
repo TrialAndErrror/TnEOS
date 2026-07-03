@@ -30,7 +30,6 @@ Pacman packages:
 $PACMAN_LIST
 Nix packages:
 $NIX_LIST
-Home Manager: Yes (automatic)
 EOF
 )
 

@@ -33,7 +33,7 @@ Run the standalone font installer:
    - Updates Rofi launcher configuration
    - Updates AwesomeWM theme configuration
 
-5. **Applies changes** with home-manager (if you confirm)
+5. **Optionally sets a default font** across your config files
 
 ## Requirements
 
@@ -61,7 +61,6 @@ Want to switch from JetBrainsMono to FiraCode? Run the script and:
 1. Select the fonts you want (or keep current selection)
 2. When prompted, choose to set a default font
 3. Select your preferred font from the list
-4. Confirm to apply changes with home-manager
 
 ### Manual Font Installation
 
@@ -82,9 +81,9 @@ fc-list | grep -i "nerd"
 
 The font installer updates these configuration files:
 
-- `~/.config/home-manager/config/alacritty/alacritty.toml`
-- `~/.config/home-manager/config/awesome/theme.lua`
-- `~/.config/home-manager/config/rofi/**/*.rasi` (all Rofi theme files)
+- `~/.config/alacritty/alacritty.toml`
+- `~/.config/awesome/theme.lua`
+- `~/.config/rofi/**/*.rasi` (all Rofi theme files)
 
 ## Troubleshooting
 
@@ -96,14 +95,6 @@ fc-cache -fv
 
 # Verify font is installed
 fc-list | grep -i "jetbrains"
-```
-
-### Changes not applied
-
-If you didn't apply changes with home-manager during installation:
-
-```bash
-home-manager switch
 ```
 
 ### Font looks wrong in terminal

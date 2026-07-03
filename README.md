@@ -9,7 +9,6 @@ TnEOS is an automated post-installation script for Arch Linux that sets up a com
 - 🎨 **Awesome Window Manager** - Pre-configured and ready to use
 - 📝 **Neovim** - Fully configured development environment
 - 🎯 **Essential Tools** - Terminal, file manager, and productivity apps
-- 🏠 **Dotfile Management** - Automatic configuration with Home Manager
 - 📦 **Package Selection** - Choose what you want installed
 
 ## Quick Start
@@ -84,7 +83,7 @@ cd TnEOS
 
 The bootstrap script will:
 1. Check your system
-2. Install required tools (gum, Nix, rsync)
+2. Install required tools (gum, Nix)
 3. Install yay (AUR helper) if not present
 4. Launch the interactive installer
 
