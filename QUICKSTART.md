@@ -69,8 +69,7 @@ These are installed automatically:
 - **Picom** - Compositor for effects
 - **Rofi** - Application launcher
 - **Kitty** - Terminal emulator
-- **Neovim** - Text editor (base install)
-- **Essential CLI tools** - brightnessctl, eza, fd, bat
+- **Essential CLI tools** - eza, fd, bat (+ brightnessctl on laptops)
 
 ---
 

@@ -119,7 +119,7 @@ Your dotfiles are copied into `~/.config/`:
 
 ### Rofi Customization
 
-In ~/.config/rofi/config.rasi, we declare an overall theme at the top and then have some overrides and customization in the file. You can modify that config with the cong-loader command (meta + shift + c).
+In ~/.config/rofi/config.rasi, we declare an overall theme at the top and then have some overrides and customization in the file. You can modify that config with the config-loader command (meta + shift + c).
 
 There is a setting for fonts; by default, it looks for Hack Nerd Font, then JetBrainsMono Nerd Font, then Iosevka Nerd Font, then falls back to monospace font. Be sure to install those fonts if you're just seeing plain monospace using the Font Installer command (or change to your preferred fonts.)
 
