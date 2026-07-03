@@ -33,7 +33,7 @@ pl() { pacman_installed "$1" && echo "$2 [installed]" || echo "$2"; }
 nl() { nix_installed "$1" && echo "$2 [installed]" || echo "$2"; }
 
 # Base packages for all systems
-PACMAN_PACKAGES=(awesome picom rofi rsync alacritty lightdm lightdm-gtk-greeter caja feh)
+PACMAN_PACKAGES=(awesome picom rofi rsync kitty lightdm lightdm-gtk-greeter caja feh)
 NIX_PACKAGES=(eza fd bat)
 
 # Add laptop-specific packages (DEVICE_TYPE is set in admin.sh)
