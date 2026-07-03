@@ -14,23 +14,9 @@ if [ -z "${DISTRO_TYPE:-}" ]; then
   export DISTRO_TYPE
 fi
 
-# --- Detect laptop vs desktop via battery presence ---
-if [ -z "${DEVICE_TYPE:-}" ]; then
-  for supply_type in /sys/class/power_supply/*/type; do
-    if [ -f "$supply_type" ] && grep -qi "^battery$" "$supply_type" 2>/dev/null; then
-      DEVICE_TYPE="Laptop"
-      break
-    fi
-  done
-
-  if [ -z "${DEVICE_TYPE:-}" ]; then
-    gum style --bold --foreground 3 "Could not detect device type (no battery found)."
-    DEVICE_TYPE=$(gum choose --header "Select your device type:" "Desktop" "Laptop")
-  fi
-fi
+ensure_device_type
 
 export DISTRO_TYPE
-export DEVICE_TYPE
 
 gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
   "System Information" \
