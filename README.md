@@ -1,10 +1,12 @@
-# TnEOS - Automated Arch Linux Setup
+# TnEOS - Linux Desktop Setup
 
-Get from a fresh Arch Linux installation to a fully configured desktop environment in minutes.
+Get from a fresh Linux installation to a fully configured desktop environment in minutes.
 
 ## What is TnEOS?
 
-TnEOS is an automated post-installation script for Arch Linux that sets up a complete desktop environment with:
+TnEOS is an automated post-installation script that sets up a complete desktop environment. It is primarily developed and tested on **Arch Linux** — Debian and Fedora are experimentally supported but may have rough edges.
+
+TnEOS installs and configures:
 
 - 🎨 **Awesome Window Manager** - Pre-configured and ready to use
 - 📝 **Neovim** - Fully configured development environment
@@ -13,7 +15,7 @@ TnEOS is an automated post-installation script for Arch Linux that sets up a com
 
 ## Quick Start
 
-After installing Arch Linux and rebooting into your new system, run this single command:
+After installing Linux and booting into your system, run this single command:
 
 ```bash
 curl -fsSL trialanderrror.com/install | bash
@@ -63,9 +65,9 @@ The installation process is simple and interactive:
 ## Installation Steps
 
 ### Prerequisites
-- Fresh Arch Linux installation
+- Linux installation (Arch recommended; Debian and Fedora experimentally supported)
 - Internet connection
-- User account created during Arch install
+- Non-root user account
 
 ### Run the Installer
 

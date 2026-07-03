@@ -4,10 +4,10 @@
 
 Before running TnEOS, you need:
 
-1. **Arch Linux installed** - Complete the base Arch installation
-2. **Booted into your system** - Not the live ISO
+1. **Linux installed** - Arch is recommended and best supported; Debian and Fedora are experimentally supported
+2. **Booted into your system** - Not a live ISO
 3. **Internet connection** - Working network
-4. **User account** - Created during Arch install (you should be logged in as this user)
+4. **Non-root user account** - You should be logged in as a regular user
 
 ## Installation
 
@@ -45,7 +45,7 @@ cd TnEOS
 ```
 
 The bootstrap script will:
-- Check that you're on Arch Linux
+- Detect your distro (Arch, Debian, or Fedora)
 - Verify internet connection
 - Install `gum` (for the interactive interface)
 - Install Nix (if not already installed)
@@ -210,14 +210,12 @@ rm -rf ~/.config/awesome ~/.config/nvim ~/.config/picom ~/.config/rofi ~/.config
 cp -r ~/.config-backups/YYYYMMDD-HHMMSS/* ~/
 ```
 
-## Advanced: Preparing During Arch Installation
+## Advanced: Pre-cloning During Installation
 
-If you want to clone TnEOS during the Arch installation process:
-
-### During arch-chroot
+If you want to clone TnEOS before your first boot (e.g. during an Arch `arch-chroot` or a Debian chroot):
 
 ```bash
-# Install git
+# Install git (Arch)
 pacman -S git
 
 # Clone to user's home
@@ -226,15 +224,12 @@ git clone https://github.com/TrialAndErrror/TnEOS.git
 chown -R yourusername:yourusername TnEOS
 ```
 
-### After Reboot
+Then after booting into your user account:
 
-Log in as your user and run:
 ```bash
 cd ~/TnEOS
 ./bootstrap.sh
 ```
-
-This saves you from having to clone the repo after installation, but the setup is still interactive.
 
 ## Getting Help
 
