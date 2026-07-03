@@ -6,7 +6,7 @@ modkey = "Mod4"
 
 beautiful.init("/home/wade/.config/awesome/theme.lua")
 
-terminal = "ghostty"
+terminal = "kitty"
 file_manager = "caja"
 local function find_editor()
 	local editors = {

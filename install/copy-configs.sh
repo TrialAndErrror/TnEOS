@@ -135,7 +135,7 @@ copy_configs() {
     "Copying Configuration Files" "Installing dotfiles to ~/.config/"
 
   # Determine which configs to install
-  local CONFIGS=("awesome" "picom" "rofi" "alacritty" "ghostty")
+  local CONFIGS=("awesome" "picom" "rofi" "kitty")
 
   if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
     CONFIGS+=("nvim")
