@@ -53,10 +53,10 @@ During installation, you'll select from:
 - GitKraken
 - LibreOffice
 - GIMP
-- Thorium Browser
+- Chromium
 
 ### System Tools
-- Nitrogen (wallpapers)
+- Feh (wallpapers)
 - Flameshot (screenshots)
 - PulseAudio Control
 

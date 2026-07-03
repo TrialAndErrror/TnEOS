@@ -24,7 +24,7 @@ Run the standalone font installer:
    - RobotoMono Nerd Font
    - DejaVuSansMono Nerd Font
 
-2. **Installs selected fonts** via pacman (from official Arch repositories)
+2. **Installs selected fonts** from the TnEOS repository
 
 3. **Refreshes font cache** so fonts are immediately available
 
@@ -33,14 +33,9 @@ Run the standalone font installer:
    - Updates Rofi launcher configuration
    - Updates AwesomeWM theme configuration
 
-5. **Optionally sets a default font** across your config files
-
 ## Requirements
 
 - `gum` - for interactive UI (installed during TnEOS setup)
-- `pacman` - Arch Linux package manager (pre-installed on Arch)
-
-**Note:** All Nerd Fonts are available in the official Arch Linux repositories, so no AUR helper is needed!
 
 ## Usage Examples
 

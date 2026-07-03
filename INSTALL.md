@@ -114,10 +114,10 @@ After installation:
 - GitKraken
 - LibreOffice
 - GIMP
-- Thorium Browser
+- Chromium
 
 **System Tools:**
-- Nitrogen (wallpaper setter)
+- Feh (wallpaper setter)
 - Flameshot (screenshots)
 - PulseAudio Control
 - LXAppearance (themes)
@@ -158,9 +158,6 @@ TnEOS wallpaper is copied to:
 Edit config files directly in `~/.config/`. To re-run TnEOS and apply updates from the repo, run `./main.sh` again — it will diff and prompt before overwriting.
 
 ## Troubleshooting
-
-### Bootstrap fails with "not on Arch Linux"
-You can bypass this check, but the script is designed for Arch. Proceed at your own risk.
 
 ### "gum: command not found"
 The bootstrap script should install this. If it fails:

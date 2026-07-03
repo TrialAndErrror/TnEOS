@@ -84,8 +84,7 @@ cd TnEOS
 The bootstrap script will:
 1. Check your system
 2. Install required tools (gum, Nix)
-3. Install yay (AUR helper) if not present
-4. Launch the interactive installer
+3. Launch the interactive installer
 
 ### Interactive Setup
 
@@ -132,7 +131,7 @@ cd ~/TnEOS
 ./install/setup-lightdm-greeter.sh
 
 # Or use the GUI tool
-yay -S lightdm-gtk-greeter-settings
+sudo pacman -S lightdm-gtk-greeter-settings
 lightdm-gtk-greeter-settings
 ```
 
