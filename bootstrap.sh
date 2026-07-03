@@ -120,11 +120,13 @@ EOF
 else
   # Check if allowUnfree is already set
   if ! grep -q "allowUnfree" "$HOME/.config/nixpkgs/config.nix"; then
-    # Backup existing config
     cp "$HOME/.config/nixpkgs/config.nix" "$HOME/.config/nixpkgs/config.nix.backup"
-    # Add allowUnfree to existing config
-    sed -i 's/{/{\n  allowUnfree = true;/' "$HOME/.config/nixpkgs/config.nix"
-    echo "✓ Unfree packages enabled (existing config updated)"
+    cat > "$HOME/.config/nixpkgs/config.nix" << 'EOF'
+{
+  allowUnfree = true;
+}
+EOF
+    echo "✓ Unfree packages enabled (old config backed up to config.nix.backup)"
   else
     echo "✓ Unfree packages already enabled"
   fi
