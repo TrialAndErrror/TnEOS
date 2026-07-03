@@ -174,8 +174,22 @@ copy_configs() {
   fi
   echo ""
 
+  # Preserve user's custom.lua across installs
+  local CUSTOM_LUA="$CONFIG_DEST/awesome/custom.lua"
+  local CUSTOM_LUA_BACKUP=""
+  if [ -f "$CUSTOM_LUA" ]; then
+    CUSTOM_LUA_BACKUP="$(mktemp)"
+    cp "$CUSTOM_LUA" "$CUSTOM_LUA_BACKUP"
+  fi
+
   echo "Installing configs to $CONFIG_DEST..."
   _install_dir_config "$AWESOME_TMP" "$CONFIG_DEST/awesome" "awesome"
+
+  if [ -n "$CUSTOM_LUA_BACKUP" ]; then
+    cp "$CUSTOM_LUA_BACKUP" "$CUSTOM_LUA"
+    rm -f "$CUSTOM_LUA_BACKUP"
+    echo "  ✓ Preserved existing ~/.config/awesome/custom.lua"
+  fi
   for config in "${CONFIGS[@]}"; do
     [[ "$config" == "awesome" ]] && continue
     _install_dir_config "$CONFIG_SRC/$config" "$CONFIG_DEST/$config" "$config"
