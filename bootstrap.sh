@@ -18,6 +18,26 @@ if [ "$EUID" -eq 0 ]; then
   exit 1
 fi
 
+# Detect distro
+if command -v pacman &>/dev/null; then
+  DISTRO_TYPE="Arch"
+elif command -v apt &>/dev/null; then
+  DISTRO_TYPE="Debian"
+elif command -v dnf &>/dev/null; then
+  DISTRO_TYPE="Fedora"
+else
+  DISTRO_TYPE="Unknown"
+fi
+
+pkg_install() {
+  case "$DISTRO_TYPE" in
+    Arch)   sudo pacman -S --needed --noconfirm "$@" ;;
+    Debian) sudo apt install -y "$@" ;;
+    Fedora) sudo dnf install -y "$@" ;;
+    *)      echo "❌ Unknown distro, cannot install packages automatically."; exit 1 ;;
+  esac
+}
+
 echo "Checking prerequisites..."
 echo ""
 
@@ -33,7 +53,7 @@ echo "✓ Internet connection OK"
 # Install gum if not present
 if ! command -v gum &> /dev/null; then
   echo "Installing gum (required for TUI)..."
-  sudo pacman -S --needed --noconfirm gum
+  pkg_install gum
   echo "✓ gum installed"
 else
   echo "✓ gum already installed"
@@ -121,7 +141,7 @@ echo ""
 # Ensure rsync is installed (needed for Home Manager setup)
 if ! command -v rsync &> /dev/null; then
   echo "Installing rsync..."
-  sudo pacman -S --needed --noconfirm rsync
+  pkg_install rsync
   echo "✓ rsync installed"
 else
   echo "✓ rsync already installed"
