@@ -10,7 +10,7 @@ configs_order=(
   "ZShell (.zshrc)"
   "NVIM (init.lua)"
   "SSH (.ssh/config)"
-  "GhosTTY (config)"
+  "Kitty (kitty.conf)"
   "Zellij (config.kdl)"
   "Rofi (config.rasi)"
   "— Cancel"
@@ -21,7 +21,7 @@ declare -A configs=(
   ["Awesome (rc.lua)"]="$HOME/.config/awesome/rc.lua"
   ["ZShell (.zshrc)"]="$HOME/.zshrc"
   ["NVIM (init.lua)"]="$HOME/.config/nvim/init.lua"
-  ["GhosTTY (config)"]="$HOME/.config/ghostty/config"
+  ["Kitty (kitty.conf)"]="$HOME/.config/kitty/kitty.conf"
   ["SSH (.ssh/config)"]="$HOME/.ssh/config"
   ["Rofi (config.rasi)"]="$HOME/.config/rofi/config.rasi"
   ["Zellij (config.kdl)"]="$HOME/.config/zellij/config.kdl"
@@ -38,4 +38,4 @@ path=${configs[$selection]:-}
 [[ -z "$path" ]] && { notify-send "Edit Config" "Invalid path for: $selection"; exit 1; }
 
 # 4) Launch nvim in terminal and open the selected file
-ghostty --working-directory="$path" -e sh -c "direnv exec . nvim $path"
+kitty --directory="$path" sh -c "direnv exec . nvim $path"
