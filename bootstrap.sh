@@ -138,15 +138,6 @@ fi
 
 echo ""
 
-# Ensure rsync is installed (needed for Home Manager setup)
-if ! command -v rsync &> /dev/null; then
-  echo "Installing rsync..."
-  pkg_install rsync
-  echo "✓ rsync installed"
-else
-  echo "✓ rsync already installed"
-fi
-
 echo ""
 echo "======================================"
 echo "  Prerequisites satisfied!"
