@@ -82,7 +82,7 @@ fi
 
 SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications to install:" \
   gitkraken                    "$(nl gitkraken 'GitKraken (GUI Git management)')" on \
-  jetbrains.pycharm-professional "$(nl jetbrains.pycharm-professional 'PyCharm Professional')" on \
+  jetbrains.pycharm            "$(nl jetbrains.pycharm 'PyCharm Professional')" on \
   libreoffice-fresh            "$(pl libreoffice-fresh 'LibreOffice')" on \
   gimp                         "$(pl gimp 'Gimp (Graphical image editor)')" on \
   chromium                     "$(pl chromium 'Chromium (web browser)')" on \
@@ -97,7 +97,7 @@ SOFTWARE_SELECTION=$(checklist "Optional Software" "Select optional applications
 
 for item in $SOFTWARE_SELECTION; do
   case $item in
-    gitkraken|jetbrains.pycharm-professional|gh|httpie|neovide)
+    gitkraken|jetbrains.pycharm|gh|httpie|neovide)
       nix_installed "$item" || NIX_PACKAGES+=("$item") ;;
     libreoffice-fresh|gimp|chromium|imagemagick|flatpak)
       pacman_installed "$item" || PACMAN_PACKAGES+=("$item") ;;
