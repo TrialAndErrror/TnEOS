@@ -94,7 +94,7 @@ After installation:
 - Awesome WM
 - Picom (compositor)
 - Rofi (launcher)
-- Alacritty (terminal)
+- Kitty (terminal)
 - Essential CLI tools
 
 ### Optional Packages (You Choose)
@@ -207,7 +207,7 @@ cd ~/TnEOS
 **Manual way** - Restore manually:
 ```bash
 # Remove TnEOS configs
-rm -rf ~/.config/awesome ~/.config/nvim ~/.config/picom ~/.config/rofi ~/.config/alacritty
+rm -rf ~/.config/awesome ~/.config/nvim ~/.config/picom ~/.config/rofi ~/.config/kitty
 
 # Restore from backup (replace YYYYMMDD-HHMMSS with your backup timestamp)
 cp -r ~/.config-backups/YYYYMMDD-HHMMSS/* ~/

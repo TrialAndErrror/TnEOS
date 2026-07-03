@@ -18,7 +18,7 @@ Installs packages via Nix package manager.
 
 ### 4. `backup-configs.sh`
 Backs up existing configuration files.
-- Checks for existing configs (awesome, nvim, picom, rofi, alacritty)
+- Checks for existing configs (awesome, nvim, picom, rofi, kitty)
 - Prompts user for backup confirmation
 - Creates timestamped backup directory
 - Exports `BACKUP_DIR` and `BACKUP_NEEDED` variables
@@ -43,7 +43,7 @@ Installs Nerd Fonts and optionally sets one as default. Works on all distros.
 - Downloads selected fonts from github.com/ryanoasis/nerd-fonts releases
 - Extracts to ~/.local/share/fonts/NerdFonts/
 - Refreshes font cache with fc-cache
-- Optionally updates default font in configs (Alacritty, Rofi, AwesomeWM)
+- Optionally updates default font in configs (Kitty, Rofi, AwesomeWM)
 
 ## Usage
 

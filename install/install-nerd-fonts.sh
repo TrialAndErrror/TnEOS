@@ -94,7 +94,7 @@ set_default_font() {
 
   echo ""
   gum style --bold --foreground 212 "Select Default Nerd Font"
-  echo "This will update Alacritty, Rofi, and AwesomeWM configs"
+  echo "This will update Kitty, Rofi, and AwesomeWM configs"
   echo ""
 
   local font_options=()
@@ -114,10 +114,10 @@ set_default_font() {
 
   local CONFIG_DIR="$HOME/.config"
 
-  if [ -f "$CONFIG_DIR/alacritty/alacritty.toml" ]; then
-    echo "Updating Alacritty configuration..."
-    sed -i "s/family = \".*Nerd Font\"/family = \"$selected_font\"/" \
-      "$CONFIG_DIR/alacritty/alacritty.toml"
+  if [ -f "$CONFIG_DIR/kitty/kitty.conf" ]; then
+    echo "Updating Kitty configuration..."
+    sed -i "s/^#\? *font_family .*/font_family      $selected_font/" \
+      "$CONFIG_DIR/kitty/kitty.conf"
   fi
 
   if [ -f "$CONFIG_DIR/awesome/theme.lua" ]; then

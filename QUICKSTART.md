@@ -68,7 +68,7 @@ These are installed automatically:
 - **Awesome WM** - Tiling window manager
 - **Picom** - Compositor for effects
 - **Rofi** - Application launcher
-- **Alacritty** - Terminal emulator
+- **Kitty** - Terminal emulator
 - **Neovim** - Text editor (base install)
 - **Essential CLI tools** - brightnessctl, eza, fd, bat
 

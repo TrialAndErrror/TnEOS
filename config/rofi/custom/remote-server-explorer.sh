@@ -10,4 +10,4 @@ selection=$(printf '%s\n' "${hosts[@]}" \
 
 [[ -z "${selection:-}" ]] && exit 0
 
-ghostty -e ssh "$selection"
+${TERMINAL:-kitty} -e ssh "$selection"

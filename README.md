@@ -33,7 +33,7 @@ That's it! The script will:
 - **LightDM** - Display manager with customizable login screen
 - **Picom** - Compositor for transparency and effects
 - **Rofi** - Application launcher and window switcher
-- **GhosTTY** - Fast, GPU-accelerated terminal emulator
+- **Kitty** - Fast, GPU-accelerated terminal emulator
 
 ### Development Tools
 - **Neovim** - Modern text editor with full IDE features

@@ -59,7 +59,7 @@ AVAILABLE_ITEMS=()
 
 # Check for .config items
 if [ -d "$BACKUP_PATH" ]; then
-  for item in awesome nvim picom rofi alacritty; do
+  for item in awesome nvim picom rofi kitty; do
     if [ -e "$BACKUP_PATH/$item" ]; then
       AVAILABLE_ITEMS+=("~/.config/$item")
     else
@@ -145,10 +145,10 @@ for item in "${ITEMS_TO_RESTORE[@]}"; do
       rm -rf "$HOME/.config/rofi"
       cp -r "$BACKUP_PATH/rofi" "$HOME/.config/"
       ;;
-    "~/.config/alacritty")
-      echo "  Restoring alacritty..."
-      rm -rf "$HOME/.config/alacritty"
-      cp -r "$BACKUP_PATH/alacritty" "$HOME/.config/"
+    "~/.config/kitty")
+      echo "  Restoring kitty..."
+      rm -rf "$HOME/.config/kitty"
+      cp -r "$BACKUP_PATH/kitty" "$HOME/.config/"
       ;;
   esac
 done

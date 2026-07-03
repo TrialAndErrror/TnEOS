@@ -29,7 +29,7 @@ Run the standalone font installer:
 3. **Refreshes font cache** so fonts are immediately available
 
 4. **Optionally sets a default font** across your system:
-   - Updates Alacritty terminal configuration
+   - Updates Kitty terminal configuration
    - Updates Rofi launcher configuration
    - Updates AwesomeWM theme configuration
 
@@ -81,7 +81,7 @@ fc-list | grep -i "nerd"
 
 The font installer updates these configuration files:
 
-- `~/.config/alacritty/alacritty.toml`
+- `~/.config/kitty/kitty.conf`
 - `~/.config/awesome/theme.lua`
 - `~/.config/rofi/**/*.rasi` (all Rofi theme files)
 
@@ -99,7 +99,7 @@ fc-list | grep -i "jetbrains"
 
 ### Font looks wrong in terminal
 
-Make sure your terminal emulator supports Nerd Fonts. Alacritty (included in TnEOS) has full support.
+Make sure your terminal emulator supports Nerd Fonts. Kitty (included in TnEOS) has full support.
 
 ## More Information
 
