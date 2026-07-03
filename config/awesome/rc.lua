@@ -8,3 +8,5 @@ require("modules.keys")
 require("modules.rules")
 require("modules.signals")
 require("modules.autorun")
+
+pcall(require, "custom")
