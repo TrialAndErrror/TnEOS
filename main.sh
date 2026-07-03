@@ -83,9 +83,9 @@ action_install_config() {
   ensure_device_type
 
   if gum confirm "Include Neovim config?"; then
-    PACMAN_PACKAGES=(neovim)
+    INCLUDE_NVIM_CONFIG=true
   else
-    PACMAN_PACKAGES=()
+    INCLUDE_NVIM_CONFIG=false
   fi
 
   install_oh_my_zsh

@@ -8,3 +8,6 @@ DISTRO_TYPE=""
 # Programs
 PACMAN_PACKAGES=()
 NIX_PACKAGES=()
+
+# Config flags
+INCLUDE_NVIM_CONFIG=""

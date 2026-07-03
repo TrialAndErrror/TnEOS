@@ -137,7 +137,7 @@ copy_configs() {
   # Determine which configs to install
   local CONFIGS=("awesome" "picom" "rofi" "kitty")
 
-  if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
+  if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]] || [[ "$INCLUDE_NVIM_CONFIG" == "true" ]]; then
     CONFIGS+=("nvim")
   fi
 
