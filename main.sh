@@ -23,6 +23,7 @@ ensure_device_type() {
   fi
 
   # --- Detect laptop vs desktop via battery presence ---
+  DEVICE_TYPE=""
   for supply_type in /sys/class/power_supply/*/type; do
     if [ -f "$supply_type" ] && grep -qi "^battery$" "$supply_type" 2>/dev/null; then
       DEVICE_TYPE="Laptop"
