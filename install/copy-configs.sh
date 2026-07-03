@@ -190,10 +190,27 @@ copy_configs() {
     rm -f "$CUSTOM_LUA_BACKUP"
     echo "  ✓ Preserved existing ~/.config/awesome/custom.lua"
   fi
+  # Preserve user's lua/local/ across nvim installs
+  local NVIM_LOCAL=""
+  if [[ " ${CONFIGS[@]} " =~ " nvim " ]]; then
+    local NVIM_LOCAL_DIR="$CONFIG_DEST/nvim/lua/local"
+    if [ -d "$NVIM_LOCAL_DIR" ]; then
+      NVIM_LOCAL="$(mktemp -d)"
+      cp -r "$NVIM_LOCAL_DIR/." "$NVIM_LOCAL/"
+    fi
+  fi
+
   for config in "${CONFIGS[@]}"; do
     [[ "$config" == "awesome" ]] && continue
     _install_dir_config "$CONFIG_SRC/$config" "$CONFIG_DEST/$config" "$config"
   done
+
+  if [ -n "$NVIM_LOCAL" ]; then
+    mkdir -p "$CONFIG_DEST/nvim/lua/local"
+    cp -r "$NVIM_LOCAL/." "$CONFIG_DEST/nvim/lua/local/"
+    rm -rf "$NVIM_LOCAL"
+    echo "  ✓ Preserved existing ~/.config/nvim/lua/local/"
+  fi
 
   _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc" ".zshrc"
   _install_file_config "$CONFIG_SRC/.xprofile" "$HOME/.xprofile" ".xprofile"
