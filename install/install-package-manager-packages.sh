@@ -16,6 +16,8 @@ translate_packages_apt() {
       libreoffice-fresh)      translated+=(libreoffice) ;;
       docker)                 translated+=(docker.io) ;;
       imagemagick)            translated+=(imagemagick) ;;
+      tree-sitter)            translated+=(libtree-sitter-dev) ;;
+      tree-sitter-cli)        echo "  ⚠ Skipping tree-sitter-cli: not in apt repos (install via: npm i -g tree-sitter-cli)" ;;
       *)                      translated+=("$pkg") ;;
     esac
   done
@@ -32,7 +34,9 @@ translate_packages_dnf() {
       python)                 translated+=(python3) ;;
       libreoffice-fresh)      translated+=(libreoffice) ;;
       imagemagick)            translated+=(ImageMagick) ;;
-      yazi) echo "  ⚠ Skipping yazi: not in dnf repos (install manually from yazi-rs.github.io)" ;;
+      yazi)                   echo "  ⚠ Skipping yazi: not in dnf repos (install manually from yazi-rs.github.io)" ;;
+      tree-sitter)            translated+=(libtree-sitter-devel) ;;
+      tree-sitter-cli)        echo "  ⚠ Skipping tree-sitter-cli: not in dnf repos (install via: npm i -g tree-sitter-cli)" ;;
       *)                      translated+=("$pkg") ;;
     esac
   done

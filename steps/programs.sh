@@ -75,8 +75,9 @@ for item in $PACMAN_SELECTION; do
   pacman_installed "$item" || PACMAN_PACKAGES+=("$item")
 done
 
-# tree-sitter CLI is required by tree-sitter-manager.nvim to compile parsers
+# tree-sitter and tree-sitter-cli are required by nvim to parse and compile grammars
 if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
+  pacman_installed "tree-sitter"     || PACMAN_PACKAGES+=("tree-sitter")
   pacman_installed "tree-sitter-cli" || PACMAN_PACKAGES+=("tree-sitter-cli")
 fi
 
