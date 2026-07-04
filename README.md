@@ -117,6 +117,66 @@ Your dotfiles are copied into `~/.config/`:
 
 ## Important Configurations
 
+### Customizing Awesome WM
+
+TnEOS includes a `~/.config/awesome/custom.lua` file specifically for your personal Awesome WM changes. The TnEOS installer never overwrites this file, so your customizations survive upgrades.
+
+Add any of the following directly to `custom.lua`:
+- Extra keybindings
+- Window rules (e.g. always open Discord on tag 5)
+- Autostart applications
+- Custom widgets
+- Signal/event hooks
+
+The file ships with commented-out examples for all of these. Uncomment and edit what you need:
+
+```bash
+nvim ~/.config/awesome/custom.lua
+```
+
+After editing, reload Awesome WM with `Super+Ctrl+R` — no need to log out.
+
+---
+
+### Customizing Neovim
+
+Machine-local Neovim plugins live in `~/.config/nvim/lua/local/plugins/`. This directory is gitignored and preserved across TnEOS installs, so anything you add there won't be touched by updates.
+
+To add a plugin, create a new `.lua` file in that folder returning a [lazy.nvim plugin spec](https://lazy.folke.io/spec):
+
+```bash
+# Example: add a plugin just for this machine
+nvim ~/.config/nvim/lua/local/plugins/my-plugin.lua
+```
+
+```lua
+-- ~/.config/nvim/lua/local/plugins/my-plugin.lua
+return {
+  "owner/repo",
+  config = function()
+    require("my-plugin").setup()
+  end,
+}
+```
+
+Lazy.nvim automatically picks up any spec files in that folder — no need to register them anywhere else.
+
+---
+
+### Your Shell Config (zshrc)
+
+TnEOS installs its shell configuration as `~/.zshrc_TnEOS` (a separate file from your own `~/.zshrc`) and adds a single source line to your `~/.zshrc`:
+
+```bash
+[ -f ~/.zshrc_TnEOS ] && source ~/.zshrc_TnEOS
+```
+
+You are free to edit `~/.zshrc` however you like — add aliases, change your theme, set environment variables, configure plugins — as long as that source line remains present. TnEOS only manages `~/.zshrc_TnEOS`; your `~/.zshrc` is yours.
+
+When TnEOS updates its shell config, it overwrites `~/.zshrc_TnEOS` only, leaving your personal `~/.zshrc` untouched.
+
+---
+
 ### Rofi Customization
 
 In ~/.config/rofi/config.rasi, we declare an overall theme at the top and then have some overrides and customization in the file. You can modify that config with the config-loader command (meta + shift + c).
