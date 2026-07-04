@@ -115,6 +115,29 @@ Your dotfiles are copied into `~/.config/`:
 - Application launcher
 - Wallpapers and themes
 
+## Running TnEOS Again
+
+Re-run `main.sh` at any time to update or reconfigure your system:
+
+```bash
+cd ~/TnEOS
+./main.sh
+```
+
+The main menu offers six options:
+
+| Option | What it does |
+|---|---|
+| **Install Everything** | Full install — programs, configs, display setup |
+| **Install Config Files** | Copy/update dotfiles only (shows a diff and asks before overwriting each one) |
+| **Install Programs** | Install packages only, skipping config changes |
+| **Setup Display** | Set the wallpaper and configure the LightDM login screen theme |
+| **Manage Backups** | Interactive UI to restore or delete timestamped config backups |
+| **Install Fonts** | Download and install Nerd Fonts |
+| **Set Default Font** | Choose a font and apply it to Kitty, Rofi, and Awesome WM in one step |
+
+---
+
 ## Important Configurations
 
 ### Customizing Awesome WM
@@ -174,6 +197,41 @@ TnEOS installs its shell configuration as `~/.zshrc_TnEOS` (a separate file from
 You are free to edit `~/.zshrc` however you like — add aliases, change your theme, set environment variables, configure plugins — as long as that source line remains present. TnEOS only manages `~/.zshrc_TnEOS`; your `~/.zshrc` is yours.
 
 When TnEOS updates its shell config, it overwrites `~/.zshrc_TnEOS` only, leaving your personal `~/.zshrc` untouched.
+
+---
+
+### Zsh and Oh-My-Zsh
+
+If you select zsh during package installation, TnEOS automatically installs [Oh-My-Zsh](https://ohmyz.sh/) as part of the same step.
+
+To avoid interrupting the install session, Oh-My-Zsh is installed with `RUNZSH=no CHSH=no` — it does **not** switch your default shell or launch a new zsh session mid-install. Everything finishes cleanly in your current shell.
+
+To make zsh your default shell after the install completes:
+
+```bash
+chsh -s $(which zsh)
+```
+
+Then log out and back in. From that point on, new terminal sessions will open in zsh with Oh-My-Zsh and the TnEOS config already active.
+
+The `~/.zshrc_TnEOS` file pre-configures Oh-My-Zsh with a theme, useful plugins (git, battery, colored-man-pages, alias-finder), and sensible defaults — nothing extra to set up.
+
+---
+
+### Laptop vs Desktop
+
+TnEOS automatically detects whether it is running on a laptop or desktop by checking for a battery in `/sys/class/power_supply/`. If detection is ambiguous it will ask you to confirm before continuing.
+
+The device type affects both what gets installed and how Awesome WM is configured:
+
+| | Laptop | Desktop |
+|---|---|---|
+| Extra packages | `acpid`, `brightnessctl` | — |
+| System services | `acpid` enabled on install | — |
+| Lid-switch config | Installed to `/etc/systemd/logind.conf.d/` | — |
+| Awesome WM | Battery widget + brightness keybindings active | Battery widget removed |
+
+If you install on a desktop but later move the config to a laptop (or vice versa), re-run **Install Config Files** from the main menu — TnEOS will re-detect the device type and apply the correct Awesome WM configuration.
 
 ---
 
