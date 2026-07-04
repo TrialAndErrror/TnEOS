@@ -10,7 +10,7 @@ show_completion() {
   local CONFIG_LIST="  ~/.config/awesome/
   ~/.config/picom/
   ~/.config/rofi/
-  ~/.config/alacritty/"
+  ~/.config/kitty/"
 
   # Add nvim if it was selected
   if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then

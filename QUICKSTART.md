@@ -24,7 +24,7 @@ sudo pacman -S git && git clone https://github.com/TrialAndErrror/TnEOS.git && c
 
 ## 🎯 What Happens
 
-1. **Bootstrap checks your system** - Installs gum, Nix, and rsync
+1. **Bootstrap checks your system** - Installs gum and Nix
 2. **You confirm your info** - Hostname and username (auto-detected)
 3. **You pick packages** - Choose what you want installed
 4. **Installation runs** - Everything installs automatically
@@ -53,10 +53,10 @@ During installation, you'll select from:
 - GitKraken
 - LibreOffice
 - GIMP
-- Thorium Browser
+- Chromium
 
 ### System Tools
-- Nitrogen (wallpapers)
+- Feh (wallpapers)
 - Flameshot (screenshots)
 - PulseAudio Control
 
@@ -68,10 +68,8 @@ These are installed automatically:
 - **Awesome WM** - Tiling window manager
 - **Picom** - Compositor for effects
 - **Rofi** - Application launcher
-- **Alacritty** - Terminal emulator
-- **Neovim** - Text editor (base install)
-- **Home Manager** - Dotfile management
-- **Essential CLI tools** - brightnessctl, eza, fd, bat
+- **Kitty** - Terminal emulator
+- **Essential CLI tools** - eza, fd, bat (+ brightnessctl on laptops)
 
 ---
 
@@ -87,14 +85,11 @@ Everything is configured and ready to go.
 
 ## 🔄 Customizing Later
 
-Want to change something? All configs are in `~/.config/home-manager/`:
+Want to change something? Edit configs directly in `~/.config/`:
 
 ```bash
 # Edit any config
-vim ~/.config/home-manager/config/awesome/rc.lua
-
-# Apply changes
-home-manager switch
+vim ~/.config/awesome/rc.lua
 ```
 
 ---

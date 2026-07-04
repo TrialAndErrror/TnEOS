@@ -4,6 +4,8 @@
 
 set -e
 
+cd "$(dirname "$0")"
+
 echo "======================================"
 echo "  TnEOS Bootstrap"
 echo "======================================"
@@ -15,6 +17,26 @@ if [ "$EUID" -eq 0 ]; then
   echo "   Run it as your regular user. It will ask for sudo when needed."
   exit 1
 fi
+
+# Detect distro
+if command -v pacman &>/dev/null; then
+  DISTRO_TYPE="Arch"
+elif command -v apt &>/dev/null; then
+  DISTRO_TYPE="Debian"
+elif command -v dnf &>/dev/null; then
+  DISTRO_TYPE="Fedora"
+else
+  DISTRO_TYPE="Unknown"
+fi
+
+pkg_install() {
+  case "$DISTRO_TYPE" in
+    Arch)   sudo pacman -S --needed --noconfirm "$@" ;;
+    Debian) sudo apt install -y "$@" ;;
+    Fedora) sudo dnf install -y "$@" ;;
+    *)      echo "❌ Unknown distro, cannot install packages automatically."; exit 1 ;;
+  esac
+}
 
 echo "Checking prerequisites..."
 echo ""
@@ -31,7 +53,7 @@ echo "✓ Internet connection OK"
 # Install gum if not present
 if ! command -v gum &> /dev/null; then
   echo "Installing gum (required for TUI)..."
-  sudo pacman -S --needed --noconfirm gum
+  pkg_install gum
   echo "✓ gum installed"
 else
   echo "✓ gum already installed"
@@ -41,7 +63,7 @@ fi
 if ! command -v nix &> /dev/null; then
   echo ""
   echo "⚠️  Nix is not installed."
-  echo "   Nix is required for package management and Home Manager."
+  echo "   Nix is required for package management."
   echo ""
   read -p "Install Nix now? (Y/n) " -n 1 -r
   echo
@@ -98,11 +120,13 @@ EOF
 else
   # Check if allowUnfree is already set
   if ! grep -q "allowUnfree" "$HOME/.config/nixpkgs/config.nix"; then
-    # Backup existing config
     cp "$HOME/.config/nixpkgs/config.nix" "$HOME/.config/nixpkgs/config.nix.backup"
-    # Add allowUnfree to existing config
-    sed -i 's/{/{\n  allowUnfree = true;/' "$HOME/.config/nixpkgs/config.nix"
-    echo "✓ Unfree packages enabled (existing config updated)"
+    cat > "$HOME/.config/nixpkgs/config.nix" << 'EOF'
+{
+  allowUnfree = true;
+}
+EOF
+    echo "✓ Unfree packages enabled (old config backed up to config.nix.backup)"
   else
     echo "✓ Unfree packages already enabled"
   fi
@@ -115,15 +139,6 @@ if systemctl is-active --quiet nix-daemon; then
 fi
 
 echo ""
-
-# Ensure rsync is installed (needed for Home Manager setup)
-if ! command -v rsync &> /dev/null; then
-  echo "Installing rsync..."
-  sudo pacman -S --needed --noconfirm rsync
-  echo "✓ rsync installed"
-else
-  echo "✓ rsync already installed"
-fi
 
 echo ""
 echo "======================================"

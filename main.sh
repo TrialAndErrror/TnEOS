@@ -15,6 +15,7 @@ source ./install/install-nerd-fonts.sh
 source ./install/setup-wallpaper.sh
 source ./install/setup-lightdm-greeter.sh
 source ./install/show-completion.sh
+source ./install/manage-backups.sh
 
 ensure_device_type() {
   if [ -n "${DEVICE_TYPE:-}" ]; then
@@ -83,9 +84,9 @@ action_install_config() {
   ensure_device_type
 
   if gum confirm "Include Neovim config?"; then
-    PACMAN_PACKAGES=(neovim)
+    INCLUDE_NVIM_CONFIG=true
   else
-    PACMAN_PACKAGES=()
+    INCLUDE_NVIM_CONFIG=false
   fi
 
   install_oh_my_zsh
@@ -104,10 +105,6 @@ action_install_programs() {
 action_setup_display() {
   setup_wallpaper
   setup_lightdm_greeter
-}
-
-action_restore_backup() {
-  bash "$(dirname "$0")/restore-backup.sh" || true
 }
 
 action_install_fonts() {
@@ -141,7 +138,7 @@ while true; do
     "Install Config Files" \
     "Install Programs" \
     "Setup Display" \
-    "Restore Backup" \
+    "Manage Backups" \
     "Install Fonts" \
     "Set Default Font" \
     "Quit")
@@ -152,9 +149,9 @@ while true; do
     "Install Config Files") action_install_config ;;
     "Install Programs")     action_install_programs ;;
     "Setup Display")        action_setup_display ;;
-    "Restore Backup")       action_restore_backup ;;
+    "Manage Backups")       manage_backups ;;
     "Install Fonts")        action_install_fonts ;;
-    "Set Default Font")        set_default_font;;
+    "Set Default Font")        set_default_font ;;
     "Quit")                 exit 0 ;;
   esac
 

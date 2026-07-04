@@ -1,20 +1,21 @@
-# TnEOS - Automated Arch Linux Setup
+# TnEOS - Linux Desktop Setup
 
-Get from a fresh Arch Linux installation to a fully configured desktop environment in minutes.
+Get from a fresh Linux installation to a fully configured desktop environment in minutes.
 
 ## What is TnEOS?
 
-TnEOS is an automated post-installation script for Arch Linux that sets up a complete desktop environment with:
+TnEOS is an automated post-installation script that sets up a complete desktop environment. It is primarily developed and tested on **Arch Linux** — Debian and Fedora are experimentally supported but may have rough edges.
+
+TnEOS installs and configures:
 
 - 🎨 **Awesome Window Manager** - Pre-configured and ready to use
 - 📝 **Neovim** - Fully configured development environment
 - 🎯 **Essential Tools** - Terminal, file manager, and productivity apps
-- 🏠 **Dotfile Management** - Automatic configuration with Home Manager
 - 📦 **Package Selection** - Choose what you want installed
 
 ## Quick Start
 
-After installing Arch Linux and rebooting into your new system, run this single command:
+After installing Linux and booting into your system, run this single command:
 
 ```bash
 curl -fsSL trialanderrror.com/install | bash
@@ -34,7 +35,7 @@ That's it! The script will:
 - **LightDM** - Display manager with customizable login screen
 - **Picom** - Compositor for transparency and effects
 - **Rofi** - Application launcher and window switcher
-- **GhosTTY** - Fast, GPU-accelerated terminal emulator
+- **Kitty** - Fast, GPU-accelerated terminal emulator
 
 ### Development Tools
 - **Neovim** - Modern text editor with full IDE features
@@ -64,9 +65,9 @@ The installation process is simple and interactive:
 ## Installation Steps
 
 ### Prerequisites
-- Fresh Arch Linux installation
+- Linux installation (Arch recommended; Debian and Fedora experimentally supported)
 - Internet connection
-- User account created during Arch install
+- Non-root user account
 
 ### Run the Installer
 
@@ -84,9 +85,8 @@ cd TnEOS
 
 The bootstrap script will:
 1. Check your system
-2. Install required tools (gum, Nix, rsync)
-3. Install yay (AUR helper) if not present
-4. Launch the interactive installer
+2. Install required tools (gum, Nix)
+3. Launch the interactive installer
 
 ### Interactive Setup
 
@@ -119,7 +119,7 @@ Your dotfiles are copied into `~/.config/`:
 
 ### Rofi Customization
 
-In ~/.config/rofi/config.rasi, we declare an overall theme at the top and then have some overrides and customization in the file. You can modify that config with the cong-loader command (meta + shift + c).
+In ~/.config/rofi/config.rasi, we declare an overall theme at the top and then have some overrides and customization in the file. You can modify that config with the config-loader command (meta + shift + c).
 
 There is a setting for fonts; by default, it looks for Hack Nerd Font, then JetBrainsMono Nerd Font, then Iosevka Nerd Font, then falls back to monospace font. Be sure to install those fonts if you're just seeing plain monospace using the Font Installer command (or change to your preferred fonts.)
 
@@ -133,7 +133,7 @@ cd ~/TnEOS
 ./install/setup-lightdm-greeter.sh
 
 # Or use the GUI tool
-yay -S lightdm-gtk-greeter-settings
+sudo pacman -S lightdm-gtk-greeter-settings
 lightdm-gtk-greeter-settings
 ```
 

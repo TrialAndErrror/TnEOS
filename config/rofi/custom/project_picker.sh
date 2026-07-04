@@ -26,4 +26,4 @@ fi
 # 4) Launch neovide inside the project's direnv environment (if available)
 cd "$path"
 # exec direnv exec . zeditor .
-ghostty --working-directory="$path" -e sh -c "direnv exec . nvim ."
+${TERMINAL:-kitty} -e sh -c "cd \"$path\" && direnv exec . nvim ."

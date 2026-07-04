@@ -4,10 +4,10 @@
 
 Before running TnEOS, you need:
 
-1. **Arch Linux installed** - Complete the base Arch installation
-2. **Booted into your system** - Not the live ISO
+1. **Linux installed** - Arch is recommended and best supported; Debian and Fedora are experimentally supported
+2. **Booted into your system** - Not a live ISO
 3. **Internet connection** - Working network
-4. **User account** - Created during Arch install (you should be logged in as this user)
+4. **Non-root user account** - You should be logged in as a regular user
 
 ## Installation
 
@@ -45,20 +45,18 @@ cd TnEOS
 ```
 
 The bootstrap script will:
-- Check that you're on Arch Linux
+- Detect your distro (Arch, Debian, or Fedora)
 - Verify internet connection
 - Install `gum` (for the interactive interface)
 - Install Nix (if not already installed)
 - Enable Nix experimental features (nix-command and flakes)
 - Enable unfree packages in Nix (for proprietary software)
-- Install `rsync` (for file management)
 - Launch the main installer
 
 The main installer will:
-- Install `yay` (AUR helper) if not already installed
-- Install your selected packages using yay (supports both official repos and AUR)
-- Install Nix packages using `nix profile add` (supports unfree packages)
-- Configure Home Manager for dotfile management
+- Install your selected packages via pacman/apt/dnf
+- Install Nix packages using `nix profile install`
+- Copy dotfiles into `~/.config/`
 
 ### Step 4: Follow the Interactive Prompts
 
@@ -73,19 +71,14 @@ The installer will guide you through:
 - **Pacman Packages** - Choose additional system packages
 - Use arrow keys and space to select, Enter to confirm
 
-#### 3. Home Manager Information
-- Brief explanation of how dotfiles will be managed
-- No action needed, just informational
-
-#### 4. Summary
+#### 3. Summary
 - Review everything that will be installed
 - Confirm to proceed or go back to make changes
 
-#### 5. Installation
+#### 4. Installation
 - Pacman packages install
 - Nix packages install
-- Home Manager installs and configures
-- Your dotfiles are applied
+- Dotfiles are copied to `~/.config/`
 
 ### Step 5: Complete!
 
@@ -101,7 +94,7 @@ After installation:
 - Awesome WM
 - Picom (compositor)
 - Rofi (launcher)
-- Alacritty (terminal)
+- Kitty (terminal)
 - Essential CLI tools
 
 ### Optional Packages (You Choose)
@@ -121,10 +114,10 @@ After installation:
 - GitKraken
 - LibreOffice
 - GIMP
-- Thorium Browser
+- Chromium
 
 **System Tools:**
-- Nitrogen (wallpaper setter)
+- Feh (wallpaper setter)
 - Flameshot (screenshots)
 - PulseAudio Control
 - LXAppearance (themes)
@@ -145,50 +138,26 @@ Your old configs are safe and can be restored anytime.
 
 ### Your Configurations
 
-All configs are managed by Home Manager in `~/.config/home-manager/`:
+Configs are copied directly into `~/.config/`:
 
 ```
-~/.config/home-manager/
-├── config/
-│   ├── awesome/     → Awesome WM configuration
-│   ├── nvim/        → Neovim configuration
-│   ├── picom/       → Picom configuration
-│   ├── rofi/        → Rofi configuration
-│   └── alacritty/   → Alacritty configuration
-└── assets/
-    ├── backgrounds/ → Wallpapers
-    └── icons/       → Icon files
+~/.config/
+├── awesome/     → Awesome WM configuration
+├── nvim/        → Neovim configuration
+├── picom/       → Picom configuration
+├── rofi/        → Rofi configuration
+└── kitty/       → Kitty terminal configuration
 ```
 
-These are symlinked to their proper locations:
-- `~/.config/awesome/` → Awesome WM
-- `~/.config/nvim/` → Neovim
-- `~/.config/picom/` → Picom
-- `~/.config/rofi/` → Rofi
-- `~/.config/alacritty/` → Alacritty
-
-TnEOS wallpaper is copied (not symlinked) to:
+TnEOS wallpaper is copied to:
 - `~/Pictures/Wallpapers/tneos-wallpaper.jpg`
   (Your existing wallpapers are not touched)
 
 ### Updating Configurations
 
-To customize your setup:
-
-```bash
-# Edit any config file
-vim ~/.config/home-manager/config/awesome/rc.lua
-
-# Apply the changes
-home-manager switch
-```
-
-That's it! Home Manager will update the symlinks and apply your changes.
+Edit config files directly in `~/.config/`. To re-run TnEOS and apply updates from the repo, run `./main.sh` again — it will diff and prompt before overwriting.
 
 ## Troubleshooting
-
-### Bootstrap fails with "not on Arch Linux"
-You can bypass this check, but the script is designed for Arch. Proceed at your own risk.
 
 ### "gum: command not found"
 The bootstrap script should install this. If it fails:
@@ -216,12 +185,6 @@ echo "experimental-features = nix-command flakes" | sudo tee -a /etc/nix/nix.con
 sudo systemctl restart nix-daemon
 ```
 
-### Home Manager fails to apply
-Check for errors:
-```bash
-home-manager switch --show-trace
-```
-
 ### Awesome WM won't start
 Make sure you selected it from your display manager. If you don't have a display manager:
 ```bash
@@ -241,20 +204,18 @@ cd ~/TnEOS
 **Manual way** - Restore manually:
 ```bash
 # Remove TnEOS configs
-rm -rf ~/.config/awesome ~/.config/nvim ~/.config/picom ~/.config/rofi ~/.config/alacritty
+rm -rf ~/.config/awesome ~/.config/nvim ~/.config/picom ~/.config/rofi ~/.config/kitty
 
 # Restore from backup (replace YYYYMMDD-HHMMSS with your backup timestamp)
 cp -r ~/.config-backups/YYYYMMDD-HHMMSS/* ~/
 ```
 
-## Advanced: Preparing During Arch Installation
+## Advanced: Pre-cloning During Installation
 
-If you want to clone TnEOS during the Arch installation process:
-
-### During arch-chroot
+If you want to clone TnEOS before your first boot (e.g. during an Arch `arch-chroot` or a Debian chroot):
 
 ```bash
-# Install git
+# Install git (Arch)
 pacman -S git
 
 # Clone to user's home
@@ -263,15 +224,12 @@ git clone https://github.com/TrialAndErrror/TnEOS.git
 chown -R yourusername:yourusername TnEOS
 ```
 
-### After Reboot
+Then after booting into your user account:
 
-Log in as your user and run:
 ```bash
 cd ~/TnEOS
 ./bootstrap.sh
 ```
-
-This saves you from having to clone the repo after installation, but the setup is still interactive.
 
 ## Getting Help
 

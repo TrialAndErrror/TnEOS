@@ -40,7 +40,7 @@ awful.layout.layouts = {
 }
 
 return {
-	has_battery = true,
+	has_battery = false,
 	terminal = terminal,
 	editor = editor,
 	editor_cmd = editor_cmd,

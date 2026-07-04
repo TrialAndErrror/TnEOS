@@ -5,6 +5,15 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../ui.sh"
 
+# Backup dir for the current copy session — set by copy_configs, used by helpers
+_COPY_CONFIGS_BACKUP_DIR=""
+
+_ensure_backup_dir() {
+  [ -z "$_COPY_CONFIGS_BACKUP_DIR" ] && return
+  [ -d "$_COPY_CONFIGS_BACKUP_DIR" ] && return
+  mkdir -p "$_COPY_CONFIGS_BACKUP_DIR"
+}
+
 # Copy a directory config to ~/.config/, with diff checking.
 # Args: src_dir dest_dir display_name
 _install_dir_config() {
@@ -16,14 +25,14 @@ _install_dir_config() {
   fi
 
   if [ -e "$dest" ]; then
-    if diff -rq "$src" "$dest" &>/dev/null; then
+    if diff -rqw "$src" "$dest" &>/dev/null; then
       echo "  ✓ $name is already up to date, skipping."
       return
     fi
 
     echo ""
     gum style --bold --foreground 212 "Changes detected in $name:"
-    diff -r --color=always "$dest" "$src" || true
+    diff -rw -U 0 --color=always "$dest" "$src" || true
     echo ""
 
     if ! gum confirm "Overwrite ~/.config/$name with the repo version?"; then
@@ -31,12 +40,9 @@ _install_dir_config() {
       return
     fi
 
-    local backup="${dest}.bak"
-    if [ -e "$backup" ]; then
-      backup="${dest}.bak.$(date +%Y%m%d-%H%M%S)"
-    fi
-    echo "  Backing up ~/.config/$name -> ${backup##*/home/$USER/.config/}"
-    mv "$dest" "$backup"
+    _ensure_backup_dir
+    echo "  Backing up $name..."
+    mv "$dest" "$_COPY_CONFIGS_BACKUP_DIR/$(basename "$dest")"
   fi
 
   echo "  Copying $name..."
@@ -54,14 +60,14 @@ _install_system_file_config() {
   fi
 
   if [ -e "$dest" ]; then
-    if diff -q "$src" "$dest" &>/dev/null; then
+    if diff -qw "$src" "$dest" &>/dev/null; then
       echo "  ✓ $name is already up to date, skipping."
       return
     fi
 
     echo ""
     gum style --bold --foreground 212 "Changes detected in $name:"
-    diff --color=always "$dest" "$src" || true
+    diff -w -U 0 --color=always "$dest" "$src" || true
     echo ""
 
     if ! gum confirm "Overwrite $dest with the repo version? (requires sudo)"; then
@@ -99,14 +105,14 @@ _install_file_config() {
   fi
 
   if [ -e "$dest" ]; then
-    if diff -q "$src" "$dest" &>/dev/null; then
+    if diff -qw "$src" "$dest" &>/dev/null; then
       echo "  ✓ $name is already up to date, skipping."
       return
     fi
 
     echo ""
     gum style --bold --foreground 212 "Changes detected in $name:"
-    diff --color=always "$dest" "$src" || true
+    diff -w -U 0 --color=always "$dest" "$src" || true
     echo ""
 
     if ! gum confirm "Overwrite ~/$name with the repo version?"; then
@@ -114,12 +120,9 @@ _install_file_config() {
       return
     fi
 
-    local backup="${dest}.bak"
-    if [ -e "$backup" ]; then
-      backup="${dest}.bak.$(date +%Y%m%d-%H%M%S)"
-    fi
-    echo "  Backing up ~/$name -> ${backup##*/home/$USER/}"
-    mv "$dest" "$backup"
+    _ensure_backup_dir
+    echo "  Backing up $name..."
+    mv "$dest" "$_COPY_CONFIGS_BACKUP_DIR/$(basename "$dest")"
   fi
 
   echo "  Copying $name..."
@@ -131,13 +134,15 @@ copy_configs() {
   local CONFIG_SRC="$REPO_DIR/config"
   local CONFIG_DEST="$HOME/.config"
 
+  _COPY_CONFIGS_BACKUP_DIR="$HOME/.config-backups/$(date +%Y%m%d-%H%M%S)"
+
   gum style --bold --foreground 212 --border double --padding "1 2" --margin "1" \
     "Copying Configuration Files" "Installing dotfiles to ~/.config/"
 
   # Determine which configs to install
   local CONFIGS=("awesome" "picom" "rofi" "kitty")
 
-  if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]]; then
+  if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]] || [[ "$INCLUDE_NVIM_CONFIG" == "true" ]]; then
     CONFIGS+=("nvim")
   fi
 
@@ -167,6 +172,8 @@ copy_configs() {
   if [ "$DEVICE_TYPE" = "Desktop" ]; then
     echo "Preparing awesome config for Desktop (no battery widget)..."
     rm -rf "$AWESOME_TMP/battery-widget"
+    rm -f "$AWESOME_TMP/modules/config.laptop.lua"
+    rm -f "$AWESOME_TMP/modules/keys.laptop.lua"
   else
     echo "Preparing awesome config for Laptop (with battery widget and brightness controls)..."
     cp "$AWESOME_TMP/modules/config.laptop.lua" "$AWESOME_TMP/modules/config.lua"
@@ -212,7 +219,19 @@ copy_configs() {
     echo "  ✓ Preserved existing ~/.config/nvim/lua/local/"
   fi
 
-  _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc" ".zshrc"
+  # Install TnEOS zshrc as a separate file and source it from the user's .zshrc
+  _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc_TnEOS" ".zshrc_TnEOS"
+  local SOURCE_LINE='[ -f ~/.zshrc_TnEOS ] && source ~/.zshrc_TnEOS'
+  if [ ! -f "$HOME/.zshrc" ]; then
+    echo "$SOURCE_LINE" > "$HOME/.zshrc"
+    echo "  ✓ Created ~/.zshrc with TnEOS source line"
+  elif ! grep -qF "$SOURCE_LINE" "$HOME/.zshrc"; then
+    echo "" >> "$HOME/.zshrc"
+    echo "$SOURCE_LINE" >> "$HOME/.zshrc"
+    echo "  ✓ Added TnEOS source line to ~/.zshrc"
+  else
+    echo "  ✓ ~/.zshrc already sources .zshrc_TnEOS, skipping."
+  fi
   _install_file_config "$CONFIG_SRC/.xprofile" "$HOME/.xprofile" ".xprofile"
 
   # Laptop-only: lid-switch behaviour
@@ -229,6 +248,10 @@ copy_configs() {
   _install_dir_config "$REPO_DIR/docs/tutorial" "$HOME/.config/TnEOS/tutorial" "TnEOS/tutorial"
   touch "$HOME/.config/TnEOS/.show-tutorial"
   echo "  ✓ Tutorial set to show on next login"
+
+  if [ -d "$_COPY_CONFIGS_BACKUP_DIR" ]; then
+    gum style --foreground 3 "  Previous configs backed up to: $_COPY_CONFIGS_BACKUP_DIR"
+  fi
 
   echo ""
   gum style --bold --foreground 2 "✓ Configs installed to ~/.config/ and ~/"
