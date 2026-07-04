@@ -219,7 +219,19 @@ copy_configs() {
     echo "  ✓ Preserved existing ~/.config/nvim/lua/local/"
   fi
 
-  _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc" ".zshrc"
+  # Install TnEOS zshrc as a separate file and source it from the user's .zshrc
+  _install_file_config "$CONFIG_SRC/.zshrc" "$HOME/.zshrc_TnEOS" ".zshrc_TnEOS"
+  local SOURCE_LINE='[ -f ~/.zshrc_TnEOS ] && source ~/.zshrc_TnEOS'
+  if [ ! -f "$HOME/.zshrc" ]; then
+    echo "$SOURCE_LINE" > "$HOME/.zshrc"
+    echo "  ✓ Created ~/.zshrc with TnEOS source line"
+  elif ! grep -qF "$SOURCE_LINE" "$HOME/.zshrc"; then
+    echo "" >> "$HOME/.zshrc"
+    echo "$SOURCE_LINE" >> "$HOME/.zshrc"
+    echo "  ✓ Added TnEOS source line to ~/.zshrc"
+  else
+    echo "  ✓ ~/.zshrc already sources .zshrc_TnEOS, skipping."
+  fi
   _install_file_config "$CONFIG_SRC/.xprofile" "$HOME/.xprofile" ".xprofile"
 
   # Laptop-only: lid-switch behaviour
