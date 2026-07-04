@@ -25,14 +25,14 @@ _install_dir_config() {
   fi
 
   if [ -e "$dest" ]; then
-    if diff -rq "$src" "$dest" &>/dev/null; then
+    if diff -rqw "$src" "$dest" &>/dev/null; then
       echo "  ✓ $name is already up to date, skipping."
       return
     fi
 
     echo ""
     gum style --bold --foreground 212 "Changes detected in $name:"
-    diff -r --color=always "$dest" "$src" || true
+    diff -rw -U 0 --color=always "$dest" "$src" || true
     echo ""
 
     if ! gum confirm "Overwrite ~/.config/$name with the repo version?"; then
@@ -60,14 +60,14 @@ _install_system_file_config() {
   fi
 
   if [ -e "$dest" ]; then
-    if diff -q "$src" "$dest" &>/dev/null; then
+    if diff -qw "$src" "$dest" &>/dev/null; then
       echo "  ✓ $name is already up to date, skipping."
       return
     fi
 
     echo ""
     gum style --bold --foreground 212 "Changes detected in $name:"
-    diff --color=always "$dest" "$src" || true
+    diff -w -U 0 --color=always "$dest" "$src" || true
     echo ""
 
     if ! gum confirm "Overwrite $dest with the repo version? (requires sudo)"; then
@@ -105,14 +105,14 @@ _install_file_config() {
   fi
 
   if [ -e "$dest" ]; then
-    if diff -q "$src" "$dest" &>/dev/null; then
+    if diff -qw "$src" "$dest" &>/dev/null; then
       echo "  ✓ $name is already up to date, skipping."
       return
     fi
 
     echo ""
     gum style --bold --foreground 212 "Changes detected in $name:"
-    diff --color=always "$dest" "$src" || true
+    diff -w -U 0 --color=always "$dest" "$src" || true
     echo ""
 
     if ! gum confirm "Overwrite ~/$name with the repo version?"; then
