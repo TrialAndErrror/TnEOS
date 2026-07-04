@@ -172,6 +172,8 @@ copy_configs() {
   if [ "$DEVICE_TYPE" = "Desktop" ]; then
     echo "Preparing awesome config for Desktop (no battery widget)..."
     rm -rf "$AWESOME_TMP/battery-widget"
+    rm -f "$AWESOME_TMP/modules/config.laptop.lua"
+    rm -f "$AWESOME_TMP/modules/keys.laptop.lua"
   else
     echo "Preparing awesome config for Laptop (with battery widget and brightness controls)..."
     cp "$AWESOME_TMP/modules/config.laptop.lua" "$AWESOME_TMP/modules/config.lua"
