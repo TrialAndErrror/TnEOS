@@ -210,6 +210,44 @@ rm -rf ~/.config/awesome ~/.config/nvim ~/.config/picom ~/.config/rofi ~/.config
 cp -r ~/.config-backups/YYYYMMDD-HHMMSS/* ~/
 ```
 
+## Non-Arch Users (Debian / Ubuntu / Fedora)
+
+TnEOS is primarily developed and tested on Arch Linux. Debian, Ubuntu, and Fedora are experimentally supported — most things work, but a handful of packages are not available in their official repos and must be installed separately after running TnEOS.
+
+### Neovim: `tree-sitter-cli` not available via apt or dnf
+
+When you select Neovim, TnEOS also installs `tree-sitter-cli` (required to compile language parsers). On Arch this comes from pacman, but it is not in the apt or dnf repos. You will see a warning during installation:
+
+```
+⚠ Skipping tree-sitter-cli: not in apt/dnf repos
+```
+
+After the TnEOS install finishes, install it via npm:
+
+```bash
+npm i -g tree-sitter-cli
+```
+
+> If you don't have npm, install Node.js first: `sudo apt install nodejs npm` or `sudo dnf install nodejs npm`.
+
+Without `tree-sitter-cli`, Neovim will work but treesitter parsers may fail to compile, which affects syntax highlighting and text objects for some languages.
+
+### Fedora only: Yazi not available via dnf
+
+Yazi (the terminal file manager) is not in the Fedora repos. TnEOS will skip it with a warning. Install it manually from the official releases page after TnEOS finishes:
+
+```
+https://github.com/sxyazi/yazi/releases
+```
+
+Or via cargo if you have Rust installed:
+
+```bash
+cargo install --locked yazi-fm yazi-cli
+```
+
+---
+
 ## Advanced: Pre-cloning During Installation
 
 If you want to clone TnEOS before your first boot (e.g. during an Arch `arch-chroot` or a Debian chroot):
