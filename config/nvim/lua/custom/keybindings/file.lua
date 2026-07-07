@@ -15,4 +15,10 @@ wk.add({
 	{ "<leader>fS", "<cmd>wa<cr>", desc = "Save all" },
 	{ "<leader>fe", "<cmd>e ~/.config/nvim/init.lua<cr>", desc = "Edit config" },
 	{ "<leader>fp", split_in_glow, desc = "Markdown Preview" },
+
+	{ "<leader>fR", group = "Remote File Actions" },
+	{ "<leader>fRc", "<cmd>RemoteSSHFSConnect<cr>", desc = "Connect to server" },
+	{ "<leader>fRf", "<cmd>RemoteSSHFSFindFiles<cr>", desc = "Find remote file" },
+	{ "<leader>fRg", "<cmd>RemoteSSHFSLiveGrep<cr>", desc = "Live grep remote" },
+	{ "<leader>fRe", "<cmd>RemoteSSHFSEdit<cr>", desc = "Edit ssh configs" },
 })

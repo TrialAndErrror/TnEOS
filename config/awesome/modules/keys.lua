@@ -123,63 +123,69 @@ local default_keys = gears.table.join(
 )
 
 local system_keys = gears.table.join(
-	awful.key({}, "XF86AudioRaiseVolume", function()
-		awful.spawn.easy_async("pactl -- set-sink-volume @DEFAULT_SINK@ +10%", notifyCurrentVolume)
-	end, { description = "Volume Up", group = "system" }),
-
-	awful.key({}, "XF86AudioLowerVolume", function()
-		awful.spawn.easy_async("pactl -- set-sink-volume @DEFAULT_SINK@ -10%", notifyCurrentVolume)
-	end, { description = "Volume Down", group = "system" }),
-
-	awful.key({}, "XF86AudioMute", function()
-		awful.spawn.easy_async("pactl set-sink-mute @DEFAULT_SINK@ toggle", notifyMuteStatus)
-	end, { description = "Toggle mute", group = "system" }),
-
-	awful.key({}, "XF86MonBrightnessDown", function(c)
-		awful.spawn.with_shell("brightnessctl set 10-%")
-	end, { description = "Brightness Down", group = "system" }),
-
-	awful.key({}, "XF86MonBrightnessUp", function(c)
-		awful.spawn.with_shell("brightnessctl set +10%")
-	end, { description = "Brightness Up", group = "system" }),
+	awful.key({ modkey, "Shift" }, "c", function()
+		awful.spawn.with_shell(" ~/.config/rofi/custom/config-loader.sh")
+	end, { description = "Edit Config Files", group = "custom" }),
 
 	awful.key({ modkey, "Shift" }, "q", function()
 		awful.spawn.with_shell(config.powermenu_command)
-	end, { description = "Power Menu", group = "awesome" }),
-
-	awful.key({ modkey, "Shift" }, "c", function()
-		awful.spawn.with_shell(" ~/.config/rofi/custom/config-loader.sh")
-	end, { description = "Edit Config Files", group = "system" }),
+	end, { description = "Power Options", group = "awesome" }),
 
 	awful.key({ modkey, "Shift" }, "s", function()
 		awful.spawn.with_shell("flameshot gui")
-	end, { description = "Screenshot Menu", group = "system" }),
+	end, { description = "Screenshot Menu", group = "custom" }),
 
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn.with_shell("~/.config/rofi/custom/rofi_bluetooth.sh")
-	end, { description = "Bluetooth Menu", group = "system" }),
+		awful.spawn.with_shell("rofi-bluetooth")
+	end, { description = "Bluetooth Menu", group = "custom" }),
 
 	awful.key({ modkey, "Shift" }, "w", function()
-		awful.spawn.with_shell("~/.config/rofi/custom/display_picker.sh")
-	end, { description = "Switch screen layout", group = "system" }),
+		awful.spawn.with_shell("bash ~/.local/share/rofi/display_layout.sh")
+	end, { description = "Switch screen layout", group = "custom" }),
 
 	awful.key({ modkey, "Shift" }, "i", function(c)
-		awful.spawn.with_shell(wifi_command)
-	end, { description = "Run Wifi Menu", group = "system" })
+		awful.spawn.with_shell(config.wifi_command)
+	end, { description = "Run Wifi Menu", group = "custom" }),
+
+	-- Screen Brightness
+	awful.key({}, "XF86MonBrightnessDown", function(c)
+		awful.spawn.with_shell("brightnessctl set 10% && xrandr --output eDP-1 --brightness .3")
+	end, { description = "Brightness Low", group = "custom" }),
+	awful.key({}, "XF86MonBrightnessUp", function(c)
+		awful.spawn.with_shell("brightnessctl set 60% && xrandr --output eDP-1 --brightness 1")
+	end, { description = "Brightness High", group = "custom" }),
+	awful.key({ "Shift" }, "XF86MonBrightnessDown", function(c)
+		awful.spawn.with_shell("brightnessctl set 10-%")
+	end, { description = "Brightness Down", group = "custom" }),
+	awful.key({ "Shift" }, "XF86MonBrightnessUp", function(c)
+		awful.spawn.with_shell("brightnessctl set +10%")
+	end, { description = "Brightness Up", group = "custom" }),
+
+	-- Volume controls
+	awful.key({}, "XF86AudioRaiseVolume", function()
+		awful.spawn.easy_async("pactl -- set-sink-volume @DEFAULT_SINK@ +10%", notifyCurrentVolume)
+	end, { description = "Volume Up", group = "custom" }),
+
+	awful.key({}, "XF86AudioLowerVolume", function()
+		awful.spawn.easy_async("pactl -- set-sink-volume @DEFAULT_SINK@ -10%", notifyCurrentVolume)
+	end, { description = "Volume Down", group = "custom" }),
+
+	awful.key({}, "XF86AudioMute", function()
+		awful.spawn.easy_async("pactl set-sink-mute @DEFAULT_SINK@ toggle", notifyMuteStatus)
+	end, { description = "Toggle mute", group = "custom" })
 )
 
 local launcher_keys = gears.table.join(
-
 	awful.key({ modkey }, "Return", function()
-		awful.spawn(config.terminal)
-	end, { description = "open terminal", group = "launcher" }),
+		awful.spawn(terminal)
+	end, { description = "open a terminal", group = "launcher" }),
 
 	awful.key({ modkey }, "z", function()
-		awful.spawn(config.terminal .. " -e sh -c 'zellij'")
+		awful.spawn(terminal .. " -e sh -c 'zellij'")
 	end, { description = "open Zellij (terminal multiplexer)", group = "launcher" }),
 
 	awful.key({ modkey }, "e", function()
-		awful.spawn(config.editor_cmd)
+		awful.spawn(editor_cmd)
 	end, { description = "open default editor", group = "launcher" }),
 
 	awful.key({ modkey }, "b", function()
@@ -194,9 +200,17 @@ local launcher_keys = gears.table.join(
 		awful.spawn.with_shell("~/.config/rofi/custom/project_picker.sh")
 	end, { description = "open Project Picker", group = "launcher" }),
 
+	awful.key({ modkey, "Shift" }, "o", function()
+		awful.spawn.with_shell("~/.config/rofi/custom/org_picker.sh")
+	end, { description = "open Org Picker", group = "launcher" }),
+
 	awful.key({ modkey, "Shift" }, "r", function()
 		awful.spawn.with_shell("~/.config/rofi/custom/remote-server-explorer.sh")
-	end, { description = "Open Remote Server", group = "launcher" })
+	end, { description = "Open Remote Server", group = "launcher" }),
+
+	awful.key({ modkey }, "p", function()
+		menubar.show()
+	end, { description = "show the menubar", group = "launcher" })
 )
 
 local globalkeys = gears.table.join(default_keys, system_keys, launcher_keys)

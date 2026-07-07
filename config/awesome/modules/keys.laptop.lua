@@ -33,8 +33,7 @@ root.buttons(gears.table.join(
 	awful.button({}, 5, awful.tag.viewprev)
 ))
 
-globalkeys = gears.table.join(
-	-- AwesomeWM defaults
+local default_keys = gears.table.join(
 	awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
 	awful.key({ modkey }, "Left", awful.tag.viewprev, { description = "view previous", group = "tag" }),
 	awful.key({ modkey }, "Right", awful.tag.viewnext, { description = "view next", group = "tag" }),
@@ -116,29 +115,14 @@ globalkeys = gears.table.join(
 		})
 	end, { description = "lua execute prompt", group = "awesome" }),
 
-	-- Default programs
-	awful.key({ modkey }, "e", function()
-		awful.spawn(editor)
-	end, { description = "open default editor", group = "launcher" }),
-
-	awful.key({ modkey }, "b", function()
-		awful.spawn(browser)
-	end, { description = "open default browser", group = "launcher" }),
-
-	awful.key({ modkey, "Shift" }, "e", function()
-		awful.spawn.with_shell(file_manager)
-	end, { description = "open default file explorer", group = "launcher" }),
-
-	awful.key({ modkey }, "Return", function()
-		awful.spawn(terminal)
-	end, { description = "open a terminal", group = "launcher" }),
-
 	awful.key({ modkey, "Shift" }, "c", function()
 		awful.spawn.with_shell(editor_cmd .. "~/.config/awesome/rc.lua")
 	end, { description = "open Awesome Config", group = "editor" }),
 
-	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
+	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" })
+)
 
+local system_keys = gears.table.join(
 	awful.key({ modkey, "Shift" }, "q", function()
 		awful.spawn.with_shell(config.powermenu_command)
 	end, { description = "Power Options", group = "awesome" }),
@@ -180,12 +164,32 @@ globalkeys = gears.table.join(
 
 	awful.key({}, "XF86AudioMute", function()
 		awful.spawn.easy_async("pactl set-sink-mute @DEFAULT_SINK@ toggle", notifyMuteStatus)
-	end, { description = "Toggle mute", group = "custom" }),
+	end, { description = "Toggle mute", group = "custom" })
+)
+
+local launcher_keys = gears.table.join(
+	awful.key({ modkey }, "Return", function()
+		awful.spawn(terminal)
+	end, { description = "open a terminal", group = "launcher" }),
+
+	awful.key({ modkey }, "e", function()
+		awful.spawn(editor)
+	end, { description = "open default editor", group = "launcher" }),
+
+	awful.key({ modkey }, "b", function()
+		awful.spawn(browser)
+	end, { description = "open default browser", group = "launcher" }),
+
+	awful.key({ modkey, "Shift" }, "e", function()
+		awful.spawn.with_shell(file_manager)
+	end, { description = "open default file explorer", group = "launcher" }),
 
 	awful.key({ modkey }, "p", function()
 		menubar.show()
 	end, { description = "show the menubar", group = "launcher" })
 )
+
+local globalkeys = gears.table.join(default_keys, system_keys, launcher_keys)
 
 for i = 1, 9 do
 	globalkeys = gears.table.join(
