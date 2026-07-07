@@ -172,6 +172,10 @@ local launcher_keys = gears.table.join(
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
 
+	awful.key({ modkey }, "z", function()
+		awful.spawn(terminal .. " -e sh -c 'zellij'")
+	end, { description = "open Zellij (terminal multiplexer)", group = "launcher" }),
+
 	awful.key({ modkey }, "e", function()
 		awful.spawn(editor)
 	end, { description = "open default editor", group = "launcher" }),
@@ -183,6 +187,18 @@ local launcher_keys = gears.table.join(
 	awful.key({ modkey, "Shift" }, "e", function()
 		awful.spawn.with_shell(file_manager)
 	end, { description = "open default file explorer", group = "launcher" }),
+
+	awful.key({ modkey }, "v", function()
+		awful.spawn.with_shell("~/.config/rofi/custom/project_picker.sh")
+	end, { description = "open Project Picker", group = "launcher" }),
+
+	awful.key({ modkey, "Shift" }, "o", function()
+		awful.spawn.with_shell("~/.config/rofi/custom/org_picker.sh")
+	end, { description = "open Org Picker", group = "launcher" }),
+
+	awful.key({ modkey, "Shift" }, "r", function()
+		awful.spawn.with_shell("~/.config/rofi/custom/remote-server-explorer.sh")
+	end, { description = "Open Remote Server", group = "launcher" }),
 
 	awful.key({ modkey }, "p", function()
 		menubar.show()
