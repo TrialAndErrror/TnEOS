@@ -9,5 +9,6 @@ wk.add({
 	{ "<leader>tw", "<cmd>set wrap!<cr>", desc = "Toggle word wrap" },
 	{ "<leader>tt", "<cmd>ToggleTerm direction=float<cr>", desc = "Toggle terminal" },
 	{ "<leader>tf", "<cmd>ToggleTerm direction=tab<cr>", desc = "Toggle terminal (fullscreen)" },
+	{ "<leader>te", "<cmd>Neotree toggle<cr>", desc = "Toggle file explorer" },
 })
 
