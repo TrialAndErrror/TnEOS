@@ -91,7 +91,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -918,6 +918,19 @@ require("lazy").setup({
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
+
+			-- Animate scrolling (<C-d>, <C-u>, <C-f>, <C-b>, zz, ...) so you can see where you're going.
+			-- Other animations are off. Raise the duration below to slow it down.
+			local animate = require("mini.animate")
+			animate.setup({
+				scroll = {
+					timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+				},
+				cursor = { enable = false },
+				resize = { enable = false },
+				open = { enable = false },
+				close = { enable = false },
+			})
 
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,

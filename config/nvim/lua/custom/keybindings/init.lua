@@ -4,6 +4,8 @@
 -- Load all keybinding modules
 require 'custom.keybindings.file'
 require 'custom.keybindings.buffer'
+require 'custom.keybindings.scratch'
+require 'custom.keybindings.claude'
 require 'custom.keybindings.window'
 require 'custom.keybindings.code'
 require 'custom.keybindings.lsp'
