@@ -116,7 +116,8 @@ return {
 		end
 
 		-- <localleader><space> (Space Space): from a diff pane, mark the current file as
-		-- viewed and move to the next file. Octo's version looks up the file under the
+		-- viewed and move to the next file (on the last file it stays put and shows a
+		-- notification instead of wrapping). Octo's version looks up the file under the
 		-- cursor in the files panel, which errors when the panel is hidden. Inside the
 		-- panel it keeps Octo's behavior (toggle the file under the cursor).
 		local octo_mappings = require("octo.mappings")
@@ -135,6 +136,23 @@ return {
 			end
 			if file.viewed_state ~= "VIEWED" then
 				file:toggle_viewed()
+			end
+			if layout.selected_file_idx == #layout.files then
+				-- Last file: stay put instead of wrapping to the first, and say so.
+				local remaining = 0
+				for _, f in ipairs(layout.files) do
+					if f ~= file and f.viewed_state ~= "VIEWED" then
+						remaining = remaining + 1
+					end
+				end
+				local msg = "Last file reviewed."
+				if remaining > 0 then
+					msg = msg .. string.format(" %d other file(s) not yet viewed.", remaining)
+				else
+					msg = msg .. " All files viewed. Submit with <localleader>vs or close with <C-c>."
+				end
+				vim.notify(msg, vim.log.levels.WARN, { title = "Octo review" })
+				return
 			end
 			layout:select_next_file()
 		end

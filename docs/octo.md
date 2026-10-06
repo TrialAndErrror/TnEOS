@@ -15,7 +15,7 @@ Config lives in `config/nvim/lua/custom/plugins/octo.lua`.
 | `<leader>gr` | `:Octo search is:pr is:open review-requested:@me` | Open PRs where you are a requested reviewer |
 | `<leader>gR` | `:Octo pr list` | All PRs in the current repo |
 | `<localleader>b` | (Octo's own mapping) | Hide/show the changed-files panel during a review |
-| `<localleader><space>` (Space Space) | patched `toggle_viewed` | In a diff pane: mark the current file viewed and go to the next file. In the panel: toggle viewed on the file under the cursor |
+| `<localleader><space>` (Space Space) | patched `toggle_viewed` | In a diff pane: mark the current file viewed and go to the next file. On the last file it stays put and shows a warning notification (with a count of files not yet viewed) instead of wrapping. In the panel: toggle viewed on the file under the cursor |
 
 Notes:
 

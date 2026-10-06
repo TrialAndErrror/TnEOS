@@ -695,6 +695,27 @@ require("lazy").setup({
 				-- ts_ls = {},
 				--
 
+				-- TypeScript server. Required by `vue_ls` (Vue 3 hybrid mode forwards all
+				-- TS requests to it), so it also gets the @vue/typescript-plugin and .vue files.
+				vtsls = {
+					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+					settings = {
+						vtsls = {
+							tsserver = {
+								globalPlugins = {
+									{
+										name = "@vue/typescript-plugin",
+										location = vim.fn.stdpath("data")
+											.. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+										languages = { "vue" },
+										configNamespace = "typescript",
+									},
+								},
+							},
+						},
+					},
+				},
+
 				lua_ls = {
 					-- cmd = { ... },
 					-- filetypes = { ... },
