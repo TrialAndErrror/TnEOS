@@ -40,7 +40,7 @@ awful.layout.layouts = {
 }
 
 return {
-	has_battery = true,
+	has_battery = false,
 	drun_theme = "~/.config/rofi/launchers/type-1/style-6.rasi",
 	powermenu_command = "bash ~/.config/rofi/powermenu/type-1/powermenu.sh",
 	wifi_command = "~/.config/rofi/custom/rofi_wifi.sh",

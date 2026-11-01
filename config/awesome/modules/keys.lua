@@ -7,24 +7,6 @@ local menubar = require("menubar")
 local config = require("modules.config")
 local mymainmenu = require("modules.menu")
 
-local function notifyCurrentVolume()
-	awful.spawn.easy_async("pactl get-sink-volume @DEFAULT_SINK@", function(stdout)
-		local volume = stdout:match("(%d+%%)")
-		if volume then
-			naughty.notify({ title = "Volume", text = "Current volume: " .. volume })
-		else
-			naughty.notify({ title = "Volume", text = "Unable to get volume" })
-		end
-	end)
-end
-
-local function notifyMuteStatus()
-	awful.spawn.easy_async("pactl get-sink-mute @DEFAULT_SINK@", function(stdout)
-		local is_muted = stdout:match("yes") and "Muted" or "Unmuted"
-		naughty.notify({ title = "Sound", text = "Volume " .. is_muted })
-	end)
-end
-
 root.buttons(gears.table.join(
 	awful.button({}, 3, function()
 		mymainmenu:toggle()
@@ -145,34 +127,7 @@ local system_keys = gears.table.join(
 
 	awful.key({ modkey, "Shift" }, "i", function(c)
 		awful.spawn.with_shell(config.wifi_command)
-	end, { description = "Run Wifi Menu", group = "custom" }),
-
-	-- Screen Brightness
-	awful.key({}, "XF86MonBrightnessDown", function(c)
-		awful.spawn.with_shell("brightnessctl set 10% && xrandr --output eDP-1 --brightness .3")
-	end, { description = "Brightness Low", group = "custom" }),
-	awful.key({}, "XF86MonBrightnessUp", function(c)
-		awful.spawn.with_shell("brightnessctl set 60% && xrandr --output eDP-1 --brightness 1")
-	end, { description = "Brightness High", group = "custom" }),
-	awful.key({ "Shift" }, "XF86MonBrightnessDown", function(c)
-		awful.spawn.with_shell("brightnessctl set 10-%")
-	end, { description = "Brightness Down", group = "custom" }),
-	awful.key({ "Shift" }, "XF86MonBrightnessUp", function(c)
-		awful.spawn.with_shell("brightnessctl set +10%")
-	end, { description = "Brightness Up", group = "custom" }),
-
-	-- Volume controls
-	awful.key({}, "XF86AudioRaiseVolume", function()
-		awful.spawn.easy_async("pactl -- set-sink-volume @DEFAULT_SINK@ +10%", notifyCurrentVolume)
-	end, { description = "Volume Up", group = "custom" }),
-
-	awful.key({}, "XF86AudioLowerVolume", function()
-		awful.spawn.easy_async("pactl -- set-sink-volume @DEFAULT_SINK@ -10%", notifyCurrentVolume)
-	end, { description = "Volume Down", group = "custom" }),
-
-	awful.key({}, "XF86AudioMute", function()
-		awful.spawn.easy_async("pactl set-sink-mute @DEFAULT_SINK@ toggle", notifyMuteStatus)
-	end, { description = "Toggle mute", group = "custom" })
+	end, { description = "Run Wifi Menu", group = "custom" })
 )
 
 local launcher_keys = gears.table.join(
