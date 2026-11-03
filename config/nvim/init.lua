@@ -93,6 +93,9 @@ vim.g.maplocalleader = " "
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
+-- gopls/golangci_lint_ls list `gotmpl` as a filetype, but nvim doesn't register it by default
+vim.filetype.add({ extension = { gotmpl = "gotmpl" } })
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
