@@ -934,7 +934,13 @@ require("lazy").setup({
 			--  - va)  - [V]isually select [A]round [)]paren
 			--  - yinq - [Y]ank [I]nside [N]ext [Q]uote
 			--  - ci'  - [C]hange [I]nside [']quote
-			require("mini.ai").setup({ n_lines = 500 })
+			require("mini.ai").setup({
+				n_lines = 500,
+				custom_textobjects = {
+					-- Markdown fenced code block: `yic` yanks inside the fence, `yac` includes it
+					c = { "```[^\n]*\n().-()\n[ \t]*```" },
+				},
+			})
 
 			-- Add/delete/replace surroundings (brackets, quotes, etc.)
 			--
