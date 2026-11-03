@@ -4,6 +4,11 @@ set -euo pipefail
 # Ensure user-local bin is on PATH when launched from rofi
 export PATH="$HOME/.local/bin:$PATH"
 
+# rofi doesn't run .zshrc, so pick up the ssh-agent that keychain started
+# (otherwise ssh/sshfs from nvim prompts for key passphrases)
+# shellcheck disable=SC1090
+[[ -f "$HOME/.keychain/$(hostname)-sh" ]] && . "$HOME/.keychain/$(hostname)-sh"
+
 # 1) Your manual order for display
 configs_order=(
   "Awesome (rc.lua)"
