@@ -4,6 +4,11 @@ set -euo pipefail
 # Ensure user-local bin is on PATH when launched from rofi
 export PATH="$HOME/.local/bin:$PATH"
 
+# rofi doesn't run .zshrc, so pick up the ssh-agent that keychain started
+# (otherwise ssh/sshfs from nvim prompts for key passphrases)
+# shellcheck disable=SC1090
+[[ -f "$HOME/.keychain/$(hostname)-sh" ]] && . "$HOME/.keychain/$(hostname)-sh"
+
 # Build list from ~/repos directories, then append Notes and Cancel
 mapfile -t repo_names < <(ls -1d "$HOME"/repos/*/ 2>/dev/null | xargs -I{} basename {})
 
