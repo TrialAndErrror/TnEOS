@@ -953,6 +953,28 @@ require("lazy").setup({
 				close = { enable = false },
 			})
 
+			-- Mouse wheel events fire in rapid bursts, which fights the scroll animation and
+			-- makes wheel scrolling jumpy/stuck. Scroll the wheel natively (no animation) by
+			-- pausing mini.animate while wheel events are arriving.
+			local wheel_timer = assert(vim.uv.new_timer())
+			local function wheel(key)
+				return function()
+					vim.g.minianimate_disable = true
+					wheel_timer:stop()
+					wheel_timer:start(
+						150,
+						0,
+						vim.schedule_wrap(function()
+							vim.g.minianimate_disable = false
+						end)
+					)
+					local lines = tonumber(vim.o.mousescroll:match("ver:(%d+)")) or 3
+					vim.cmd.normal({ lines .. key, bang = true })
+				end
+			end
+			vim.keymap.set({ "n", "x" }, "<ScrollWheelUp>", wheel("\25"), { desc = "Scroll up (no animation)" })
+			vim.keymap.set({ "n", "x" }, "<ScrollWheelDown>", wheel("\5"), { desc = "Scroll down (no animation)" })
+
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,
 			--  and try some other statusline plugin
