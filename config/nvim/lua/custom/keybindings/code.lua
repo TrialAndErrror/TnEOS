@@ -20,6 +20,13 @@ wk.add {
     end,
     desc = 'Organize/add imports',
   },
+  {
+    '<leader>cI',
+    function()
+      require('custom.auto_import').import_word()
+    end,
+    desc = 'Import symbol under cursor',
+  },
   { '<leader>cr', vim.lsp.buf.rename, desc = 'Rename symbol' },
   {
     '<leader>cf',

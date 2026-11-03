@@ -44,6 +44,7 @@ throwaway and wipes itself on close. `q` or `Esc` closes it.
 | `ca` | n | Code action |
 | `cq` | n | Quick fixes only |
 | `ci` | n | Organize/add imports (applies immediately) |
+| `cI` | n | Import the symbol under the cursor (Python / Go), see [lsp.md](lsp.md#auto-import-space-c-i) |
 | `cr` | n | Rename symbol |
 | `cf` | n | Format buffer (via `vim.lsp.buf.format`) |
 | `cs` | v | Silicon: screenshot the selection ([silicon.md](silicon.md)) |
