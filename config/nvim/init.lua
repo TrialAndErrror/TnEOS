@@ -91,7 +91,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -695,6 +695,27 @@ require("lazy").setup({
 				-- ts_ls = {},
 				--
 
+				-- TypeScript server. Required by `vue_ls` (Vue 3 hybrid mode forwards all
+				-- TS requests to it), so it also gets the @vue/typescript-plugin and .vue files.
+				vtsls = {
+					filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+					settings = {
+						vtsls = {
+							tsserver = {
+								globalPlugins = {
+									{
+										name = "@vue/typescript-plugin",
+										location = vim.fn.stdpath("data")
+											.. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
+										languages = { "vue" },
+										configNamespace = "typescript",
+									},
+								},
+							},
+						},
+					},
+				},
+
 				lua_ls = {
 					-- cmd = { ... },
 					-- filetypes = { ... },
@@ -918,6 +939,19 @@ require("lazy").setup({
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
+
+			-- Animate scrolling (<C-d>, <C-u>, <C-f>, <C-b>, zz, ...) so you can see where you're going.
+			-- Other animations are off. Raise the duration below to slow it down.
+			local animate = require("mini.animate")
+			animate.setup({
+				scroll = {
+					timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+				},
+				cursor = { enable = false },
+				resize = { enable = false },
+				open = { enable = false },
+				close = { enable = false },
+			})
 
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,
