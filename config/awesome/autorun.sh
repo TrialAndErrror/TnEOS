@@ -10,7 +10,8 @@ function run {
 xev -version
 
 # Generic command for all touchpads
-xinput set-prop "$(xinput list --name-only | grep -i touch)" "libinput Tapping Enabled" 1
+touchpad="$(xinput list --name-only | grep -i touch | head -n1)"
+[ -n "$touchpad" ] && xinput set-prop "$touchpad" "libinput Tapping Enabled" 1
 picom -b --config ~/.config/picom/picom.conf
 run nm-applet
 run volumeicon

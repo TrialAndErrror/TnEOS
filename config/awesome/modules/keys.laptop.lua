@@ -115,14 +115,18 @@ local default_keys = gears.table.join(
 		})
 	end, { description = "lua execute prompt", group = "awesome" }),
 
-	awful.key({ modkey, "Shift" }, "c", function()
-		awful.spawn.with_shell(editor_cmd .. "~/.config/awesome/rc.lua")
-	end, { description = "open Awesome Config", group = "editor" }),
+	awful.key({ modkey, "Shift" }, "a", function()
+		awful.spawn.with_shell(editor_cmd .. " ~/.config/awesome/rc.lua")
+	end, { description = "open Awesome Config", group = "awesome" }),
 
 	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" })
 )
 
 local system_keys = gears.table.join(
+	awful.key({ modkey, "Shift" }, "c", function()
+		awful.spawn.with_shell(" ~/.config/rofi/custom/config-loader.sh")
+	end, { description = "Edit Config Files", group = "custom" }),
+
 	awful.key({ modkey, "Shift" }, "q", function()
 		awful.spawn.with_shell(config.powermenu_command)
 	end, { description = "Power Options", group = "awesome" }),
@@ -138,6 +142,10 @@ local system_keys = gears.table.join(
 	awful.key({ modkey, "Shift" }, "w", function()
 		awful.spawn.with_shell("bash ~/.local/share/rofi/display_layout.sh")
 	end, { description = "Switch screen layout", group = "custom" }),
+
+	awful.key({ modkey, "Shift" }, "i", function(c)
+		awful.spawn.with_shell(config.wifi_command)
+	end, { description = "Run Wifi Menu", group = "custom" }),
 
 	-- Screen Brightness
 	awful.key({}, "XF86MonBrightnessDown", function(c)
@@ -177,7 +185,7 @@ local launcher_keys = gears.table.join(
 	end, { description = "open Zellij (terminal multiplexer)", group = "launcher" }),
 
 	awful.key({ modkey }, "e", function()
-		awful.spawn(editor)
+		awful.spawn(editor_cmd)
 	end, { description = "open default editor", group = "launcher" }),
 
 	awful.key({ modkey }, "b", function()
