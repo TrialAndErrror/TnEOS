@@ -6,6 +6,20 @@ local silicon = require 'silicon'
 wk.add {
   { '<leader>c', group = 'Code Actions' },
   { '<leader>ca', vim.lsp.buf.code_action, desc = 'Code action' },
+  {
+    '<leader>cq',
+    function()
+      vim.lsp.buf.code_action { context = { only = { 'quickfix' } } }
+    end,
+    desc = 'Quick fix',
+  },
+  {
+    '<leader>ci',
+    function()
+      vim.lsp.buf.code_action { context = { only = { 'source.organizeImports' } }, apply = true }
+    end,
+    desc = 'Organize/add imports',
+  },
   { '<leader>cr', vim.lsp.buf.rename, desc = 'Rename symbol' },
   {
     '<leader>cf',
