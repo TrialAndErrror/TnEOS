@@ -113,6 +113,11 @@ See [gitsigns.md](gitsigns.md): `hs hr hS hu hR hp hb hd hD`.
 
 See [telescope.md](telescope.md): `sf sg sw sd sr sh sk sn s. s/ ss sm sc`.
 
+| Key | Does |
+| --- | --- |
+| `st` | Grep as a directory/file tree (see [grep-tree.md](grep-tree.md)) |
+| `sT` | Same, for the word under the cursor |
+
 ## `Space t` Toggles
 
 | Key | Does |

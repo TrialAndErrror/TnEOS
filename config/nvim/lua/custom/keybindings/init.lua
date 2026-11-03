@@ -2,6 +2,7 @@
 -- This file loads all keybinding modules
 
 -- Load all keybinding modules
+require('custom.grep_tree').setup()
 require 'custom.keybindings.file'
 require 'custom.keybindings.buffer'
 require 'custom.keybindings.scratch'
