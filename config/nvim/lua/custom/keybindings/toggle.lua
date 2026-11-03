@@ -10,5 +10,6 @@ wk.add({
 	{ "<leader>tt", "<cmd>ToggleTerm direction=float<cr>", desc = "Toggle terminal" },
 	{ "<leader>tf", "<cmd>ToggleTerm direction=tab<cr>", desc = "Toggle terminal (fullscreen)" },
 	{ "<leader>te", "<cmd>Neotree toggle<cr>", desc = "Toggle file explorer" },
+	{ "<leader>tz", "<cmd>ZenMode<cr>", desc = "Toggle zen mode" },
 })
 
