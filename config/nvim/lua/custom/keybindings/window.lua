@@ -2,7 +2,7 @@
 local wk = require 'which-key'
 
 -- Register keybindings with which-key (using wk.add method)
-wk.add({
+wk.add {
   { '<leader>w', group = 'Window Actions' },
   { '<leader>ww', '<C-w>w', desc = 'Switch to next window/panel' },
   { '<leader>wW', '<C-w>W', desc = 'Switch to previous window/panel' },
@@ -21,4 +21,4 @@ wk.add({
   { '<leader>w<', '<C-w><', desc = 'Decrease window width' },
   { '<leader>wr', '<C-w>r', desc = 'Rotate windows' },
   { '<leader>wx', '<C-w>x', desc = 'Exchange windows' },
-})
+}

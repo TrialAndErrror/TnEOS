@@ -27,26 +27,18 @@ local state = {
 
 local function icon(name, is_dir)
   local ok, devicons = pcall(require, 'nvim-web-devicons')
-  if not ok then
-    return is_dir and '' or ''
-  end
-  if is_dir then
-    return ''
-  end
+  if not ok then return is_dir and '' or '' end
+  if is_dir then return '' end
   local i = devicons.get_icon(name, vim.fn.fnamemodify(name, ':e'), { default = true })
   return i or ''
 end
 
-local function plural(n)
-  return n .. (n == 1 and ' result' or ' results')
-end
+local function plural(n) return n .. (n == 1 and ' result' or ' results') end
 
 --- Rebuild the buffer contents from state.
 local function render()
   local buf = state.buf
-  if not (buf and vim.api.nvim_buf_is_valid(buf)) then
-    return
-  end
+  if not (buf and vim.api.nvim_buf_is_valid(buf)) then return end
   local out, hls, map = {}, {}, {}
   local total = 0
   for _, d in ipairs(state.dirs) do
@@ -111,9 +103,7 @@ local function render()
   vim.bo[buf].modifiable = false
   vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
   for _, h in ipairs(hls) do
-    if h[1] then
-      vim.api.nvim_buf_set_extmark(buf, ns, h[1], h[3], { end_col = h[4], hl_group = h[2] })
-    end
+    if h[1] then vim.api.nvim_buf_set_extmark(buf, ns, h[1], h[3], { end_col = h[4], hl_group = h[2] }) end
   end
   state.lines = map
 end
@@ -124,9 +114,7 @@ local function node_at_cursor()
 end
 
 local function toggle(node)
-  if node.key then
-    state.collapsed[node.key] = not state.collapsed[node.key] or nil
-  end
+  if node.key then state.collapsed[node.key] = not state.collapsed[node.key] or nil end
 end
 
 local function set_all(collapsed)
@@ -173,79 +161,49 @@ local function parent_row(row)
   local node = state.lines[row]
   local want = node.type == 'match' and 'file' or node.type == 'file' and 'dir' or 'root'
   for r = row - 1, 1, -1 do
-    if state.lines[r].type == want then
-      return r
-    end
+    if state.lines[r].type == want then return r end
   end
 end
 
 local function setup_buffer(buf)
-  local function map(lhs, fn, desc)
-    vim.keymap.set('n', lhs, fn, { buffer = buf, nowait = true, silent = true, desc = 'GrepTree: ' .. desc })
-  end
+  local function map(lhs, fn, desc) vim.keymap.set('n', lhs, fn, { buffer = buf, nowait = true, silent = true, desc = 'GrepTree: ' .. desc }) end
   local function activate()
     local node = node_at_cursor()
-    if not node then
-      return
-    end
+    if not node then return end
     if node.type == 'match' then
       open_match(node)
     elseif node.type ~= 'root' then
-      keep_cursor(function()
-        toggle(node)
-      end)
+      keep_cursor(function() toggle(node) end)
     end
   end
   map('<CR>', activate, 'open / toggle')
   map('o', activate, 'open / toggle')
   map('<Tab>', function()
     local node = node_at_cursor()
-    if node and node.key then
-      keep_cursor(function()
-        toggle(node)
-      end)
-    end
+    if node and node.key then keep_cursor(function() toggle(node) end) end
   end, 'toggle')
   map('l', function()
     local node = node_at_cursor()
-    if node and node.key and state.collapsed[node.key] then
-      keep_cursor(function()
-        toggle(node)
-      end)
-    end
+    if node and node.key and state.collapsed[node.key] then keep_cursor(function() toggle(node) end) end
   end, 'expand')
   map('h', function()
     local node, row = node_at_cursor()
-    if not node then
-      return
-    end
+    if not node then return end
     if node.key and not state.collapsed[node.key] then
-      keep_cursor(function()
-        toggle(node)
-      end)
+      keep_cursor(function() toggle(node) end)
     else
       local p = parent_row(row)
-      if p then
-        vim.api.nvim_win_set_cursor(0, { p, 0 })
-      end
+      if p then vim.api.nvim_win_set_cursor(0, { p, 0 }) end
     end
   end, 'collapse / go to parent')
   map('E', function()
-    keep_cursor(function()
-      set_all(false)
-    end)
+    keep_cursor(function() set_all(false) end)
   end, 'expand all')
   map('C', function()
-    keep_cursor(function()
-      set_all(true)
-    end)
+    keep_cursor(function() set_all(true) end)
   end, 'collapse all files')
-  map('R', function()
-    M.search(state.term, { root = state.root })
-  end, 're-run search')
-  map('q', function()
-    vim.cmd 'close'
-  end, 'close')
+  map('R', function() M.search(state.term, { root = state.root }) end, 're-run search')
+  map('q', function() vim.cmd 'close' end, 'close')
 end
 
 local function ensure_window()
@@ -276,17 +234,13 @@ end
 ---@param opts? { root?: string }
 function M.search(term, opts)
   opts = opts or {}
-  if not term or term == '' then
-    return
-  end
+  if not term or term == '' then return end
   if vim.fn.executable 'rg' == 0 then
     vim.notify('GrepTree: ripgrep (rg) not found', vim.log.levels.ERROR)
     return
   end
   local cur = vim.api.nvim_get_current_win()
-  if not (state.buf and vim.api.nvim_win_get_buf(cur) == state.buf) then
-    state.origin_win = cur
-  end
+  if not (state.buf and vim.api.nvim_win_get_buf(cur) == state.buf) then state.origin_win = cur end
   state.root = opts.root or vim.fn.getcwd()
   state.term = term
   state.collapsed = {}
@@ -305,9 +259,7 @@ function M.search(term, opts)
         if ok and ev.type == 'match' and ev.data.path and ev.data.path.text then
           local path = ev.data.path.text:gsub('^%./', '')
           local dir = vim.fn.fnamemodify(path, ':h')
-          if dir == '.' then
-            dir = ''
-          end
+          if dir == '.' then dir = '' end
           local d = by_dir[dir]
           if not d then
             d = { path = dir, files = {}, byfile = {}, count = 0 }
@@ -327,9 +279,7 @@ function M.search(term, opts)
           local subs = {}
           for _, sm in ipairs(ev.data.submatches or {}) do
             local s, e = sm['start'] - lead, sm['end'] - lead
-            if e > 0 then
-              subs[#subs + 1] = { math.max(s, 0), math.min(e, #text) }
-            end
+            if e > 0 then subs[#subs + 1] = { math.max(s, 0), math.min(e, #text) } end
           end
           f.matches[#f.matches + 1] = {
             lnum = ev.data.line_number,
@@ -340,13 +290,9 @@ function M.search(term, opts)
           d.count = d.count + 1
         end
       end
-      table.sort(order, function(a, b)
-        return a.path < b.path
-      end)
+      table.sort(order, function(a, b) return a.path < b.path end)
       for _, d in ipairs(order) do
-        table.sort(d.files, function(a, b)
-          return a.path < b.path
-        end)
+        table.sort(d.files, function(a, b) return a.path < b.path end)
       end
       state.dirs = order
       if #order == 0 then
@@ -361,14 +307,10 @@ function M.search(term, opts)
 end
 
 function M.prompt()
-  vim.ui.input({ prompt = 'Grep tree: ' }, function(input)
-    M.search(input)
-  end)
+  vim.ui.input({ prompt = 'Grep tree: ' }, function(input) M.search(input) end)
 end
 
-function M.word()
-  M.search(vim.fn.expand '<cword>')
-end
+function M.word() M.search(vim.fn.expand '<cword>') end
 
 function M.setup()
   vim.api.nvim_create_user_command('GrepTree', function(a)
