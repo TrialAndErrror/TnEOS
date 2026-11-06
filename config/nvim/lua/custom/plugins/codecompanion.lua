@@ -5,7 +5,7 @@ return {
   'olimorris/codecompanion.nvim',
   dependencies = {
     'nvim-lua/plenary.nvim',
-    -- NOTE: nvim-treesitter omitted: this config uses tree-sitter-manager.nvim.
+    -- NOTE: nvim-treesitter omitted: it is already installed and loaded by kickstart's init.lua.
     -- NOTE: nvim-cmp omitted: this config uses blink.cmp.
   },
   config = function()

@@ -10,7 +10,10 @@ vim.opt.expandtab = true -- convert tabs to spaces
 vim.opt.smartindent = true -- smart autoindenting on new lines
 vim.opt.breakindent = true -- maintain indent when wrapping lines
 
+-- gopls/golangci_lint_ls list `gotmpl` as a filetype, but nvim doesn't register it by default
+vim.filetype.add { extension = { gotmpl = 'gotmpl' } }
+
 -- Load custom keybindings
 require 'custom.keybindings'
 
-vim.cmd.colorscheme("miniautumn")
+vim.cmd.colorscheme 'miniautumn'
