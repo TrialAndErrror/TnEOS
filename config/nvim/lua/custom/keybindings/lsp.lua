@@ -23,16 +23,12 @@ local function dedupe_on_list(opts)
   end
 end
 
-local function definition()
-  vim.lsp.buf.definition { on_list = dedupe_on_list }
-end
+local function definition() vim.lsp.buf.definition { on_list = dedupe_on_list } end
 
-local function type_definition()
-  vim.lsp.buf.type_definition { on_list = dedupe_on_list }
-end
+local function type_definition() vim.lsp.buf.type_definition { on_list = dedupe_on_list } end
 
 -- Register keybindings with which-key (using wk.add method)
-wk.add({
+wk.add {
   { '<leader>l', group = 'LSP Actions' },
   { '<leader>li', '<cmd>LspInfo<cr>', desc = 'LSP Info' },
   { '<leader>lr', vim.lsp.buf.references, desc = 'References' },
@@ -42,4 +38,4 @@ wk.add({
   { '<leader>lh', vim.lsp.buf.hover, desc = 'Hover doc' },
   { '<leader>ls', vim.lsp.buf.signature_help, desc = 'Signature help' },
   { '<leader>lR', '<cmd>LspRestart<cr>', desc = 'Restart LSP' },
-})
+}
