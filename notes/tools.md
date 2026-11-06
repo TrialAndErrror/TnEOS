@@ -22,16 +22,6 @@ cd ~docs
 - Suffix aliases for commonly used arguments
 - Pipe commands to get to clipboard
 
-# NVIM
-
-## Plugins
-- tree-sitter: LSP support
-    - [Docs](https://tree-sitter.github.io/tree-sitter/)
-- markdown-preview.nvim: what it says 
-    - [GitHub](https://github.com/MeanderingProgrammer/render-markdown.nvim)
-- mini.nvim: for icons for markdown-preview
-    - [GitHub](https://github.com/nvim-mini/mini.nvim)
-
 # AI
 - grill-me (and grill-with-docs) 
     - [YouTube](https://www.youtube.com/watch?v=6BB6exR8Zd8)

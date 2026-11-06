@@ -163,26 +163,10 @@ After editing, reload Awesome WM with `Super+Ctrl+R` — no need to log out.
 
 ### Customizing Neovim
 
-Machine-local Neovim plugins live in `~/.config/nvim/lua/local/plugins/`. This directory is gitignored and preserved across TnEOS installs, so anything you add there won't be touched by updates.
-
-To add a plugin, create a new `.lua` file in that folder returning a [lazy.nvim plugin spec](https://lazy.folke.io/spec):
-
-```bash
-# Example: add a plugin just for this machine
-nvim ~/.config/nvim/lua/local/plugins/my-plugin.lua
-```
-
-```lua
--- ~/.config/nvim/lua/local/plugins/my-plugin.lua
-return {
-  "owner/repo",
-  config = function()
-    require("my-plugin").setup()
-  end,
-}
-```
-
-Lazy.nvim automatically picks up any spec files in that folder — no need to register them anywhere else.
+The Neovim config is installed from its own repo,
+[kickstart-config](https://github.com/TrialAndErrror/kickstart-config) (see its README for
+plugin docs and options). Machine-local plugin specs go in `~/.config/nvim/lua/local/plugins/`;
+that folder is preserved across reinstalls.
 
 ---
 

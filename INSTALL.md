@@ -143,7 +143,7 @@ Configs are copied directly into `~/.config/`:
 ```
 ~/.config/
 ├── awesome/     → Awesome WM configuration
-├── nvim/        → Neovim configuration
+├── (nvim)       → installed from github.com/TrialAndErrror/kickstart-config
 ├── picom/       → Picom configuration
 ├── rofi/        → Rofi configuration
 └── kitty/       → Kitty terminal configuration

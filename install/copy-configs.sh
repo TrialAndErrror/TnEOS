@@ -129,6 +129,40 @@ _install_file_config() {
   cp "$src" "$dest"
 }
 
+# Install the Neovim config from the standalone kickstart-config repo.
+# Override the source with KICKSTART_CONFIG_REPO (owner/repo) / KICKSTART_CONFIG_REF.
+NVIM_CONFIG_REPO="${KICKSTART_CONFIG_REPO:-TrialAndErrror/kickstart-config}"
+NVIM_CONFIG_REF="${KICKSTART_CONFIG_REF:-main}"
+
+_install_nvim_config() {
+  if ! command -v nvim &>/dev/null; then
+    echo "  ⚠ nvim is not installed, skipping Neovim config."
+    return
+  fi
+  if ! command -v curl &>/dev/null; then
+    echo "  ⚠ curl is not installed, skipping Neovim config."
+    return
+  fi
+
+  if [ -e "$HOME/.config/nvim" ]; then
+    if ! gum confirm "Replace ~/.config/nvim with $NVIM_CONFIG_REPO? (existing config is backed up; lua/local/ is kept)"; then
+      echo "  Skipping nvim."
+      return
+    fi
+  fi
+
+  local installer
+  installer="$(mktemp)"
+  echo "  Fetching Neovim config installer from $NVIM_CONFIG_REPO@$NVIM_CONFIG_REF..."
+  if curl -fsSL "https://raw.githubusercontent.com/$NVIM_CONFIG_REPO/$NVIM_CONFIG_REF/install.sh" -o "$installer"; then
+    KICKSTART_CONFIG_REPO="$NVIM_CONFIG_REPO" KICKSTART_CONFIG_REF="$NVIM_CONFIG_REF" \
+      bash "$installer" --yes || echo "  ⚠ Neovim config install failed; continuing."
+  else
+    echo "  ⚠ Could not download the Neovim config installer; skipping."
+  fi
+  rm -f "$installer"
+}
+
 copy_configs() {
   local REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
   local CONFIG_SRC="$REPO_DIR/config"
@@ -142,8 +176,9 @@ copy_configs() {
   # Determine which configs to install
   local CONFIGS=("awesome" "picom" "rofi" "kitty")
 
-  if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]] || [[ "$INCLUDE_NVIM_CONFIG" == "true" ]]; then
-    CONFIGS+=("nvim")
+  local INSTALL_NVIM=false
+  if [[ " ${PACMAN_PACKAGES[@]} " =~ " neovim " ]] || [[ "${INCLUDE_NVIM_CONFIG:-}" == "true" ]]; then
+    INSTALL_NVIM=true
   fi
 
   # Detect or reuse already-exported device type
@@ -197,26 +232,14 @@ copy_configs() {
     rm -f "$CUSTOM_LUA_BACKUP"
     echo "  ✓ Preserved existing ~/.config/awesome/custom.lua"
   fi
-  # Preserve user's lua/local/ across nvim installs
-  local NVIM_LOCAL=""
-  if [[ " ${CONFIGS[@]} " =~ " nvim " ]]; then
-    local NVIM_LOCAL_DIR="$CONFIG_DEST/nvim/lua/local"
-    if [ -d "$NVIM_LOCAL_DIR" ]; then
-      NVIM_LOCAL="$(mktemp -d)"
-      cp -r "$NVIM_LOCAL_DIR/." "$NVIM_LOCAL/"
-    fi
-  fi
-
   for config in "${CONFIGS[@]}"; do
     [[ "$config" == "awesome" ]] && continue
     _install_dir_config "$CONFIG_SRC/$config" "$CONFIG_DEST/$config" "$config"
   done
 
-  if [ -n "$NVIM_LOCAL" ]; then
-    mkdir -p "$CONFIG_DEST/nvim/lua/local"
-    cp -r "$NVIM_LOCAL/." "$CONFIG_DEST/nvim/lua/local/"
-    rm -rf "$NVIM_LOCAL"
-    echo "  ✓ Preserved existing ~/.config/nvim/lua/local/"
+  if [ "$INSTALL_NVIM" = "true" ]; then
+    echo "Installing Neovim config..."
+    _install_nvim_config
   fi
 
   # Install TnEOS zshrc as a separate file and source it from the user's .zshrc
