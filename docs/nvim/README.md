@@ -25,9 +25,9 @@ pops up a menu of everything available (see [which-key](which-key.md)).
 | Trouble | [trouble.md](trouble.md) | Diagnostics / quickfix / symbols list |
 | LSP, Mason, Fidget | [lsp.md](lsp.md) | Go to definition, rename, code actions, tool installer |
 | blink.cmp + LuaSnip | [blink-cmp.md](blink-cmp.md) | Autocompletion and snippets |
-| Conform | [conform.md](conform.md) | Formatting (and format on save) |
+| Conform | [conform.md](conform.md) | Formatting (manual with `Space f`; no format on save) |
 | mini.nvim | [mini.md](mini.md) | Text objects, surround, statusline, scroll animation |
-| Treesitter manager | [treesitter.md](treesitter.md) | Syntax parsers |
+| Treesitter | [treesitter.md](treesitter.md) | Syntax parsers |
 | todo-comments | [todo-comments.md](todo-comments.md) | Highlight and search TODO/FIXME |
 | render-markdown | [render-markdown.md](render-markdown.md) | Pretty markdown in the buffer |
 | Silicon | [silicon.md](silicon.md) | Code screenshots |
@@ -87,3 +87,22 @@ pops up a menu of everything available (see [which-key](which-key.md)).
 - The `kickstart.plugins.*` extras (debug, lint, autopairs, indent_line,
   kickstart neo-tree/gitsigns) are commented out in `init.lua`, so none of
   their keymaps exist.
+
+## Plugin manager: lazy.nvim now, `vim.pack` later
+
+`init.lua` tracks upstream kickstart.nvim's **`lazy` branch** (upstream's last
+commit there was 2026-04-22) plus local additions under `lua/custom/`. Keep
+`init.lua` close to upstream so a plain `diff` shows only deliberate changes.
+
+Upstream's `master` has moved to **`vim.pack`**, Neovim 0.12's built-in plugin
+manager (documented as experimental, with a lockfile at
+`~/.config/nvim/nvim-pack-lock.json`). We are staying on lazy.nvim for now:
+every spec in `lua/custom/plugins/` uses lazy.nvim features (`opts`, `config`,
+`keys`, `cmd`, `event`, `dependencies`, `build`) that `vim.pack` does not
+have, so moving means porting each file by hand and giving up lazy-loading.
+
+**To consider in the future:** a `vim.pack` migration. Suggested approach: try
+it in a separate config with `NVIM_APPNAME=nvim-pack nvim` (own config, plugins
+and lockfile, so the real config is untouched), port a few plugins, compare
+startup and day-to-day feel, and switch only if it is worth it. Replace the
+`local.plugins` import with an equivalent loader at the same time.
