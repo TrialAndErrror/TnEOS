@@ -13,6 +13,7 @@ pops up a menu of everything available (see [which-key](which-key.md)).
 | which-key | [which-key.md](which-key.md) | Popup menu of pending keys |
 | Custom keybindings | [custom-keybindings.md](custom-keybindings.md) | All the `<leader>` menus defined in `lua/custom/keybindings/` |
 | Telescope | [telescope.md](telescope.md) | Fuzzy finder: files, grep, buffers, git, help |
+| Grep tree | [grep-tree.md](grep-tree.md) | Grep results grouped by directory / file, collapsible |
 | Neo-tree | [neo-tree.md](neo-tree.md) | File tree sidebar |
 | Yazi | [yazi.md](yazi.md) | Full terminal file manager inside nvim |
 | Bufferline | [bufferline.md](bufferline.md) | Buffer tabs along the top |
@@ -42,6 +43,7 @@ pops up a menu of everything available (see [which-key](which-key.md)).
 | `Space Space` | Switch buffers (Telescope) |
 | `Space f f` | Find file |
 | `Space s g` | Grep the project |
+| `Space s t` | Grep the project as a directory/file tree |
 | `Space /` | Fuzzy search in current buffer |
 | `\` | Reveal current file in the file tree |
 | `Space t t` | Floating terminal |

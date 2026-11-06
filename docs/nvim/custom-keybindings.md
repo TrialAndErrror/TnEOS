@@ -44,6 +44,7 @@ throwaway and wipes itself on close. `q` or `Esc` closes it.
 | `ca` | n | Code action |
 | `cq` | n | Quick fixes only |
 | `ci` | n | Organize/add imports (applies immediately) |
+| `cI` | n | Import the symbol under the cursor (Python / Go), see [lsp.md](lsp.md#auto-import-space-c-i) |
 | `cr` | n | Rename symbol |
 | `cf` | n | Format buffer (via `vim.lsp.buf.format`) |
 | `cs` | v | Silicon: screenshot the selection ([silicon.md](silicon.md)) |
@@ -112,6 +113,11 @@ See [gitsigns.md](gitsigns.md): `hs hr hS hu hR hp hb hd hD`.
 ## `Space s` Search
 
 See [telescope.md](telescope.md): `sf sg sw sd sr sh sk sn s. s/ ss sm sc`.
+
+| Key | Does |
+| --- | --- |
+| `st` | Grep as a directory/file tree (see [grep-tree.md](grep-tree.md)) |
+| `sT` | Same, for the word under the cursor |
 
 ## `Space t` Toggles
 

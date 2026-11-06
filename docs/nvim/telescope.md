@@ -18,6 +18,7 @@ Config: `init.lua`, plus `custom/keybindings/{search,file,buffer,git}.lua`.
 | `Space f r` / `Space s .` | Recent files |
 | `Space s g` | Live grep (needs `ripgrep`) |
 | `Space s w` | Grep the word under the cursor |
+| `Space s t` | Not Telescope: grep results as a collapsible tree, see [grep-tree.md](grep-tree.md) |
 | `Space s /` | Live grep in open buffers only |
 | `Space s d` | Diagnostics |
 | `Space s r` | Resume the last picker |

@@ -14,8 +14,8 @@ diagnostics and code actions.
 Config: `init.lua` (kickstart LSP block), `custom/keybindings/{lsp,code}.lua`,
 `custom/plugins/flask.lua`.
 
-Servers and tools installed automatically: `lua_ls`, `stylua`, `pyright`,
-`djlint`. Add more in the `servers` table in `init.lua`.
+Servers and tools installed automatically: `lua_ls`, `stylua`, `gopls`,
+`basedpyright`, `vtsls`, `djlint`. Add more in the `servers` table in `init.lua`.
 
 ## Go to / look up
 
@@ -86,3 +86,28 @@ Cursor-hold highlights other uses of the symbol under the cursor.
 :checkhealth vim.lsp
 :lua vim.print(vim.lsp.get_clients())
 ```
+
+## Auto-import (`Space c I`)
+
+Put the cursor on an undefined name (`defaultdict`, `Path`, `fmt`) and press
+`Space c I` to add its import. Implemented in `custom/auto_import.lua`.
+
+| Situation | Result |
+| --- | --- |
+| One place provides the name | The import is added at the top of the file |
+| Several do (e.g. `Path` from `pathlib` or `zipfile`) | A picker asks which one |
+| Go and gopls has no exact match | Falls back to organize-imports, which adds missing `pkg.Name` imports |
+| Nothing found | A warning says so |
+
+It asks the language server for completions at the token and applies only the
+import edit, never the completion text. It then tries quickfix code actions
+that mention "import".
+
+- **Go:** `gopls`.
+- **Python:** `basedpyright`. Plain `pyright` and `pylsp` do not suggest
+  standard-library imports, which is why `basedpyright` is in the server list.
+  `pylsp` (if installed in Mason) still runs alongside it, so you may see
+  duplicate diagnostics; `:MasonUninstall python-lsp-server` removes it.
+- Other languages work if their server offers auto-import (e.g. `vtsls`).
+
+`Space c i` is different: it organizes all imports in the file.
