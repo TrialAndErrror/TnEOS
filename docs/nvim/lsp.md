@@ -1,4 +1,4 @@
-# LSP, Mason, Fidget, lazydev
+# LSP, Mason, Fidget
 
 The Language Server Protocol gives you go-to-definition, hover docs, rename,
 diagnostics and code actions.
@@ -8,14 +8,18 @@ diagnostics and code actions.
   `mason-tool-installer`: install servers and tools from inside nvim.
 - [fidget.nvim](https://github.com/j-hui/fidget.nvim): bottom-right progress
   notifications ("indexing...").
-- [lazydev.nvim](https://github.com/folke/lazydev.nvim): makes `lua_ls` understand
-  the nvim API when editing Lua.
 
-Config: `init.lua` (kickstart LSP block), `custom/keybindings/{lsp,code}.lua`,
-`custom/plugins/flask.lua`.
+Config: `init.lua` (kickstart LSP block), `custom/lsp_servers.lua` (our servers
+and tools), `custom/keybindings/{lsp,code}.lua`.
 
-Servers and tools installed automatically: `lua_ls`, `stylua`, `gopls`,
-`basedpyright`, `vtsls`, `djlint`. Add more in the `servers` table in `init.lua`.
+Servers enabled and installed automatically: `lua_ls` and `stylua` (kickstart's),
+plus `gopls`, `golangci_lint_ls`, `basedpyright`, `html`, `jsonls`, `jinja_lsp`,
+`vtsls` and `vue_ls`, and the extra tool `djlint`. Add more in
+`custom/lsp_servers.lua`.
+
+**Only servers listed in `init.lua` or `custom/lsp_servers.lua` are enabled**
+(`automatic_enable = false`). Installing a server by hand in `:Mason` installs it
+but does not start it; add it to `custom/lsp_servers.lua`.
 
 ## Go to / look up
 
@@ -52,8 +56,9 @@ Servers and tools installed automatically: `lua_ls`, `stylua`, `gopls`,
 | `Space q` | Diagnostics to location list |
 | `Space x x` / `Space x X` | Trouble list ([trouble.md](trouble.md)) |
 
-Only errors are underlined; all severities show as inline virtual text. Signs use
-Nerd Font icons.
+Warnings and errors are underlined; all severities show as inline virtual text.
+Jumping with `]d` / `[d` opens the diagnostic float automatically. (This is
+kickstart's global diagnostic config near the top of `init.lua`.)
 
 ## Other
 
@@ -69,13 +74,16 @@ Cursor-hold highlights other uses of the symbol under the cursor.
 
 ```vim
 :Mason                   " UI: i install, X uninstall, u update, U update all, / filter, g? help
-:MasonInstall pyright
-:MasonUninstall pyright
+:MasonInstall prettier
+:MasonUninstall prettier
 :MasonUpdate
 :MasonLog
 :MasonToolsInstall       " install everything in ensure_installed
 :MasonToolsUpdate
 ```
+
+Formatters and linters work as soon as they're installed. A language *server* also
+has to be listed in `custom/lsp_servers.lua` before it starts.
 
 ## Debug commands
 
@@ -106,8 +114,8 @@ that mention "import".
 - **Go:** `gopls`.
 - **Python:** `basedpyright`. Plain `pyright` and `pylsp` do not suggest
   standard-library imports, which is why `basedpyright` is in the server list.
-  `pylsp` (if installed in Mason) still runs alongside it, so you may see
-  duplicate diagnostics; `:MasonUninstall python-lsp-server` removes it.
+  A stray `pyright` or `pylsp` in Mason is harmless: it is not enabled, so it
+  can't produce duplicate diagnostics or duplicate import choices.
 - Other languages work if their server offers auto-import (e.g. `vtsls`).
 
 `Space c i` is different: it organizes all imports in the file.

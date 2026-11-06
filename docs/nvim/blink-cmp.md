@@ -4,7 +4,7 @@
 and [LuaSnip](https://github.com/L3MON4D3/LuaSnip) the snippet engine.
 Completion appears as you type in insert mode.
 
-Config: `init.lua` (preset `default`; sources: LSP, path, snippets, lazydev;
+Config: `init.lua` (preset `default`; sources: LSP, path, snippets;
 documentation popup does not open automatically; signature help on).
 
 ## Insert-mode keys (default preset)
@@ -36,5 +36,6 @@ config, so you mainly see LSP-provided snippets. Add your own with
 
 ## Tips
 
-- In Lua files, lazydev adds nvim API completion (`vim.*`).
+- In Lua files, `lua_ls` is configured with the nvim runtime files, so `vim.*`
+  completes.
 - To make documentation auto-popup, set `documentation.auto_show = true` in `init.lua`.

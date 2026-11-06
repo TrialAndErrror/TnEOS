@@ -7,9 +7,12 @@ Config: `init.lua` and `custom/plugins/flask.lua`.
 
 ## Behavior
 
-- **Format on save**: on `:w` (500ms timeout), except C and C++.
-- Formatters by filetype: Lua is `stylua`; `htmldjango`, `jinja`, `jinja2` use
-  `djlint`. Everything else falls back to the LSP formatter.
+- **No format on save** (kickstart's default): format with `Space f` when you
+  want it.
+- Formatters by filetype: `htmldjango`, `jinja`, `jinja2` use `djlint`.
+  Everything else falls back to the LSP formatter. That includes Lua: `stylua`
+  runs as a language server (it is in the servers table), and `.stylua.toml` in
+  the config root sets the style (2 spaces, single quotes).
 
 ## Keys
 
@@ -26,9 +29,10 @@ etc. without pausing to avoid formatting.
 ```vim
 :ConformInfo               " which formatters apply and whether they are installed
 :lua require('conform').format()
-:noautocmd w               " save without format-on-save
 ```
 
-To disable format-on-save, edit `format_on_save` in `init.lua`. To add a
-formatter, add it to `formatters_by_ft` and install it with Mason
-(`:MasonInstall prettier`).
+To turn on format-on-save for a filetype, add it to `enabled_filetypes` in
+`format_on_save` in `init.lua` (empty by default; that is a deliberate change
+from stock, so keep it small). To add a formatter, add it to `formatters_by_ft`
+and install it with Mason (`:MasonInstall prettier`), or list it in `tools` in
+`custom/lsp_servers.lua` so a fresh machine installs it too.

@@ -1,11 +1,13 @@
 # mini.nvim
 
-[mini.nvim](https://github.com/echasnovski/mini.nvim) is a collection of small
+[mini.nvim](https://github.com/nvim-mini/mini.nvim) is a collection of small
 modules. Enabled here: **ai** (text objects), **surround**, **statusline**,
 **animate** (smooth scrolling only). The colorscheme `miniautumn` is from the
 same suite.
 
-Config: `init.lua`; colorscheme in `custom/options.lua`.
+Config: `init.lua` (ai, surround, statusline) and `custom/plugins/mini.lua`
+(animate, mouse-wheel handling, the markdown-fence text object); colorscheme in
+`custom/options.lua`.
 
 ## mini.ai: better text objects
 
@@ -19,13 +21,20 @@ Use after an operator (`d`, `c`, `y`, `v`). `a` = around (includes delimiters),
 | `ci"` / `ci'` / `` ci` `` / `ciq` | Inside any quote |
 | `cit` | Inside an HTML/XML tag |
 | `caf` / `cif` | Function call (around / inside) |
-| `caa` / `cia` | Function argument |
+| `cia` | Function argument (inside) |
 | `ci?` | User prompt: asks for the left and right characters |
-| `cin(` / `cil(` | **Next** / **last** parentheses (looks ahead / behind, up to 500 lines) |
+| `cii(` / `cil(` | **Next** / **last** parentheses (looks ahead / behind, up to 500 lines) |
+| `yic` / `yac` | Markdown fenced code block (inside / including the fences); a local addition |
 | `ciw` | Normal vim word (still there) |
 
-Examples: `daa` delete an argument with its comma; `vif` select a call's inside;
-`yinq` yank the next quoted string.
+Kickstart binds "next" to `ii` / `aa` (not mini.ai's default `in` / `an`) so it
+doesn't clash with Neovim 0.12's built-in node selection on `an` / `in`. Side
+effect: `aa` is now "around next", so **"around argument" can no longer be typed
+as `caa` / `daa`**; use `cia` / `dia` (inside argument). I checked that these
+mappings exist but haven't tried `daa` interactively.
+
+Examples: `dia` delete an argument; `vif` select a call's inside;
+`yiiq` yank the next quoted string.
 
 ## mini.surround
 
@@ -52,7 +61,9 @@ filetype, and `line:column`. No keys.
 ## mini.animate
 
 Scrolling (`Ctrl-d`, `Ctrl-u`, `zz`, ...) is animated over 150 ms. Cursor,
-resize, open and close animations are disabled.
+resize, open and close animations are disabled. The mouse wheel scrolls
+natively (no animation), because wheel events arrive in bursts that fight the
+animation.
 
 ## Colorscheme
 
