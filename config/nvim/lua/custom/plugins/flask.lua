@@ -23,13 +23,12 @@ return {
 		end,
 	},
 
-	-- Install pyright + djlint via mason
-	-- mason-lspconfig's default handler automatically sets up pyright with blink.cmp capabilities
+	-- Install djlint via mason (the Python LSP, basedpyright, is in the servers table in init.lua)
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		opts = function(_, opts)
 			opts.ensure_installed = opts.ensure_installed or {}
-			vim.list_extend(opts.ensure_installed, { "pyright", "djlint" })
+			vim.list_extend(opts.ensure_installed, { "djlint" })
 		end,
 	},
 
