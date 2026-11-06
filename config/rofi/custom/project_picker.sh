@@ -9,6 +9,12 @@ export PATH="$HOME/.local/bin:$PATH"
 # shellcheck disable=SC1090
 [[ -f "$HOME/.keychain/$(hostname)-sh" ]] && . "$HOME/.keychain/$(hostname)-sh"
 
+# Same reason: API keys (e.g. OPENROUTER_API_KEY for codecompanion.nvim) live in
+# an untracked env file that both this script and ~/.zshrc can source.
+# Format: `export NAME=value` lines; keep it chmod 600.
+# shellcheck disable=SC1090
+[[ -f "$HOME/.config/secrets.env" ]] && . "$HOME/.config/secrets.env"
+
 # Build list from ~/repos directories, then append Notes and Cancel
 mapfile -t repo_names < <(ls -1d "$HOME"/repos/*/ 2>/dev/null | xargs -I{} basename {})
 
