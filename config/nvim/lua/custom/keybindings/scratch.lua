@@ -28,6 +28,6 @@ local function open_scratch()
 end
 
 -- Register keybindings with which-key (using wk.add method)
-wk.add({
+wk.add {
   { '<leader>bs', open_scratch, desc = 'Scratch buffer' },
-})
+}

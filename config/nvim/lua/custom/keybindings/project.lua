@@ -2,7 +2,7 @@
 local wk = require 'which-key'
 
 -- Register keybindings with which-key (using wk.add method)
-wk.add({
+wk.add {
   { '<leader>p', group = 'Project Actions' },
   { '<leader>pp', '<cmd>Telescope projects<cr>', desc = 'Switch project' },
-})
+}
